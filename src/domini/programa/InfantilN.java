@@ -8,7 +8,6 @@
  *
  */
 package domini.programa;
-
 import java.util.Calendar;
 
 public class InfantilN extends Normal {

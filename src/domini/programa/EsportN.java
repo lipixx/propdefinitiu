@@ -18,7 +18,7 @@ public class EsportN extends Normal{
     public EsportN(String Nnom, Calendar NdataCaducitat, String Ndescripcio, float NpreuBase,int Nduracio, String NnomEsport)
     {
         super(Nnom,NdataCaducitat,Ndescripcio,NpreuBase,Nduracio);
-        nomEsport = NnomEsport;
+        nomEsport = new String(NnomEsport);
     }
     
     public EsportN(String Nnom, Calendar NdataCaducitat, String Ndescripcio, float NpreuBase,int Nduracio)

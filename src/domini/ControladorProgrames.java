@@ -16,6 +16,8 @@ import dades.GestorDiscException;
 import domini.programa.*;
 import java.util.Calendar;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @SuppressWarnings("unchecked")
 public class ControladorProgrames {
@@ -642,10 +644,29 @@ public class ControladorProgrames {
      *          i RepoFranges.db, al directori actual.
      *  @return Cert si la operació ha tingut èxit. Fals altrament.
      */
-    public boolean saveGclientsAll() throws GestorDiscException {
-        return RepoProg.saveAll() &&
-                RepoTemes.exportaTemes("RepositoriTemes.db") &&
-                RepoFranges.exportaFranges("RepositoriFranges.db");
+    public boolean saveGclientsAll() {
+        try 
+        {
+            return RepoProg.saveAll() && RepoTemes.exportaTemes("RepositoriTemes.db") && RepoFranges.exportaFranges("RepositoriFranges.db");
+      
+        } catch (GestorDiscException ex)
+        {
+            try
+            {
+                return RepoTemes.exportaTemes("RepositoriTemes.db");
+           
+            } catch (GestorDiscException ex1) 
+            {
+                try 
+                {
+                    return RepoFranges.exportaFranges("RepositoriFranges.db");
+              
+                } catch (GestorDiscException ex2) 
+                {
+                    return false;
+                }
+            }
+        }
     }
 
     /**

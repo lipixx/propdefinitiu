@@ -18,7 +18,7 @@ public class EsportC extends Continu{
     public EsportC(String Nnom, Calendar NdataCaducitat, String Ndescripcio, float NpreuBase,String NnomEsport)
     {
         super(Nnom,NdataCaducitat,Ndescripcio,NpreuBase);
-        nomEsport = NnomEsport;
+        nomEsport = new String(NnomEsport);
     }
     
     public EsportC(String Nnom, Calendar NdataCaducitat, String Ndescripcio, float NpreuBase)

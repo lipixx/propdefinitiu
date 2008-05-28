@@ -17,7 +17,7 @@ public class EsportD extends Directe {
 
     public EsportD(String Nnom, Calendar NdataCaducitat, String Ndescripcio, float NpreuBase, Calendar NiniciEmissio, int Nduracio, String NnomEsport) {
         super(Nnom, NdataCaducitat, Ndescripcio, NpreuBase, NiniciEmissio, Nduracio);
-        nomEsport = NnomEsport;
+        nomEsport = new String(NnomEsport);
     }
     
     public EsportD(String Nnom, Calendar NdataCaducitat, String Ndescripcio, float NpreuBase, Calendar NiniciEmissio, int Nduracio) {
