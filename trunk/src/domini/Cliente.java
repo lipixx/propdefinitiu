@@ -18,6 +18,7 @@ import java.util.Calendar;
  *
  * @author Francisco Javier Rojas (e6464692)
  */
+@SuppressWarnings("unchecked")
 public class Cliente implements Serializable, ClasseAmbClau<String>{
 
     protected String Nombre;
@@ -135,12 +136,34 @@ public class Cliente implements Serializable, ClasseAmbClau<String>{
         listPlan.add(P);
         return true;
     }
-    public Planificacio getPlanificacio(int id){
+    public Planificacio getPlanificacio(int id)
+    {
         for(Planificacio p : listPlan){
             if(p.getId()==id) return p;
         }
         return null;
     }
+    
+    /** AFEGIDAAAAAAA CERCA PER DATA INI DATA FI**/
+    public Planificacio getPlanificacio(Calendar dataIni, Calendar dataFi)
+    {
+        for (Planificacio p : listPlan)
+        {
+            if (p.getDataInici().equals(dataIni) && p.getDataFi().equals(dataFi))
+            {
+                return p;
+            }
+        }
+        return null;
+    }
+    
+    public ArrayList<Planificacio> getLlistaPlan()
+    {
+        return listPlan;
+    }
+    
+    /*************************************************/
+    
     public boolean clearPlanificacio(){
         listPlan = new ArrayList<Planificacio>();
         return true;

@@ -1,5 +1,7 @@
 package domini;
 
+import dades.RepositoriFranges;
+
 /**
  *
  * @author lipi
@@ -14,13 +16,14 @@ public class ControladorDomini
     private ControladorProgrames ControlProg;
     private ControladorCliente  ControlClient;
     private ControladorPlanificacio ControlPlan;
-    
+    private RepositoriFranges RepoFranges;
     public ControladorDomini()
     {
         /**Inicialitzacions*/
         try 
         {
-            ControlProg = new ControladorProgrames();
+            RepoFranges = new RepositoriFranges();
+            ControlProg = new ControladorProgrames(RepoFranges);
             ControlClient = new ControladorCliente();
             ControlPlan = new ControladorPlanificacio();
         
