@@ -5,6 +5,7 @@
 package vistes;
 
 import dades.GestorDiscException;
+import domini.ControladorCliente;
 import domini.ControladorDomini;
 import domini.ControladorProgrames;
 import java.awt.event.ActionEvent;
@@ -24,6 +25,8 @@ public class kVistes {
      */
     ControladorDomini CD;
     ControladorProgrames CPG;
+    ControladorCliente CCliente;
+    ControladorVistasCliente kvCliente;
     kVistaGProgrames kvGProgs;
     VistaPrincipal vPrincipal;
 
@@ -32,10 +35,12 @@ public class kVistes {
         /**Inits dels Controladors i Vistes*/
         CD = new ControladorDomini();
         CPG = CD.getCProgs();
+        CCliente = CD.getCClient();
 
         /**Controladors de les vistes (han de tenir els controladors de domini que necessitin*/
         kvGProgs = new kVistaGProgrames(CPG);
-
+        kvCliente = new ControladorVistasCliente(CCliente);
+        
         /**Vista principal (ha de tenir totes les vistes*/
         vPrincipal = new VistaPrincipal(kvGProgs.getVista());
         initVistaPrincipal();
@@ -51,7 +56,7 @@ public class kVistes {
 
     public void initVistaPrincipal() {
         /**Nous escoltadors d'events*/
-        ActionListener accions[] = new ActionListener[4];
+        ActionListener accions[] = new ActionListener[5];
 
 
         /**Init de nous listeners*/
@@ -60,13 +65,11 @@ public class kVistes {
         accions[0] = (new ActionListener() {
 
             public void actionPerformed(ActionEvent arg0) {
-                try {
-
-                    CPG.saveGclientsAll();
+                   if (CPG.saveGclientsAll())
                     JOptionPane.showMessageDialog(null, "Fet!");
-                } catch (GestorDiscException ex) {
-                    JOptionPane.showMessageDialog(null, "Error." + ex.getMessage());
-                }
+                   else
+                    JOptionPane.showMessageDialog(null, "Error.");
+                
             }
         });
 
@@ -108,6 +111,14 @@ public class kVistes {
                 } catch (GestorDiscException ex) {
                     JOptionPane.showMessageDialog(null, "Error." + ex.getMessage());
                 }
+            }
+        });
+        
+                /*Engega la Gestio de Clients*/
+        accions[4] = (new ActionListener() {
+
+            public void actionPerformed(ActionEvent arg0) {
+                  kvCliente.gestionaCliente();
             }
         });
 

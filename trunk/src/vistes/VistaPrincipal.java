@@ -35,6 +35,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
         importaProgs.addActionListener(actions[1]);
         esborraRepoProgs.addActionListener(actions[2]);
         exportaProgs.addActionListener(actions[3]);
+        gClients.addActionListener(actions[4]);
     }
         
     /** This method is called from within the constructor to
@@ -46,6 +47,8 @@ public class VistaPrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel1 = new javax.swing.JPanel();
+        gClients = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         saveAll = new javax.swing.JMenuItem();
@@ -62,6 +65,27 @@ public class VistaPrincipal extends javax.swing.JFrame {
         jMenuItem6 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        gClients.setText("Engega la gestió!!");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(333, Short.MAX_VALUE)
+                .addComponent(gClients, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(264, 264, 264))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(220, Short.MAX_VALUE)
+                .addComponent(gClients, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(186, 186, 186))
+        );
+
+        jTabbedPane1.addTab("Gestió de Clients", jPanel1);
 
         jMenu1.setText("Fitxer");
 
@@ -134,6 +158,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem clearAll;
     private javax.swing.JMenuItem esborraRepoProgs;
     private javax.swing.JMenuItem exportaProgs;
+    private javax.swing.JButton gClients;
     private javax.swing.JMenuItem importaProgs;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
@@ -144,6 +169,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JMenuItem saveAll;
     // End of variables declaration//GEN-END:variables

@@ -8,7 +8,6 @@
  *
  */
 package domini.programa;
-
 import java.util.Calendar;
 
 public class MusicaN extends Normal {
