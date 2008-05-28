@@ -17,6 +17,8 @@ public class ControladorDomini
     private ControladorCliente  ControlClient;
     private ControladorPlanificacio ControlPlan;
     private RepositoriFranges RepoFranges;
+    private Cliente clientActual;
+    
     public ControladorDomini()
     {
         /**Inicialitzacions*/
@@ -48,6 +50,16 @@ public class ControladorDomini
     public ControladorPlanificacio getCPlan()
     {
         return ControlPlan;
+    }
+    
+    public void setClientActual(String id, boolean guardar)
+    {
+        if (guardar)
+        ControlClient.modificarCliente(clientActual);
+        
+        Cliente aux = new Cliente();
+        if (ControlClient.obtenerCliente(id, aux))
+            clientActual = aux;        
     }
     
 }

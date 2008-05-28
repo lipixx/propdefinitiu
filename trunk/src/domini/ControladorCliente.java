@@ -162,5 +162,15 @@ public class ControladorCliente {
         c.actualizar("ListaClientes.txt");
     }
     /*{Post:se ha guardado la lista clientes en Disco}*/
+    
+    public boolean obtenerCliente(String id, Cliente i)
+    {
+        return c.obteElement(id, i);
+    }
+    
+    public boolean modificarCliente(Cliente cr)
+    {
+        return c.modificaElement(cr);
+    }
 }
 
