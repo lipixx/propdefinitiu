@@ -16,8 +16,6 @@ import dades.GestorDiscException;
 import domini.programa.*;
 import java.util.Calendar;
 import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @SuppressWarnings("unchecked")
 public class ControladorProgrames {
@@ -26,10 +24,10 @@ public class ControladorProgrames {
     private RepositoriTematiques RepoTemes;
     private RepositoriFranges RepoFranges;
 
-    public ControladorProgrames() throws Exception {
+    public ControladorProgrames(RepositoriFranges nRepoFranges) throws Exception {
         RepoProg = new RepositoriProgrames();
         RepoTemes = new RepositoriTematiques();
-        RepoFranges = new RepositoriFranges();
+        RepoFranges = nRepoFranges;
     }
 
     /**
@@ -568,7 +566,7 @@ public class ControladorProgrames {
 
         return frangesActuals;
     }
-
+    
     /**
      *  Aquesta funció substitueix totes les franges del repositori 
      *  agafant l'string de franges i convertint-lo en un array
