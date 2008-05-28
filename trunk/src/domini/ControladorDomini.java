@@ -13,6 +13,7 @@ public class ControladorDomini
     /**Variables globals i classes que te el CD*/
     private ControladorProgrames ControlProg;
     private ControladorCliente  ControlClient;
+    private ControladorPlanificacio ControlPlan;
     
     public ControladorDomini()
     {
@@ -21,6 +22,7 @@ public class ControladorDomini
         {
             ControlProg = new ControladorProgrames();
             ControlClient = new ControladorCliente();
+            ControlPlan = new ControladorPlanificacio();
         
         } catch (Exception ex) 
         {
@@ -40,5 +42,9 @@ public class ControladorDomini
         return ControlClient;
     }
     
+    public ControladorPlanificacio getCPlan()
+    {
+        return ControlPlan;
+    }
     
 }
