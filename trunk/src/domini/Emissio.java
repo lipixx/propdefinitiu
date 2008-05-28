@@ -26,16 +26,14 @@ public class Emissio {
     private FranjaHoraria franja;
 
     public Emissio(Calendar novaDataEmissio, boolean nouEmes, boolean nouFacturat, Programa nouPrograma, FranjaHoraria nouFranja, Calendar novaHoraInici, Calendar novaHoraFi) {
-        this.dataEmissio = novaDataEmissio;
-        this.emes = nouEmes;
-        this.facturat = nouFacturat;
-        this.programa = nouPrograma;
-        this.franja = nouFranja;
-        this.horaInici = novaHoraInici;
-        this.horaFi = novaHoraFi;
-        System.out.println("EMISSIO: setPreuEmissio ->");
-        this.setPreuEmissio(nouPrograma, nouFranja);
-        System.out.println("EMISSIO: fi");
+        dataEmissio = novaDataEmissio;
+        emes = nouEmes;
+        facturat = nouFacturat;
+        programa = nouPrograma;
+        franja = nouFranja;
+        horaInici = novaHoraInici;
+        horaFi = novaHoraFi;
+        setPreuEmissio(nouPrograma, nouFranja);
     }
 
     /**
@@ -111,11 +109,6 @@ public class Emissio {
      *  @post   S'ha modificat l'atribut amb el nou valor.
      */
     public void setPreuEmissio(Programa prog, FranjaHoraria franja) {
-        System.out.println("aban get taxa");
-        float preuF = franja.getTaxa();
-        System.out.println("aban get preu base");
-        float ppreuP = prog.getPreuBase();
-        System.out.println("aban assignacio");
         this.preuEmissio = prog.getPreuBase() + franja.getTaxa();
     }
 
