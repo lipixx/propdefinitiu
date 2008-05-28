@@ -9,6 +9,6 @@ package domini;
  *
  * @author Josep Marti
  */
-class ControladorPlanificacio {
+public class ControladorPlanificacio {
 
 }
