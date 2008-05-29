@@ -45,7 +45,9 @@ public class kVistaFranges {
             public void actionPerformed(ActionEvent arg0) 
             {
                 String franges[][] = vFranges.getListaFranges();
+                if (franges != null)
                 cProgs.setFranges(franges.length, franges);
+                else System.out.println("CAP FRANJA!!");
             }
         });
         
