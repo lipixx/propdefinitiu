@@ -542,11 +542,11 @@ public class ControladorProgrames {
      *  @pre    -
      *  @post   -
      *  @return Una llista de franges amb, per cada una:
-     *          HInici:MInici, HFinal:Mfinal, Taxa a aplicar.
+     *          HInici, MInici, HFinal, Mfinal, Taxa a aplicar.
      */
     public String[][] getFranges() {
         int nFranges = RepoFranges.mida();
-        String frangesActuals[][] = new String[nFranges][3];
+        String frangesActuals[][] = new String[nFranges][5];
         FranjaHoraria f;
         int horaInici, horaFi, minutInici, minutFi;
         float taxa;
@@ -554,22 +554,17 @@ public class ControladorProgrames {
         for (int i = 0; i < nFranges; i++) {
             f = (FranjaHoraria) RepoFranges.getFranja(i);
             horaInici = f.getHoraInici().get(Calendar.HOUR_OF_DAY);
-
-            //minutInici = f.getHoraInici().get(Calendar.MINUTE);
+            minutInici = f.getHoraInici().get(Calendar.MINUTE);
             horaFi = f.getHoraFi().get(Calendar.HOUR_OF_DAY);
-            //minutFi = f.getHoraFi().get(Calendar.MINUTE);
+            minutFi = f.getHoraFi().get(Calendar.MINUTE);
             taxa = f.getTaxa();
 
-            /**Culpa den rael aso es canvia*/
-            /*
-            frangesActuals[i][0] = "" + Integer.toString(horaInici) + ":" + Integer.toString(minutInici);
-            frangesActuals[i][1] = "" + Integer.toString(horaFi) + ":" + Integer.toString(minutFi);
-            frangesActuals[i][2] = "" + Float.toString(taxa);
-             * */
 
-            frangesActuals[i][0] = "" + Integer.toString(horaInici);
-            frangesActuals[i][1] = "" + Integer.toString(horaFi);
-            frangesActuals[i][2] = "" + Float.toString(taxa); 
+            frangesActuals[i][0] = ""+horaInici;
+            frangesActuals[i][1] = ""+minutInici;
+            frangesActuals[i][2] = ""+horaFi;
+            frangesActuals[i][3] = ""+minutFi;
+            frangesActuals[i][4] = ""+taxa;
         }
 
         return frangesActuals;
@@ -604,25 +599,19 @@ public class ControladorProgrames {
         for (int i = 0; i < nFranges; i++) {
             /* Una franjaHoraria es definia com:
              * Calendar horaInici, Calendar horaFi, float taxa
-             *
+             **/
             horaInici = Integer.parseInt(franges[i][0]);
             minutInici = Integer.parseInt(franges[i][1]);
             horaFi = Integer.parseInt(franges[i][2]);
             minutFi = Integer.parseInt(franges[i][3]);
             taxa = Float.parseFloat(franges[i][4]);
-            */
-             //Culpa den rael aso es canvia aixi:
-            horaInici = Integer.parseInt(franges[i][0]);
-            minutInici = 0;
-            horaFi = Integer.parseInt(franges[i][1]);
-            minutFi = 0;
-            taxa = Float.parseFloat(franges[i][2]);
+            
              
             /* Clone del Calendar per tenir
              * franges al mateix temps.
              */
             Calendar horaMinInici = Calendar.getInstance();
-            Calendar horaMinFi = Calendar.getInstance();
+            Calendar horaMinFi = (Calendar) horaMinInici.clone();
             
             horaMinInici.set(Calendar.MINUTE, minutInici);
             horaMinInici.set(Calendar.HOUR_OF_DAY, horaInici);

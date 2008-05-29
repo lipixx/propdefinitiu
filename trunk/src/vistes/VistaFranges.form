@@ -15,12 +15,19 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="1" attributes="0">
-              <EmptySpace min="-2" pref="124" max="-2" attributes="0"/>
+          <Group type="102" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="236" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Component id="jButton1" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jScrollPane1" alignment="1" min="-2" pref="311" max="-2" attributes="1"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
+                              <Component id="bGuarda" min="-2" pref="167" max="-2" attributes="1"/>
+                          </Group>
                           <Group type="103" groupAlignment="1" max="-2" attributes="0">
                               <Component id="jSeparator1" alignment="0" max="32767" attributes="1"/>
                               <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -28,10 +35,10 @@
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                       <Component id="spTaxa" max="32767" attributes="1"/>
                                       <Component id="spFranjaInici" max="32767" attributes="1"/>
-                                      <Component id="jLabel1" alignment="0" max="32767" attributes="1"/>
+                                      <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="1"/>
                                   </Group>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" attributes="0">
+                                      <Group type="102" alignment="0" attributes="0">
                                           <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                                           <Component id="bAddFranja" min="-2" pref="127" max="-2" attributes="0"/>
                                       </Group>
@@ -53,32 +60,25 @@
                                           </Group>
                                       </Group>
                                   </Group>
-                                  <EmptySpace max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                              <Component id="jButton1" alignment="1" min="-2" max="-2" attributes="0"/>
-                              <Component id="jScrollPane1" alignment="1" min="-2" pref="311" max="-2" attributes="1"/>
-                          </Group>
-                      </Group>
-                      <EmptySpace min="-2" pref="123" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jScrollPane2" pref="167" max="32767" attributes="1"/>
-                          <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
-                          <Component id="bGuarda" alignment="0" pref="167" max="32767" attributes="1"/>
                       </Group>
                   </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="306" max="-2" attributes="0"/>
+                      <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
-              <EmptySpace min="-2" pref="78" max="-2" attributes="0"/>
+              <EmptySpace pref="47" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
-              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
               <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Component id="jSeparator1" min="-2" pref="10" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -89,33 +89,27 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="spFranjaInici" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="spMinIni" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="spMinFi" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="spFranjaFi" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Group type="102" attributes="1">
-                      <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="bAddFranja" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="spTaxa" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Component id="jButton1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="jScrollPane1" min="-2" pref="274" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <Component id="jScrollPane2" min="-2" pref="395" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  </Group>
+              <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="bAddFranja" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="spTaxa" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <Component id="bGuarda" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
+              <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jScrollPane1" min="-2" pref="274" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="56" max="-2" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace pref="543" max="32767" attributes="0"/>
+              <Component id="bGuarda" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -212,42 +206,9 @@
         </Component>
       </SubComponents>
     </Container>
-    <Container class="javax.swing.JScrollPane" name="jScrollPane2">
-      <AuxValues>
-        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-      </AuxValues>
-
-      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-      <SubComponents>
-        <Component class="javax.swing.JTable" name="lsTaxes">
-          <Properties>
-            <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="new javax.swing.table.DefaultTableModel(&#xa;    new Object [][] {&#xa;        {&quot;00:00 - 00:59&quot;, &quot;0&quot;},&#xa;        {&quot;01:00 - 01:59&quot;, &quot;0&quot;},&#xa;        {&quot;02:00 - 02:59&quot;, &quot;0&quot;},&#xa;        {&quot;03:00 - 03:59&quot;, &quot;0&quot;},&#xa;        {&quot;04:00 - 04:59&quot;, &quot;0&quot;},&#xa;        {&quot;05:00 - 05:59&quot;, &quot;0&quot;},&#xa;        {&quot;06:00 - 06:59&quot;, &quot;0&quot;},&#xa;        {&quot;07:00 - 07:59&quot;, &quot;0&quot;},&#xa;        {&quot;08:00 - 08:59&quot;, &quot;0&quot;},&#xa;        {&quot;09:00 - 09:59&quot;, &quot;0&quot;},&#xa;        {&quot;10:00 - 10:59&quot;, &quot;0&quot;},&#xa;        {&quot;11:00 - 11:59&quot;, &quot;0&quot;},&#xa;        {&quot;12:00 - 12:59&quot;, &quot;0&quot;},&#xa;        {&quot;13:00 - 13:59&quot;, &quot;0&quot;},&#xa;        {&quot;14:00 - 14:59&quot;, &quot;0&quot;},&#xa;        {&quot;15:00 - 15:59&quot;, &quot;0&quot;},&#xa;        {&quot;16:00 - 16:59&quot;, &quot;0&quot;},&#xa;        {&quot;17:00 - 17:59&quot;, &quot;0&quot;},&#xa;        {&quot;18:00 - 18:59&quot;, &quot;0&quot;},&#xa;        {&quot;19:00 - 19:59&quot;, &quot;0&quot;},&#xa;        {&quot;20:00 - 20:59&quot;, &quot;0&quot;},&#xa;        {&quot;21:00 - 21:59&quot;, &quot;0&quot;},&#xa;        {&quot;22:00 - 22:59&quot;, &quot;0&quot;},&#xa;        {&quot;23:00 - 23:59&quot;, &quot;0&quot;}&#xa;    },&#xa;    new String [] {&#xa;        &quot;Hora&quot;, &quot;Taxa&quot;&#xa;    }&#xa;) {&#xa;    boolean[] canEdit = new boolean [] {&#xa;        false, false&#xa;    };&#xa;&#xa;    public boolean isCellEditable(int rowIndex, int columnIndex) {&#xa;        return canEdit [columnIndex];&#xa;    }&#xa;}" type="code"/>
-            </Property>
-            <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
-              <TableColumnModel selectionModel="0">
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-              </TableColumnModel>
-            </Property>
-            <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
-              <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
-            </Property>
-          </Properties>
-        </Component>
-      </SubComponents>
-    </Container>
     <Component class="javax.swing.JButton" name="bGuarda">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Guardar"/>
+        <Property name="text" type="java.lang.String" value="Guardar al Repositori"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="bAddFranja">
@@ -267,11 +228,6 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JSeparator" name="jSeparator1">
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabel5">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Detall de les hores/taxa:"/>
-      </Properties>
     </Component>
     <Component class="javax.swing.JSpinner" name="spMinIni">
       <Properties>
