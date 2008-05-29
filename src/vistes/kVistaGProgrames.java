@@ -206,24 +206,11 @@ public class kVistaGProgrames {
                 seleccionatPrograma();
             }
         });
-        /**
-        accions[0] = (ActionListener) java.beans.EventHandler.create(ActionListener.class, this, "setLlistaFiltre");
-        accions[1] = (ActionListener) java.beans.EventHandler.create(ActionListener.class, this, "setLlistaFiltre");
-        accions[2] = (ActionListener) java.beans.EventHandler.create(ActionListener.class, this, "setLlistaFiltre");
-        accions[3] = (ActionListener) java.beans.EventHandler.create(ActionListener.class, this, "setLlistaFiltre");
-        accions[4] = (ActionListener) java.beans.EventHandler.create(ActionListener.class, this, "afegirPrograma");
-        accions[5] = (ActionListener) java.beans.EventHandler.create(ActionListener.class, this, "eliminarPrograma");
-        accions[6] = (ActionListener) java.beans.EventHandler.create(ActionListener.class, this, "modificarPrograma");
-        accions[7] = (ActionListener) java.beans.EventHandler.create(ActionListener.class, this, "guardarTot");
-        accions[8] = (ActionListener) java.beans.EventHandler.create(ActionListener.class, this, "sortir");
-        selFiltre = (ListSelectionListener) java.beans.EventHandler.create(ListSelectionListener.class, this, "actualitzaLlProgrames");
-        selPrograma = (ListSelectionListener) java.beans.EventHandler.create(ListSelectionListener.class, this, "seleccionatPrograma");
-         */
+        
         vGProgs.setListeners(accions, selFiltre, selPrograma);
     }
 
     private void initVistaADDP() {
-        //  vADDP.setActions((ActionListener) java.beans.EventHandler.create(ActionListener.class, this, "addProgramaDeForm"));
         vADDP.setActions(new ActionListener() {
 
             public void actionPerformed(ActionEvent arg0) {
@@ -261,6 +248,8 @@ public class kVistaGProgrames {
 
         if (dadesP != null) {
             vMODP.setDadesMod(dadesP);
+            vMODP.setLocationRelativeTo(vGProgs);
+            vMODP.setTitle("Modificar programa");
             vMODP.setVisible(true);
         }
     }

@@ -71,9 +71,9 @@ public class FranjaHoraria implements ClasseAmbClau<Float>, Serializable {
      *  @pre    Hora de Inici es major que hora de Fi.
      *  @post   S'ha modificat l'atribut amb el nou valor.
      */
-    public void setHoraInici(Calendar horaInici) {
+    public void setHoraInici(Calendar nhoraInici) {
         if (!horaInici.after(this.horaFi)) {
-            this.horaInici = horaInici;
+            horaInici = (Calendar) nhoraInici.clone();
         }
     }
 
@@ -83,9 +83,9 @@ public class FranjaHoraria implements ClasseAmbClau<Float>, Serializable {
      *  @pre    Hora de Fi es major que hora de Inici.
      *  @post   S'ha modificat l'atribut amb el nou valor.
      */
-    public void setHoraFi(Calendar horaFi) {
-        if (!horaFi.before(this.horaInici)) {
-            this.horaFi = horaFi;
+    public void setHoraFi(Calendar nhoraFi) {
+        if (!nhoraFi.before(horaInici)) {
+            horaFi = (Calendar) nhoraFi.clone();
         }
     }
 
