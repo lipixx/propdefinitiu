@@ -22,13 +22,13 @@ public class Planificacio {
     private int id;
     private Calendar dataInici;
     private Calendar dataFi;
-    private LinkedList<Emissio> llistaEmissions;
+    private LinkedList<ServeiPendent> llistaEmissions;
 
     public Planificacio(Calendar novaDataInici, Calendar novaDataFi) {
         this.id=idglobal++;
         this.dataInici = novaDataInici;
         this.dataFi = novaDataFi;
-        llistaEmissions = new LinkedList<Emissio>();
+        llistaEmissions = new LinkedList<ServeiPendent>();
     }
  
     public int getId() {
@@ -56,7 +56,11 @@ public class Planificacio {
      *  Consultora de la llista llistaEmissions.
      *  @return Un llistat amb totes les emissions assocides a la planificacio.
      */
-    public LinkedList<Emissio> getLlistaEmissions() {
+    public LinkedList<ServeiPendent> getLlistaEmissions() {
+        return llistaEmissions;
+    }
+    
+    public LinkedList<ServeiPendent> getLlistaServeis() {
         return llistaEmissions;
     }
 

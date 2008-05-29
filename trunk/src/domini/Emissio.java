@@ -14,21 +14,21 @@ package domini;
  */
 import java.util.Calendar;
 
-public class Emissio {
+public class Emissio extends ServeiPendent {
 
     private Calendar dataEmissio;
     private Calendar horaInici;
     private Calendar horaFi;
     private boolean emes;
-    private boolean facturat;
-    private float preuEmissio;
+    private double preuEmissio;
     private Programa programa;
     private FranjaHoraria franja;
 
-    public Emissio(Calendar novaDataEmissio, boolean nouEmes, boolean nouFacturat, Programa nouPrograma, FranjaHoraria nouFranja, Calendar novaHoraInici, Calendar novaHoraFi) {
+    public Emissio(Calendar novaDataEmissio, boolean nouEmes, boolean nouFacturat, Programa nouPrograma, FranjaHoraria nouFranja, Calendar novaHoraInici, Calendar novaHoraFi) 
+    {
+        super(nouFacturat, 0, nouPrograma.getNom(),novaDataEmissio);
         dataEmissio = novaDataEmissio;
         emes = nouEmes;
-        facturat = nouFacturat;
         programa = nouPrograma;
         franja = nouFranja;
         horaInici = novaHoraInici;
@@ -41,7 +41,7 @@ public class Emissio {
      *  @return La data d'emissio del programa.
      */
     public Calendar getDataEmissio() {
-        return this.dataEmissio;
+        return dataEmissio;
     }
 
     /**
@@ -49,7 +49,7 @@ public class Emissio {
      *  @return L'hora d'inici d'emissio del programa.
      */
     public Calendar getHoraInici() {
-        return this.horaInici;
+        return horaInici;
     }
 
     /**
@@ -57,7 +57,7 @@ public class Emissio {
      *  @return L'hora de fi d'emissio del programa.
      */
     public Calendar getHoraFi() {
-        return this.horaFi;
+        return horaFi;
     }
 
     /**
@@ -66,24 +66,15 @@ public class Emissio {
      *  en cas contrari retorna fals.
      */
     public boolean getEmes() {
-        return this.emes;
-    }
-
-    /**
-     *  Consultora de l'atribut facturat.
-     *  @return Un boolea que es cert si l'emissio ja ha estat facturada,
-     *  en cas contrari retorna fals.
-     */
-    public boolean getFacturat() {
-        return this.facturat;
+        return emes;
     }
 
     /**
      *  Consultora de l'atribut preuEmissio.
      *  @return El preu de l'emissio.
      */
-    public float getPreuEmissio() {
-        return this.preuEmissio;
+    public double getPreuEmissio() {
+        return preuEmissio;
     }
 
     /**
@@ -91,7 +82,7 @@ public class Emissio {
      *  @return El programa associat a l'emissio.
      */
     public Programa getPrograma() {
-        return this.programa;
+        return programa;
     }
 
     /**
@@ -99,7 +90,7 @@ public class Emissio {
      *  @return La franja associada a l'emissio.
      */
     public FranjaHoraria getFranja() {
-        return this.franja;
+        return franja;
     }
 
     /**
@@ -108,8 +99,12 @@ public class Emissio {
      * i esta associada a una franja que també ha de tenir una taxa fixada.
      *  @post   S'ha modificat l'atribut amb el nou valor.
      */
-    public void setPreuEmissio(Programa prog, FranjaHoraria franja) {
-        this.preuEmissio = prog.getPreuBase() + franja.getTaxa();
+    public void setPreuEmissio(Programa prog, FranjaHoraria franja) 
+    {
+        double preuF = franja.getTaxa();
+        double ppreuP = prog.getPreuBase();
+        preuEmissio = prog.getPreuBase() + franja.getTaxa();
+        super.setPreu(preuEmissio);
     }
 
     /**
@@ -118,7 +113,7 @@ public class Emissio {
      *  @post   S'ha modificat l'atribut amb el nou valor.
      */
     public void setDataEmissio(Calendar novaDataEmissio) {
-        this.dataEmissio = novaDataEmissio;
+        dataEmissio = novaDataEmissio;
     }
 
     /**
@@ -127,7 +122,7 @@ public class Emissio {
      *  @post   S'ha modificat l'atribut amb el nou valor.
      */
     public void setHoraInici(Calendar novaHoraInici) {
-        this.horaInici = novaHoraInici;
+        horaInici = novaHoraInici;
     }
 
     /**
@@ -136,7 +131,7 @@ public class Emissio {
      *  @post   S'ha modificat l'atribut amb el nou valor.
      */
     public void setHoraFi(Calendar novaHoraFi) {
-        this.horaFi = novaHoraFi;
+        horaFi = novaHoraFi;
     }
 
     /**
@@ -145,15 +140,6 @@ public class Emissio {
      *  @post   S'ha modificat l'atribut amb el nou valor.
      */
     public void setEmes(boolean nouEmes) {
-        this.emes = nouEmes;
-    }
-
-    /**
-     *  Modificadora de l'atribut facturat.
-     *  @pre    -
-     *  @post   S'ha modificat l'atribut amb el nou valor.
-     */
-    public void setFacturat(boolean nouFacturat) {
-        this.facturat = nouFacturat;
+        emes = nouEmes;
     }
 }

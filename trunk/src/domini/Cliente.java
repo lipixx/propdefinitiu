@@ -29,7 +29,7 @@ public class Cliente implements Serializable, ClasseAmbClau<String>{
     protected boolean autoFact;
     protected int intervalFact; //0: MES |  1: SETMANA | 2:DIA
     protected Calendar ultFact;
-    //protected ArrayList<Factura> listFact;
+    protected ArrayList<Factura> listFact;
     protected ArrayList<Planificacio> listPlan;
 
     /** Creates a new instance of Cliente */
@@ -43,7 +43,7 @@ public class Cliente implements Serializable, ClasseAmbClau<String>{
         this.autoFact = autoFact;
         this.intervalFact = intervalFact;
         ultFact = Calendar.getInstance();
-      //  listFact = new ArrayList<Factura>();
+        listFact = new ArrayList<Factura>();
         listPlan = new ArrayList<Planificacio>();
 
     }  
@@ -51,6 +51,7 @@ public class Cliente implements Serializable, ClasseAmbClau<String>{
     public Cliente(){
 
     }
+
 
     public String getId() {
         return ID;
@@ -80,6 +81,11 @@ public class Cliente implements Serializable, ClasseAmbClau<String>{
         return ultFact;
     }
 
+    public ArrayList<Factura> getListFact()
+    {
+        return listFact;
+    }
+    
     public boolean setId(String nuevoID) {
         ID = new String(nuevoID);
         return true;
@@ -111,26 +117,32 @@ public class Cliente implements Serializable, ClasseAmbClau<String>{
         return true;
     }
 
-    public boolean setUltimaFactura(Calendar nuevoUltFact) {
-        this.ultFact = Calendar.getInstance();
-        this.ultFact.setTime(nuevoUltFact.getTime());
+    public boolean setUltimaFactura(Calendar nuevoUltFact) 
+    {
+        this.ultFact = (Calendar) nuevoUltFact.clone();
         return true;
-    }/*
-    public boolean addFactura(Factura F){
+    }
+            
+    public boolean addFactura(Factura F)
+    {
         listFact.ensureCapacity(listFact.size()+1);
         listFact.add(F);
         return true;
     }
-    public Factura getFactura(int id){
+    
+    public Factura getFactura(int id)
+    {
         for(Factura f : listFact){
             if(f.getId()==id) return f;
         }
         return null;
     }
+    
     public boolean clearFactura(){
         listFact = new ArrayList<Factura>();
         return true;
-    }*/
+    }
+    
     public boolean addPlanificacio(Planificacio P){
         listPlan.ensureCapacity(listPlan.size()+1);
         listPlan.add(P);
@@ -178,9 +190,8 @@ public class Cliente implements Serializable, ClasseAmbClau<String>{
         autoFact = objecteACopiar.autoFact;
         intervalFact = objecteACopiar.intervalFact;
         ultFact = (Calendar) objecteACopiar.ultFact.clone();
-      //  listFact = new ArrayList<Factura>();
+        listFact = (ArrayList<Factura>) objecteACopiar.getListFact().clone();
         listPlan = (ArrayList<Planificacio>) objecteACopiar.listPlan.clone();        
-        //objecteACopiar = new Cliente(this.ID,this.Nombre,this.Apellidos,this.FechaNacimiento,this.autoFact, this.intervalFact);    
     }
 
     @Override
