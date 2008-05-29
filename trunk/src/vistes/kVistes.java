@@ -28,21 +28,24 @@ public class kVistes {
     ControladorCliente CCliente;
     ControladorVistasCliente kvCliente;
     kVistaGProgrames kvGProgs;
+    kVistaFranges kvFranges;
+    
     VistaPrincipal vPrincipal;
-
+   
     public kVistes() throws Exception {
 
         /**Inits dels Controladors i Vistes*/
         CD = new ControladorDomini();
         CPG = CD.getCProgs();
         CCliente = CD.getCClient();
-
+        
         /**Controladors de les vistes (han de tenir els controladors de domini que necessitin*/
         kvGProgs = new kVistaGProgrames(CPG);
+        kvFranges = new kVistaFranges(CPG);
         kvCliente = new ControladorVistasCliente(CCliente);
-        
+  
         /**Vista principal (ha de tenir totes les vistes*/
-        vPrincipal = new VistaPrincipal(kvGProgs.getVista());
+        vPrincipal = new VistaPrincipal(kvGProgs.getVista(),kvFranges.getVistaFranges());
         initVistaPrincipal();
 
     }

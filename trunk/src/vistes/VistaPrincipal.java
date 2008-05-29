@@ -15,12 +15,14 @@ import java.awt.event.ActionListener;
 public class VistaPrincipal extends javax.swing.JFrame {
       
     VistaGProgrames vGProgs;
+    VistaFranges vFranges;
     
     /** Creates new form NewJFrame */
-    public VistaPrincipal(VistaGProgrames nVistes) 
+    public VistaPrincipal(VistaGProgrames nVistesGP, VistaFranges nVistaFranges) 
     {
         /**Totes les pestanyes que hi haura*/
-        vGProgs = nVistes;
+        vGProgs = nVistesGP;
+        vFranges = nVistaFranges;
         
         try {
             initComponents();
@@ -149,6 +151,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
         );
 
         jTabbedPane1.add("Programes",vGProgs);
+        jTabbedPane1.add("Franges Horaries",vFranges);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

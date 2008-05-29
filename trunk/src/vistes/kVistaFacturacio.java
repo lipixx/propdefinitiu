@@ -1,7 +1,6 @@
 package vistes;
 
 import domini.ControladorFactura;
-import java.util.LinkedList;
 
 import java.awt.event.ActionListener;
 import java.awt.event.WindowListener;
@@ -21,7 +20,9 @@ public class kVistaFacturacio
     Object[] datos;
     Object[][] listaPendientes;
     Object[][] listaFacturas;
-    static SimpleDateFormat d = new SimpleDateFormat("dd/mm/yyyy");
+    Object[][] desglosament;
+    
+    static SimpleDateFormat d;
 
     /**
      * Constructora la Vista Facturació
@@ -29,12 +30,19 @@ public class kVistaFacturacio
      * @Pre Cert
      * @Post S'inicialitza el controlador de factures.
      */
-    public kVistaFacturacio(ControladorFactura cFact) {
+    public kVistaFacturacio(ControladorFactura cFact) throws Exception {
 
         listaPendientes = null;
         listaFacturas = null;
-            cf = cFact;
-            inicializarVistaFacturacio();
+        desglosament = null;
+        d = new SimpleDateFormat("dd/MM/yyyy");
+        cf = cFact;
+        inicializarVistaFacturacio();
+    }
+    
+    public VistaFacturacio getVistaFact()
+    {
+        return vf;
     }
 
     /**
@@ -52,10 +60,10 @@ public class kVistaFacturacio
      * @post La vista factura conté les llistes de factures 
      * i d'emissions pendents de pagament.
      */
-    public void inicializarControladorVistaFactura() 
-    {
-        cf.setLlServeisPendents();
-    }
+ //   public void inicializarControladorVistaFactura() 
+   // {
+     //   cf.setLlServeisPendents();
+    //}
 
     /**
      * La finestra vistaFacturació s'inicialitza amb la llista de
@@ -66,7 +74,7 @@ public class kVistaFacturacio
      * @pre     Cert
      * @post    
      */
-    public void inicializarVistaFacturacio() throws Exception {
+    public void inicializarVistaFacturacio() {
         vf = new VistaFacturacio();
        
         inicializarListaFacturas();
