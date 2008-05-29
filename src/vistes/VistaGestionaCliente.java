@@ -264,9 +264,13 @@ public class VistaGestionaCliente extends javax.swing.JFrame {
     }
 
     private boolean checkDatosModificar() {
+        boolean b0 = !IDField01.getText().isEmpty();
         boolean b1 = chkAlfabetico(NoField01.getText());
         boolean b2 = chkAlfabetico(ApField01.getText());
         int b3 = chkFecha(AAAAField01.getText(), MMField01.getText(), DDField01.getText());
+        if (!b0){
+            alerta("Debe escribir un identificador");
+        }
         if (!b1) {
             alerta("Formato de Nombre incorrecto\nSolo puede haber car�ceres alfab�ticos, espacios, o los siguientes s�mbolos: \' � � � -");
         }

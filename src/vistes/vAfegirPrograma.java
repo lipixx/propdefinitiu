@@ -81,10 +81,13 @@ public class vAfegirPrograma extends javax.swing.JDialog {
                     JOptionPane.showMessageDialog(null, "La data de caducitat era anterior a la data d'inici d'emissio.");
                     return null;
                 }
-
-                if ((nouPrograma.duracio = ((Integer) duracio.getValue()).intValue()) < 0) {
-                    JOptionPane.showMessageDialog(null, "La duracio no pot ser negativa.");
-                }
+                
+                //Duracio de 10 en 10 minuts
+                int duraAux = ((Integer) duracio.getValue()).intValue();
+                if (duraAux <=0) duraAux=10;
+                
+            	if ((duraAux%10) >= 5) nouPrograma.duracio = ((duraAux/10)+1)*10;
+                else nouPrograma.duracio = (duraAux/10)*10;
 
                 /*Categories per format Directe*/
                 switch (llistaCategories.getSelectedIndex()) {
@@ -113,10 +116,12 @@ public class vAfegirPrograma extends javax.swing.JDialog {
 
             /**Format Normal*/
             if (llistaFormats.getSelectedIndex() == 0) {
-                if ((nouPrograma.duracio = ((Integer) duracio.getValue()).intValue()) < 0) {
-                    JOptionPane.showMessageDialog(null, "La duracio no pot ser negativa.");
-                }
-
+                /** De 10 en 10 minuts*/
+                int duraAux = ((Integer) duracio.getValue()).intValue();
+                if (duraAux <=0) duraAux=10; //Minim 10 minuts 
+            	if ((duraAux%10) >= 5) nouPrograma.duracio = ((duraAux/10)+1)*10; 
+                else nouPrograma.duracio = (duraAux/10)*10;
+                 
                 switch (llistaCategories.getSelectedIndex()) {
                     case 0:
                         //Altres
@@ -453,7 +458,7 @@ public class vAfegirPrograma extends javax.swing.JDialog {
 
         jLabel11.setText("Duracio (min):");
 
-        duracio.setModel(new javax.swing.SpinnerNumberModel(0, 0, 500, 5));
+        duracio.setModel(new javax.swing.SpinnerNumberModel(10, 10, 500, 10));
 
         dacord.setText("D'acord");
 
