@@ -571,6 +571,7 @@ public class VistaGestionaCliente extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tablaDatos.setColumnSelectionAllowed(true);
         tablaDatos.setPreferredSize(null);
         tablaDatos.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tablaDatos);

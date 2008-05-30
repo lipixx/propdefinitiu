@@ -30,6 +30,10 @@ public class ControladorProgrames {
         RepoFranges = nRepoFranges;
     }
 
+    public RepositoriProgrames<String, domini.Programa> getRepoProgs()
+    {
+        return RepoProg;
+    }
     /**
      *  Afegeix un programa al repositori de programes en memoria.  
      *  @param  nou Es una tupla amb els parametres del nou programa.
@@ -671,6 +675,25 @@ public class ControladorProgrames {
             }
         }
     }
+    
+    public void exportaFranges(String nomFitxer)
+    {
+        try {
+            RepoFranges.exportaFranges(nomFitxer);
+        } catch (GestorDiscException ex) {
+            System.out.println("Error de fitxer: "+ex.getMessage());
+        }
+    }
+    
+    public void impFranges(String nomFitxer)
+    {
+        RepoFranges.importaFranges(nomFitxer);
+    }
+    
+    public void esborraFranges()
+    {
+        RepoFranges.esborrarLlista();
+    }
 
     /**
      *  Aquesta funcio carrega en memoria tots els repositoris estàndard 
@@ -709,7 +732,7 @@ public class ControladorProgrames {
      *  @return Una llista de programes tals que per tot nom del programa "i", coincideix
      *  amb el nom de la llistaNoms[i].
      */
-    private LinkedList<Programa> llistarProgramesNom(String[] llistaNoms) {
+    public LinkedList<Programa> llistarProgramesNom(String[] llistaNoms) {
         int nProgs = llistaNoms.length;
         LinkedList<Programa> llista = new LinkedList<Programa>();
         Programa p;
