@@ -17,6 +17,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author  rael
  */
+@SuppressWarnings("unchecked")
 public class VistaNovaFactura extends javax.swing.JFrame {
 
     private static String[] CabeceraListaPendientes = {"ID", "Nom Programa", "Format", "Data Emissió", "Preu"};
@@ -138,7 +139,6 @@ public class VistaNovaFactura extends javax.swing.JFrame {
         spPeriodoInicio = new javax.swing.JSpinner();
         spPeriodoFin = new javax.swing.JSpinner();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setName("Form"); // NOI18N
 
         etPagarPeriode.setText("Període"); // NOI18N
@@ -374,7 +374,7 @@ public class VistaNovaFactura extends javax.swing.JFrame {
                         .add(etTotal)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(tbTotal, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 92, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 109, Short.MAX_VALUE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 110, Short.MAX_VALUE)
                         .add(bFacturar))
                     .add(layout.createSequentialGroup()
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
@@ -414,7 +414,7 @@ public class VistaNovaFactura extends javax.swing.JFrame {
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(etTitolSeleccionManual)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 423, Short.MAX_VALUE))
+                        .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 425, Short.MAX_VALUE))
                     .add(layout.createSequentialGroup()
                         .add(bNetejarFactura)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
