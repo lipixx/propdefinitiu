@@ -31,6 +31,12 @@ public class kVistaFranges {
         return vFranges;
     }
 
+    public void resetFranges()
+    {
+         String franges[][] = cProgs.getFranges();
+         vFranges.setLlistaFranges(franges);
+    }
+
     private void initVFranges() 
     {
          vFranges = new VistaFranges();

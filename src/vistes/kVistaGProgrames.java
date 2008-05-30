@@ -43,6 +43,15 @@ public class kVistaGProgrames {
     public VistaGProgrames getVista() {
         return vGProgs;
     }
+    
+        public void actualitzaVistaGProgrames()
+    {
+        actLlistaFiltres(0);
+        actLlistaProgrames("tots", "");
+        vGProgs.setLlistaProgrames(llistaProgrames);
+        vGProgs.setLlistaFiltres(llistaFiltres);
+        vGProgs.clearFitxa();
+    }
 
     /**
      * Obte una llista filtrada del controlador de domini de programes,
@@ -55,7 +64,7 @@ public class kVistaGProgrames {
      * @pre -
      * @post S'ha assignat la llista filtrada del CPG a la global d'aquesta classe.
      */
-    public void actLlistaProgrames(String tipusFiltre, String valor) {
+    private void actLlistaProgrames(String tipusFiltre, String valor) {
         llistaProgrames = CPG.getllistaFiltrada(tipusFiltre, null);
     }
 
@@ -106,7 +115,8 @@ public class kVistaGProgrames {
 
     }
 
-    public void initVistaGProgrames() {
+    
+    private void initVistaGProgrames() {
         /**Nova vista i nous escoltadors d'events*/
         vGProgs = new VistaGProgrames();
         ListSelectionListener selFiltre, selPrograma;
@@ -258,7 +268,7 @@ public class kVistaGProgrames {
         System.out.println("sortir-programa");
     }
 
-    public void addProgramaDeForm() {
+    private void addProgramaDeForm() {
         tuplaPrograma nou = vADDP.getTupla();
 
         if (nou == null) {
@@ -271,7 +281,7 @@ public class kVistaGProgrames {
         vADDP.setVisible(false);
     }
 
-    public void modProgramaDeForm() {
+    private void modProgramaDeForm() {
         tuplaPrograma mod = vMODP.getTupla();
 
         vMODP.setVisible(false);
@@ -286,13 +296,13 @@ public class kVistaGProgrames {
         vGProgs.clearFitxa();
     }
 
-    public void setLlistaFiltre() {
+    private void setLlistaFiltre() {
         vGProgs.clearFitxa();
         actLlistaFiltres(vGProgs.getFClickedInt());
         vGProgs.setLlistaFiltres(llistaFiltres);
     }
 
-    public void actualitzaLlProgrames() {
+    private void actualitzaLlProgrames() {
         //System.out.println("Actualitz ll progs!!");
         //Boto pitjat
         String tipusFiltre = vGProgs.getFClickedStr();
@@ -322,7 +332,7 @@ public class kVistaGProgrames {
         vGProgs.setLlistaProgrames(llistaProgrames);
     }
 
-    public void seleccionatPrograma() {
+    private void seleccionatPrograma() {
         //Agafem nom del programa seleccionat
         String nomP = vGProgs.getProgramaSelected();
 
@@ -331,7 +341,7 @@ public class kVistaGProgrames {
         ////// FALTA INICIEMISSIO i DATA CADUCITATTTTTTTTT
         tuplaPrograma dadesP = CPG.veureFitxa(nomP.toLowerCase());
         if (dadesP != null) {
-            String fitxa = "Nom: " + dadesP.nom + "\nPreu: " + dadesP.preu + "\nFormat: " + dadesP.format + "\nCategoria: " + dadesP.categoria + "\nDescripcio: " + dadesP.descripcio + "\nData Caducitat: " + dadesP.dataCad.get(Calendar.DATE) + "/" + dadesP.dataCad.get(Calendar.MONTH) +
+            String fitxa = "Nom: " + dadesP.nom + "\nPreu: " + dadesP.preu + "\nFormat: " + dadesP.format + "\nCategoria: " + dadesP.categoria + "\nDescripcio: " + dadesP.descripcio + "\nData Caducitat: " + dadesP.dataCad.get(Calendar.DATE) + "/" + (dadesP.dataCad.get(Calendar.MONTH)+1) +
                     "/" + dadesP.dataCad.get(Calendar.YEAR);
 
             if (dadesP.format == 2 || dadesP.format == 0) {
@@ -339,7 +349,7 @@ public class kVistaGProgrames {
             }
 
             if (dadesP.format == 2) {
-                fitxa = fitxa + "\nData Inici Emissio:" + dadesP.iniciEmissio.get(Calendar.DATE) + "/" + dadesP.iniciEmissio.get(Calendar.MONTH) +
+                fitxa = fitxa + "\nData Inici Emissio:" + dadesP.iniciEmissio.get(Calendar.DATE) + "/" + (dadesP.iniciEmissio.get(Calendar.MONTH)+1) +
                         "/" + dadesP.iniciEmissio.get(Calendar.YEAR) + " a les " + dadesP.iniciEmissio.get(Calendar.HOUR_OF_DAY) + ":" + dadesP.iniciEmissio.get(Calendar.MINUTE);
             }
 
@@ -358,7 +368,7 @@ public class kVistaGProgrames {
         }
     }
 
-    public void afegirPrograma() throws ParseException {
+    private void afegirPrograma() throws ParseException {
         // vADDP = new AfegirPrograma(new javax.swing.JFrame(), true);
         // initVistaADDP();
         vADDP.setLocationRelativeTo(vGProgs);
@@ -366,7 +376,7 @@ public class kVistaGProgrames {
         vADDP.setVisible(true);
     }
 
-    public void guardarTot() throws GestorDiscException {
+    private void guardarTot() throws GestorDiscException {
         System.out.println("All saved!!!");
         CPG.saveGclientsAll();
     }
