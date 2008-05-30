@@ -1,22 +1,71 @@
 /*
- * VistaPlanificacio.java
+ * kVistaPlanificacio.java
  *
- * Created on 30 / maig / 2008, 17:46
+ * Created on 28 de mayo de 2008, 17:45
  */
-
 package vistes;
+
+import domini.tuplaEmissio;
+import java.awt.event.ActionListener;
+import java.text.ParseException;
+import javax.swing.event.ListSelectionListener;
 
 /**
  *
- * @author  lipi
+ * @author  Josep Marti
  */
 public class VistaPlanificacio extends javax.swing.JPanel {
-    
-    /** Creates new form VistaPlanificacio */
+
+    /** Creates new form kVistaPlanificacio */
     public VistaPlanificacio() {
         initComponents();
     }
-    
+
+    public void setLlistaPlans(String[] llistaPlanificacions) {
+        llistaPlanificacionsV.setListData(llistaPlanificacions);
+    }
+
+    String getGraellaSelected() {
+        return (String) graella.getValueAt(graella.getSelectedColumn(), graella.getSelectedRow());
+
+    }
+
+    String getPlanSelected() {
+
+        String pla = (String) llistaPlanificacionsV.getSelectedValue();
+        return pla;
+    }
+
+    void pintarGraella(String[][] graella) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    void pintarGraella(tuplaEmissio[] tEmissio) throws ParseException {
+
+
+
+    }
+
+    public void setGraella() {
+        String[][] graellaAuxiliar = new String[144][7];
+        graella.setModel(new javax.swing.table.DefaultTableModel(
+                graellaAuxiliar,
+                new String[]{
+            "Dilluns", "Dimarts", "Dimecres", "Dijous", "Divendres", "Dissabte", "Diumenge"
+        }));
+
+    }
+
+    public void setActions(ActionListener actions[], ListSelectionListener lPlanificacions) {
+
+        llistaPlanificacionsV.getSelectionModel().addListSelectionListener(lPlanificacions);
+        botoNovaPlanificacio.addActionListener(actions[0]);
+        botoSetmanaAnterior.addActionListener(actions[1]);
+        botoSetmanaSeguent.addActionListener(actions[2]);
+        botoAnular.addActionListener(actions[3]);
+
+    }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -25,31 +74,123 @@ public class VistaPlanificacio extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        graella = new javax.swing.JTable();
+        botoNovaPlanificacio = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        llistaPlanificacionsV = new javax.swing.JList();
+        jLabel3 = new javax.swing.JLabel();
+        preuTotalV = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        botoAnular = new javax.swing.JButton();
+        botoSetmanaAnterior = new javax.swing.JButton();
+        botoSetmanaSeguent = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
-        jLabel1.setText("Hola");
+        graella.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [144][8],
+            new String [] {
+                "Hora","Dilluns", "Dimarts", "Dimecres", "Dijous","Divendres", "Dissabte", "Diumenge"
+            }
+        ));
+        graella.setCellSelectionEnabled(true);
+        graella.setInheritsPopupMenu(true);
+        jScrollPane1.setViewportView(graella);
+
+        botoNovaPlanificacio.setFont(new java.awt.Font("Bitstream Vera Sans", 1, 12));
+        botoNovaPlanificacio.setText("CREAR NOVA PLANIFICACIO");
+
+        jScrollPane2.setViewportView(llistaPlanificacionsV);
+
+        jLabel3.setText("Preu Total:");
+
+        preuTotalV.setEditable(false);
+
+        jLabel4.setFont(new java.awt.Font("Bitstream Vera Sans", 1, 10));
+        jLabel4.setText("Llista Planificacions");
+
+        botoAnular.setText("Anul·lar Programa");
+
+        botoSetmanaAnterior.setText(" << Setmana anterior");
+
+        botoSetmanaSeguent.setText("Setmana següent >>");
+
+        jLabel1.setText("€");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(164, 164, 164)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 655, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(191, 191, 191)
+                        .addComponent(botoSetmanaAnterior)
+                        .addGap(33, 33, 33)
+                        .addComponent(botoSetmanaSeguent)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(59, 59, 59)
+                        .addComponent(botoNovaPlanificacio))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(47, 47, 47)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(97, 97, 97)
+                        .addComponent(jLabel4)))
+                .addGap(28, 28, 28))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(preuTotalV, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
-                .addContainerGap(207, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 301, Short.MAX_VALUE)
+                .addComponent(botoAnular)
+                .addGap(414, 414, 414))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(134, 134, 134)
-                .addComponent(jLabel1)
-                .addContainerGap(149, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel4)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(botoSetmanaAnterior)
+                        .addComponent(botoSetmanaSeguent)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane2)
+                        .addGap(12, 12, 12)
+                        .addComponent(botoNovaPlanificacio)
+                        .addGap(31, 31, 31))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(botoAnular)
+                    .addComponent(preuTotalV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addGap(86, 86, 86))
         );
     }// </editor-fold>//GEN-END:initComponents
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton botoAnular;
+    private javax.swing.JButton botoNovaPlanificacio;
+    private javax.swing.JButton botoSetmanaAnterior;
+    private javax.swing.JButton botoSetmanaSeguent;
+    private javax.swing.JTable graella;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JList llistaPlanificacionsV;
+    private javax.swing.JTextField preuTotalV;
     // End of variables declaration//GEN-END:variables
-    
 }
