@@ -69,7 +69,7 @@ public class Programa implements ClasseAmbClau<String>, Serializable {
     }
 
     /**  Afegeix una tematica a la llista de temes del programa.
-     *  @param  tema Tematica a afegir a la llista
+     *  @param  T Tematica a afegir a la llista
      *  @pre    -
      *  @post   S'ha afegit la tematica a la llista de tematiques
      */

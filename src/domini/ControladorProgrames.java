@@ -635,7 +635,7 @@ public class ControladorProgrames {
      *  Esborra tots els programes de la llista en memoria.
      *  @pre    S'ha inicialitzat previament la llista en memoria.
      *  @post   S'han esborrat tots els programes de la llista.
-     *  @return Cert si la neteja ha tingut èxit. Fals altrament.
+     *  
      */
     public void netejaLlistaProgrames() {
         RepoProg.buidarLlista();
