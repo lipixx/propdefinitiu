@@ -114,7 +114,7 @@ public class ControladorCliente {
         int i = 0;
         Object[] listClientes;
         LinkedList<Cliente> clientes = c.listaObject();
-        if (clientes != null) {
+        if (clientes.isEmpty()) {
             listClientes = new Object[clientes.size()];
             for (Cliente cx : clientes) {
                 listClientes[i] = consultaCliente(cx.getId());
