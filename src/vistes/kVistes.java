@@ -63,7 +63,7 @@ public class kVistes {
         kvGProgs = new kVistaGProgrames(CPG);
         kvFranges = new kVistaFranges(CPG);
         kvCliente = new ControladorVistasCliente(CCliente);
-        kvPlan = new kVistaPlanificacio(CPlani);
+        kvPlan = new kVistaPlanificacio(CPG, CPlani);
         kvFact = new kVistaFacturacio(CFactura);
 
         /**Vista principal: Pestanyes que te la vista principal, a mes de les seves*/
