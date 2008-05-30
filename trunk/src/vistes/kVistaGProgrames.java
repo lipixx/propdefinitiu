@@ -16,11 +16,11 @@ public class kVistaGProgrames {
 
     private ControladorProgrames CPG;
     private VistaGProgrames vGProgs;
-    vAfegirPrograma vADDP, vMODP;
+    private vAfegirPrograma vADDP, vMODP;
     private tuplaPrograma dadesPrograma;
     private String[] llistaProgrames;
     private String[] llistaFiltres;
-    SimpleDateFormat formatCalendar;
+    private SimpleDateFormat formatCalendar;
 
     public kVistaGProgrames(ControladorProgrames cpgComu) {
         /**Controlador de programes que li pasa el kVistes*/
