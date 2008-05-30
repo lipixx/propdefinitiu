@@ -63,10 +63,10 @@ inicializarVistaNuevaFactura();
     /**
      * Inicializa el controlador de la vista de factura
      * 
-     * @param listaConceptos 
+     * @param inCF
      * 
      * Lista de conceptos pendientes de facturar
-     * @param inLlistaFacturas 
+     * 
      */
     public void inicializarControladorVistaFactura(ControladorFactura inCF) {
 

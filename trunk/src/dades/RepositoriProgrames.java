@@ -62,7 +62,7 @@ public class RepositoriProgrames<K, T extends ClasseAmbClau<K>> {
 
     /**
      *  Afegeix un Objecte programa a la llista.  
-     *  @param  T Objecte a insertar.
+     *  @param  programa Objecte a insertar.
      *  @param format Numero corresponent al format: 0:Normal 1:Continu 2:Directe
      *  @param categoria Numero corresponent a la categoria:
      *  Categoria ve donat per un INT de 0 a 10:

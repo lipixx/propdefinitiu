@@ -23,9 +23,9 @@ public class FranjaHoraria implements ClasseAmbClau<Float>, Serializable {
 
     /**
      *  Cerca un programa al repositori de programes.  
-     *  @param  horaInici Hora d'inici de la franja.
-     *  @param  horaFi Hora de fi de la franja.
-     *  @param  taxa Taxa que s'ha d'aplicar a la franja.
+     *  @param  NhoraInici Hora d'inici de la franja.
+     *  @param  NhoraFi Hora de fi de la franja.
+     *  @param  Ntaxa Taxa que s'ha d'aplicar a la franja.
      *  @pre    horaInici menor igual que horaFi, i taxa major igual que 0.
      *  @post   -
      */
@@ -67,7 +67,7 @@ public class FranjaHoraria implements ClasseAmbClau<Float>, Serializable {
 
     /**
      *  Modificadora de l'atribut horaInici.
-     *  @param horaInici Nova hora d'inici de la franja.
+     *  @param nhoraInici Nova hora d'inici de la franja.
      *  @pre    Hora de Inici es major que hora de Fi.
      *  @post   S'ha modificat l'atribut amb el nou valor.
      */
@@ -79,7 +79,7 @@ public class FranjaHoraria implements ClasseAmbClau<Float>, Serializable {
 
     /**
      *  Modificadora de l'atribut horaFi.
-     *  @param horaFi Es l'hora de fi d'aquesta franja.
+     *  @param nhoraFi Es l'hora de fi d'aquesta franja.
      *  @pre    Hora de Fi es major que hora de Inici.
      *  @post   S'ha modificat l'atribut amb el nou valor.
      */
