@@ -13,10 +13,11 @@ package domini;
  *
  */
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.LinkedList;
 
-public class Planificacio {
+public class Planificacio implements Serializable{
 
     private int idglobal=0;
     private int id;
@@ -36,6 +37,11 @@ public class Planificacio {
      }
     
 
+    //Afegida per jo
+    public void addEmissioPlanificacio(ServeiPendent servei)
+    {
+        llistaEmissions.add(servei);
+    }
     /**
      *  Consultora de l'atribut dataInici.
      *  @return La data d'emissio del programa.

@@ -1,5 +1,6 @@
 package domini;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
 /**
@@ -7,7 +8,7 @@ import java.util.Calendar;
  * @author Felip Moll Marquès
  * 
  */
-public class ServeiPendent 
+public class ServeiPendent implements Serializable
 {
     
     private boolean facturat;

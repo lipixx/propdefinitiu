@@ -12,7 +12,6 @@ package domini;
 import dades.RepositoriFranges;
 import dades.RepositoriProgrames;
 import domini.programa.*;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.Vector;
@@ -143,8 +142,12 @@ public class ControladorPlanificacio {
      */
     public void setClient(Cliente nom) {
         //S'han de "resetejar" ses llistes internes d'aquest controlador
+        //Petava perque no es podia fer casting de Array a Linked. Es podia
+        //fer una new LinkedList(ArrayList), pero tu lo que vols es fer feina
+        //directament amb sa llista de dins es client, aixi no has de preocuparte
+        //de guardar cada vegada.
         cActual = nom;
-        llistaPlanificacions = (LinkedList<Planificacio>) cActual.getLlistaPlan().clone();
+        llistaPlanificacions = cActual.getLlistaPlan();
     }
 
     public void anularEmissio(String nomPrograma, Calendar dIni, Calendar dFi, boolean temporal) {
@@ -194,7 +197,7 @@ public class ControladorPlanificacio {
 
     public String[] getLlistaPlanificacions() {
         String[] llista;
-        ArrayList llistaPClient = cActual.getLlistaPlan();
+        LinkedList llistaPClient = cActual.getLlistaPlan();
         if (llistaPClient == null) {
             return llista = new String[0];
         }

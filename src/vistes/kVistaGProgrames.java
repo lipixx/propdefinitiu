@@ -120,7 +120,7 @@ public class kVistaGProgrames {
         /**Nova vista i nous escoltadors d'events*/
         vGProgs = new VistaGProgrames();
         ListSelectionListener selFiltre, selPrograma;
-        ActionListener accions[] = new ActionListener[9];
+        ActionListener accions[] = new ActionListener[8];
 
 
         /**Setejem les dues llistes que tenim, la de programes i la de filtres
@@ -196,12 +196,6 @@ public class kVistaGProgrames {
                 }
             }
         });
-        accions[8] = (new ActionListener() {
-
-            public void actionPerformed(ActionEvent arg0) {
-                sortir();
-            }
-        });
 
         selFiltre = (new ListSelectionListener() {
 
@@ -264,9 +258,6 @@ public class kVistaGProgrames {
         }
     }
 
-    private void sortir() {
-        System.out.println("sortir-programa");
-    }
 
     private void addProgramaDeForm() {
         tuplaPrograma nou = vADDP.getTupla();

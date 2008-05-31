@@ -66,11 +66,12 @@ public class ControladorVistasCliente {
 
     public void altaCliente() {
         Object[] aux = VGC.getDatosAgregar();
+        if (aux != null){
         CDC.altaCliente((String)aux[0],(String) aux[1],(String) aux[2],(Calendar) aux[3],(Boolean) aux[4],(Integer) aux[5]);
         actListaCliente();
         VGC.clearDatosConsulta();
         VGC.setListado(this.listaClientes);
-
+        }
     }
 
     public void bajaCliente() {

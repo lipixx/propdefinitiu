@@ -2,8 +2,8 @@ package domini;
 
 
 //import dades.Factura;
+import domini.programa.AltresC;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Calendar;
 
 /*
@@ -14,6 +14,7 @@ import java.util.Calendar;
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
+import java.util.LinkedList;
 /**
  *
  * @author Francisco Javier Rojas (e6464692)
@@ -29,8 +30,8 @@ public class Cliente implements Serializable, ClasseAmbClau<String>{
     protected boolean autoFact;
     protected int intervalFact; //0: MES |  1: SETMANA | 2:DIA
     protected Calendar ultFact;
-    protected ArrayList<Factura> listFact;
-    protected ArrayList<Planificacio> listPlan;
+    protected LinkedList<Factura> listFact;
+    protected LinkedList<Planificacio> listPlan;
 
     /** Creates a new instance of Cliente */
     public Cliente(
@@ -43,8 +44,9 @@ public class Cliente implements Serializable, ClasseAmbClau<String>{
         this.autoFact = autoFact;
         this.intervalFact = intervalFact;
         ultFact = Calendar.getInstance();
-        listFact = new ArrayList<Factura>();
-        listPlan = new ArrayList<Planificacio>();
+        listFact = new LinkedList<Factura>();
+        listPlan = new LinkedList<Planificacio>();
+        testingFactures();
 
     }  
     
@@ -52,6 +54,39 @@ public class Cliente implements Serializable, ClasseAmbClau<String>{
 
     }
 
+    public void testingFactures()
+    {
+        //Cream Emissio
+        Calendar data1 = Calendar.getInstance();
+        Calendar data2 = (Calendar) data1.clone();
+        data2.set(Calendar.HOUR,6);
+        
+        float k = 10;
+        AltresC programa = new AltresC("Test-1",data1,"Descripcio",k);
+        FranjaHoraria nouFranja = new FranjaHoraria(data1,data2,k);
+        Emissio emi = new Emissio(data1, true, false, programa,nouFranja,data1,data2);
+        //Fi Crear Emissio
+        
+        //Creem una nova planificacio amb 10 programes
+        Planificacio P = new Planificacio(data1,data2);
+       for (int ka=0; ka<3; ka++)
+       {
+           P = new Planificacio(data1,data2);
+           data2.set(Calendar.HOUR, data2.get(Calendar.HOUR)+1+ka);
+           P.setDataInici(data2);
+           data2.add(Calendar.HOUR, ka);
+           P.setDataFi(data2);
+           
+        for (int i=0; i<10; i++)
+        {
+            P.addEmissioPlanificacio(emi);
+            emi.getPrograma().setNom("Test"+i);
+            emi.setPreu(emi.getPreu()+i);
+        }
+           listPlan.add(P);
+       }
+
+    }
 
     public String getId() {
         return ID;
@@ -81,7 +116,7 @@ public class Cliente implements Serializable, ClasseAmbClau<String>{
         return ultFact;
     }
 
-    public ArrayList<Factura> getListFact()
+    public LinkedList<Factura> getListFact()
     {
         return listFact;
     }
@@ -125,7 +160,6 @@ public class Cliente implements Serializable, ClasseAmbClau<String>{
             
     public boolean addFactura(Factura F)
     {
-        listFact.ensureCapacity(listFact.size()+1);
         listFact.add(F);
         return true;
     }
@@ -139,12 +173,11 @@ public class Cliente implements Serializable, ClasseAmbClau<String>{
     }
     
     public boolean clearFactura(){
-        listFact = new ArrayList<Factura>();
+        listFact = new LinkedList<Factura>();
         return true;
     }
     
     public boolean addPlanificacio(Planificacio P){
-        listPlan.ensureCapacity(listPlan.size()+1);
         listPlan.add(P);
         return true;
     }
@@ -169,7 +202,7 @@ public class Cliente implements Serializable, ClasseAmbClau<String>{
         return null;
     }
     
-    public ArrayList<Planificacio> getLlistaPlan()
+    public LinkedList<Planificacio> getLlistaPlan()
     {
         return listPlan;
     }
@@ -177,7 +210,7 @@ public class Cliente implements Serializable, ClasseAmbClau<String>{
     /*************************************************/
     
     public boolean clearPlanificacio(){
-        listPlan = new ArrayList<Planificacio>();
+        listPlan = new LinkedList<Planificacio>();
         return true;
     }
 
@@ -190,8 +223,8 @@ public class Cliente implements Serializable, ClasseAmbClau<String>{
         autoFact = objecteACopiar.autoFact;
         intervalFact = objecteACopiar.intervalFact;
         ultFact = (Calendar) objecteACopiar.ultFact.clone();
-        listFact = (ArrayList<Factura>) objecteACopiar.getListFact().clone();
-        listPlan = (ArrayList<Planificacio>) objecteACopiar.listPlan.clone();        
+        listFact = (LinkedList<Factura>) objecteACopiar.getListFact().clone();
+        listPlan = (LinkedList<Planificacio>) objecteACopiar.listPlan.clone();        
     }
 
     @Override

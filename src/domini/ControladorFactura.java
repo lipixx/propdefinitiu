@@ -23,6 +23,19 @@ public class ControladorFactura {
         this.llistaFactures = new LinkedList();
     }
 
+    public boolean setClient(Cliente nouClient)
+    {
+        clientActual = nouClient;
+        if (clientActual != null)
+        {
+           setListaConceptos();
+           setListaFactures();
+           // retorna true si realitzarAutoFacturacio a partir de la data d'avui es fa
+        }
+        return true;
+    }
+
+    
     /**
      * Inicializa la lista de facturas de un cliente
      * 
@@ -30,9 +43,10 @@ public class ControladorFactura {
      * @param inLlistaFactures
      *          Lista de facturas
      */
-    public void setListaFactures(LinkedList<Factura> inLlistaFactures) {
+    public void setListaFactures()
+    {
 
-        llistaFactures = inLlistaFactures;
+        llistaFactures = clientActual.getListFact();
     }
     
     
@@ -47,21 +61,7 @@ public class ControladorFactura {
 
         llistaFactures = inLlistaFactures;
     }
-    
-   /**
-     * Asigna el compte del usuari.
-     * 
-    * @param inCompte 
-     */
-    
-    /*#######################################ATTENTION########################*/
-    public boolean setClient(Cliente inClient) {
-        //Falta retornar si s'ha realitzat una autoFacturacio!!! 
-        //Falta reiniciar totes les estructures
-        boolean autoFacturacioRealitzada = false;
-        clientActual = inClient;
-        return autoFacturacioRealitzada;
-    }
+
     
     /**
      * Inicializa el controlador de facturas con una lista de 
@@ -70,9 +70,23 @@ public class ControladorFactura {
      * @param inllistaConceptes
      *          Lista de conceptos pendetes por facturar
      */
-    public void setListaConceptos(LinkedList<Emissio> inllistaConceptes) {
-
-        llistaConceptes = inllistaConceptes;
+    public void setListaConceptos() {
+         //Agafem la llista de planificacions del client
+            LinkedList<Planificacio> plansClient = clientActual.getLlistaPlan();
+            
+            //Per tota planificacio:
+            for (int i=0; i<plansClient.size(); i++)
+            {
+                //Agafa la llista de serveis pendents (emissions)
+               LinkedList<ServeiPendent> aux;
+               aux = plansClient.get(i).getLlistaEmissions();
+               
+               //En coloca els ServeisPendents (emissions) a la llista privada de conceptes
+               for (int j=0; i<aux.size();i++)
+               {
+                  llistaConceptes.add((Emissio)aux.get(j));
+               }
+            }
     }
 
     /**
@@ -349,7 +363,7 @@ public class ControladorFactura {
             llistaAutofacturats = this.llistaPendentsPeriode(dIP, dFP);
 
             llistaConceptesActuals.clear();
-            llistaConceptesActuals =                    llistaAutofacturats;
+            llistaConceptesActuals = llistaAutofacturats;
 
             return (llistaAutofacturats.size() != 0);
         } else {
