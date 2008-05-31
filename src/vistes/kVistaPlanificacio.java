@@ -442,7 +442,7 @@ public class kVistaPlanificacio {
 
         //Agafem fitxa del programa seleccionat
         //i actualizem la fitxa
-        ////// FALTA INICIEMISSIO i DATA CADUCITATTTTTTTTT
+      
         tuplaPrograma dadesP = CPG.veureFitxa(nomP.toLowerCase());
         if (dadesP != null) {
             String fitxa = "Nom: " + dadesP.nom + "\nPreu: " + dadesP.preu + "\nFormat: " + dadesP.format + "\nCategoria: " + dadesP.categoria + "\nDescripcio: " + dadesP.descripcio + "\nData Caducitat: " + dadesP.dataCad.get(Calendar.DATE) + "/" + dadesP.dataCad.get(Calendar.MONTH) +
