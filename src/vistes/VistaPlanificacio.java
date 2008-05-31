@@ -44,8 +44,6 @@ public class VistaPlanificacio extends javax.swing.JPanel {
 
     void pintarGraella(tuplaEmissio[] tEmissio) throws ParseException {
 
-
-
     }
 
     public void setGraella() {
@@ -69,6 +67,14 @@ public class VistaPlanificacio extends javax.swing.JPanel {
 
     }
 
+    void setSetmana(String setmana) {
+        botoSetmana.setText(setmana);
+    }
+
+    void setPreu(String preu) {
+        preuTotalV.setText(preu);
+    }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -89,6 +95,8 @@ public class VistaPlanificacio extends javax.swing.JPanel {
         botoSetmanaAnterior = new javax.swing.JButton();
         botoSetmanaSeguent = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        botoSetmana = new javax.swing.JTextPane();
 
         graella.setModel(new javax.swing.table.DefaultTableModel(
             new Object [144][8],
@@ -120,20 +128,28 @@ public class VistaPlanificacio extends javax.swing.JPanel {
 
         jLabel1.setText("€");
 
+        botoSetmana.setEditable(false);
+        botoSetmana.setAlignmentX(1.0F);
+        botoSetmana.setAlignmentY(1.0F);
+        jScrollPane3.setViewportView(botoSetmana);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(23, 23, 23)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 655, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(191, 191, 191)
+                        .addGap(84, 84, 84)
                         .addComponent(botoSetmanaAnterior)
-                        .addGap(33, 33, 33)
-                        .addComponent(botoSetmanaSeguent)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(42, 42, 42)
+                        .addComponent(botoSetmanaSeguent)
+                        .addGap(91, 91, 91)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(59, 59, 59)
@@ -162,9 +178,9 @@ public class VistaPlanificacio extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel4)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(botoSetmanaAnterior)
-                        .addComponent(botoSetmanaSeguent)))
+                    .addComponent(botoSetmanaAnterior)
+                    .addComponent(botoSetmanaSeguent)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(layout.createSequentialGroup()
@@ -185,6 +201,7 @@ public class VistaPlanificacio extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botoAnular;
     private javax.swing.JButton botoNovaPlanificacio;
+    private javax.swing.JTextPane botoSetmana;
     private javax.swing.JButton botoSetmanaAnterior;
     private javax.swing.JButton botoSetmanaSeguent;
     private javax.swing.JTable graella;
@@ -193,6 +210,7 @@ public class VistaPlanificacio extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JList llistaPlanificacionsV;
     private javax.swing.JTextField preuTotalV;
     // End of variables declaration//GEN-END:variables

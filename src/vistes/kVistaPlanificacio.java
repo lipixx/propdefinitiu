@@ -47,7 +47,6 @@ public class kVistaPlanificacio {
 
     public kVistaPlanificacio(ControladorProgrames controladorProg, ControladorPlanificacio controladorPlani) {
 
-        System.out.println("INIT");
         CPlani = controladorPlani;
         CPG = controladorProg;
 
@@ -61,8 +60,8 @@ public class kVistaPlanificacio {
         vSprog = new VistaSelectProgrames(new javax.swing.JFrame(), true);
         vGen = new VistaGenerada(new javax.swing.JFrame(), true);
 
-        initSetmana();
         initVistaPlanificacio();
+        initSetmana();
         initVistaCriteris();
         initVistaSelectProg();
         initVistaGenerat();
@@ -97,7 +96,6 @@ public class kVistaPlanificacio {
             /* Nova planificacio */
 
             public void actionPerformed(ActionEvent e) {
-                System.out.println("HOSTIA PUTA JODER!!");
                 vCriteris.setLocationRelativeTo(vPlani);
                 vCriteris.setTitle("Definir criteris planificacio");
                 vCriteris.setVisible(true);
@@ -155,8 +153,10 @@ public class kVistaPlanificacio {
         vPlani.setActions(actions, selPlan);
     }
 
-    private void generarGraella() {
-        throw new UnsupportedOperationException("Not yet implemented");
+    private void generarGraella(boolean temporal) {
+        String inici = "" + iniciSetmana.get(Calendar.DAY_OF_MONTH) + "-" + iniciSetmana.get(Calendar.MONTH) + "-" + iniciSetmana.get(Calendar.YEAR);
+        String fi = "" + fiSetmana.get(Calendar.DAY_OF_MONTH) + "-" + fiSetmana.get(Calendar.MONTH) + "-" + fiSetmana.get(Calendar.YEAR);
+        CPlani.genSet(inici, fi, vPlani.getPlanSelected(), temporal);
     }
 
     private void initVistaSelectProg() {
@@ -237,36 +237,26 @@ public class kVistaPlanificacio {
     }
 
     private void initSetmana() {
-        try {
 
-            Calendar inici = Calendar.getInstance();
-            Calendar fi = (Calendar) inici.clone();
-            int ara = inici.get(Calendar.DAY_OF_WEEK);
-            /* SUNDAY=0, MONDAY=1, TUESDAY=2, WEDNESDAY=3, THURSDAY=4, FRIDAY=5 and SATURDAY=6 */
+        iniciSetmana = Calendar.getInstance();
+        fiSetmana = (Calendar) iniciSetmana.clone();
+        int ara = iniciSetmana.get(Calendar.DAY_OF_WEEK);
+        /* SUNDAY=0, MONDAY=1, TUESDAY=2, WEDNESDAY=3, THURSDAY=4, FRIDAY=5 and SATURDAY=6 */
 
-            int sumar = 0;
-            if (ara == 0) {
-                sumar = 6;
-            } else {
-                sumar = ara - 1;
-            }
-
-            inici.add(Calendar.DAY_OF_MONTH, -(sumar));
-            int dia = inici.get(Calendar.DAY_OF_MONTH);
-            int mes = inici.get(Calendar.MONTH);
-            int any = inici.get(Calendar.YEAR);
-
-            Date dateInici = formatCalendar.parse("" + dia + "/" + mes + "/" + any);
-            inici = Calendar.getInstance();
-            inici.setTime(dateInici);
-            Date dateFi = formatCalendar.parse("" + dia + "/" + mes + "/" + any);
-            fi = Calendar.getInstance();
-            fi.setTime(dateFi);
-            fi.add(Calendar.DAY_OF_MONTH, +7);
-        } catch (ParseException ex) {
-            System.out.println("Error: L 257");
-            Logger.getLogger(kVistaPlanificacio.class.getName()).log(Level.SEVERE, null, ex);
+        int sumar = 0, restar = 0;
+        if (ara == 1) {
+            sumar = 0;
+            restar = 6;
+        } else {
+            sumar = (7 - ara) + 1;
+            restar = ara - 2;
         }
+
+        iniciSetmana.add(Calendar.DAY_OF_MONTH, -restar);
+        fiSetmana.add(Calendar.DAY_OF_MONTH, +sumar);
+        String setmana = "" + iniciSetmana.get(Calendar.DAY_OF_MONTH) + "/" + (iniciSetmana.get(Calendar.MONTH) + 1) + "/" + iniciSetmana.get(Calendar.YEAR) + " a " + fiSetmana.get(Calendar.DAY_OF_MONTH) + "/" + (fiSetmana.get(Calendar.MONTH) + 1) + "/" + fiSetmana.get(Calendar.YEAR);
+        vPlani.setSetmana(setmana);
+
 
     }
 
@@ -278,6 +268,8 @@ public class kVistaPlanificacio {
                 try {
                     nousCriteris = vCriteris.getCriteris();
                     vCriteris.setVisible(false);
+                    vSprog.setLocationRelativeTo(vCriteris);
+                    vSprog.setTitle("Seleccionar programes");
                     vSprog.setVisible(true);
                 } catch (ParseException ex) {
                     System.out.println("Error: L 273");
@@ -402,7 +394,7 @@ public class kVistaPlanificacio {
 
         String idPlanificacio = vGen.getPlanSelected();
         initSetmana();
-        generarGraella();
+        generarGraella(false);
         vGen.pintarGraella(graella);
 
     }
@@ -412,7 +404,7 @@ public class kVistaPlanificacio {
 
         String idPlanificacio = vPlani.getPlanSelected();
         initSetmana();
-        generarGraella();
+        generarGraella(true);
         vPlani.pintarGraella(graella);
 
     }
@@ -422,11 +414,17 @@ public class kVistaPlanificacio {
         iniciSetmana.add(Calendar.DAY_OF_MONTH, -7);
         fiSetmana.add(Calendar.DAY_OF_MONTH, -7);
 
+        String setmana = "" + iniciSetmana.get(Calendar.DAY_OF_MONTH) + "/" + (iniciSetmana.get(Calendar.MONTH) + 1) + "/" + iniciSetmana.get(Calendar.YEAR) + " a " + fiSetmana.get(Calendar.DAY_OF_MONTH) + "/" + (fiSetmana.get(Calendar.MONTH) + 1) + "/" + fiSetmana.get(Calendar.YEAR);
+        vPlani.setSetmana(setmana);
     }
 
     private void avancarSetmana() {
+
         iniciSetmana.add(Calendar.DAY_OF_MONTH, +7);
         fiSetmana.add(Calendar.DAY_OF_MONTH, +7);
+
+        String setmana = "" + iniciSetmana.get(Calendar.DAY_OF_MONTH) + "/" + (iniciSetmana.get(Calendar.MONTH) + 1) + "/" + iniciSetmana.get(Calendar.YEAR) + " a " + fiSetmana.get(Calendar.DAY_OF_MONTH) + "/" + (fiSetmana.get(Calendar.MONTH) + 1) + "/" + fiSetmana.get(Calendar.YEAR);
+        vPlani.setSetmana(setmana);
     }
 
     /** A Partir d'aqui  part de Controlador de vistes de Programes*/
@@ -442,7 +440,7 @@ public class kVistaPlanificacio {
 
         //Agafem fitxa del programa seleccionat
         //i actualizem la fitxa
-      
+
         tuplaPrograma dadesP = CPG.veureFitxa(nomP.toLowerCase());
         if (dadesP != null) {
             String fitxa = "Nom: " + dadesP.nom + "\nPreu: " + dadesP.preu + "\nFormat: " + dadesP.format + "\nCategoria: " + dadesP.categoria + "\nDescripcio: " + dadesP.descripcio + "\nData Caducitat: " + dadesP.dataCad.get(Calendar.DATE) + "/" + dadesP.dataCad.get(Calendar.MONTH) +

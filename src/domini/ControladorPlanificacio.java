@@ -12,7 +12,10 @@ package domini;
 import dades.RepositoriFranges;
 import dades.RepositoriProgrames;
 import domini.programa.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.Vector;
 
@@ -43,6 +46,77 @@ public class ControladorPlanificacio {
         llistaFrangesProhibides = new LinkedList<FranjaHoraria>();
         llistaPlanificacions = new LinkedList<Planificacio>();
         llistaProgrames = new LinkedList<Programa>();
+    }
+
+    public String[][] genSet(String inici, String fin, String plani, boolean temporal) throws ParseException {
+
+        SimpleDateFormat formatCalendar = new SimpleDateFormat("dd-MM-yyyy");
+
+        Date ini = formatCalendar.parse(inici);
+        Calendar iniSetmana = Calendar.getInstance();
+        iniSetmana.setTime(ini);
+
+        Date fi = formatCalendar.parse(fin);
+        Calendar fiSetmana = Calendar.getInstance();
+        fiSetmana.setTime(fi);
+
+        Date iniP = formatCalendar.parse(plani.substring(0, 10));
+        Calendar iniPlani = Calendar.getInstance();
+        iniPlani.setTime(iniP);
+
+        Date fiP = formatCalendar.parse(plani.substring(13, 23));
+        Calendar fiPlani = Calendar.getInstance();
+        fiPlani.setTime(fiP);
+
+        LinkedList<Planificacio> llistaP;
+        if (temporal) {
+            llistaP = llistaPlanificacions;
+        } else {
+            llistaP = cActual.getLlistaPlan();
+        }
+        Planificacio p = null;
+        boolean trobat = false;
+        for (int i = 0; i < llistaP.size() && !trobat; i++) {
+            if (llistaP.get(i).getDataInici().equals(iniPlani) && llistaP.get(i).getDataFi().equals(fiPlani)) {
+                trobat = true;
+                p = llistaP.get(i);
+            }
+        }
+        String[][] graella = new String[144][8];
+        int comptador = 0;
+        int dia, hora, minut, hFi, mFi, duracio;
+        boolean diaSeg = false;
+        for (int j = 0; j < p.getLlistaEmissions().size(); j++) {
+
+            if (!((Emissio) p.getLlistaEmissions().get(j)).getHoraInici().before(iniSetmana) && !((Emissio) p.getLlistaEmissions().get(j)).getHoraInici().after(fiSetmana)) {
+
+                dia = ((Emissio) p.getLlistaEmissions().get(j)).getHoraInici().get(Calendar.DAY_OF_WEEK);
+                if (dia == 1) {
+                    dia = 7;
+                } else {
+                    dia++;
+                }
+                hora = ((Emissio) p.getLlistaEmissions().get(j)).getHoraInici().get(Calendar.HOUR_OF_DAY);
+                minut = ((Emissio) p.getLlistaEmissions().get(j)).getHoraInici().get(Calendar.MINUTE);
+                duracio = ((Emissio) p.getLlistaEmissions().get(j)).getHoraFi().get(Calendar.HOUR);
+                if (hora > duracio) {
+                    diaSeg = true;
+                    di((Emissio) p.addEmissioPlanificacio().
+                
+                } else {
+                    diaSeg = false;
+                    duracio -= hora;
+                }
+
+                graella[hora][dia] = ((Emissio) p.getLlistaEmissions().get(j)).getPrograma().getNom();
+
+
+            }
+            comptador += 10;
+        }
+
+
+        return graella;
     }
 
     public String[] gene(Vector<String> programesSeleccionats, tuplaCriteris nousCriteris) {
@@ -172,7 +246,7 @@ public class ControladorPlanificacio {
             for (int i = 0; i < cActual.getLlistaPlan().size() && !trobat; i++) {
                 if (cActual.getLlistaPlan().get(i).getDataInici().equals(dIni) && cActual.getLlistaPlan().get(i).getDataFi().equals(dFi)) {
                     for (int j = 0; j < cActual.getLlistaPlan().get(i).getLlistaEmissions().size() && !trobat; j++) {
-                        if (((Emissio)cActual.getLlistaPlan().get(i).getLlistaEmissions().get(j)).getPrograma().getNom().equals(nomPrograma)) {
+                        if (((Emissio) cActual.getLlistaPlan().get(i).getLlistaEmissions().get(j)).getPrograma().getNom().equals(nomPrograma)) {
                             cActual.getLlistaPlan().get(i).getLlistaEmissions().remove(cActual.getLlistaPlan().get(i).getLlistaEmissions().get(j));
                             trobat = true;
                         }
