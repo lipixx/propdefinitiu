@@ -22,10 +22,12 @@ public class VistaPlanificacio extends javax.swing.JPanel {
     }
 
     public void setLlistaPlans(String[] llistaPlanificacions) {
+        /* Col·loca la llistaPlanificacions dins la JList llistaPlanificacionsV */
         llistaPlanificacionsV.setListData(llistaPlanificacions);
     }
 
     String getGraellaSelected() {
+        /* Retorna un String que identifica una Emissio */
         return (String) graella.getValueAt(graella.getSelectedColumn(), graella.getSelectedRow());
 
     }
@@ -47,6 +49,7 @@ public class VistaPlanificacio extends javax.swing.JPanel {
     }
 
     public void setGraella() {
+        /* ?¿ */
         String[][] graellaAuxiliar = new String[144][7];
         graella.setModel(new javax.swing.table.DefaultTableModel(
                 graellaAuxiliar,
