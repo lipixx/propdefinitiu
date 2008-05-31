@@ -20,8 +20,6 @@ import javax.swing.event.ListSelectionListener;
  *
  * @author lipi
  */
-
-
 public class kVistes {
 
     /** Tindra:
@@ -35,18 +33,14 @@ public class kVistes {
     ControladorVistasCliente kvCliente;
     kVistaGProgrames kvGProgs;
     kVistaFranges kvFranges;
-    
     //Falten
     ControladorPlanificacio CPlani;
     ControladorFactura CFactura;
-    
     kVistaPlanificacio kvPlan;
     kVistaFacturacio kvFact;
     //Fi Falten
-    
     /**Les dues pestanyes que te incloses*/
     VistaPrincipal vPrincipal;
-    
     /**Necessari per generar la llista de clients*/
     public Object[][] listaClientes;
 
@@ -58,7 +52,7 @@ public class kVistes {
         CCliente = CD.getCClient();
         CPlani = CD.getCPlan();
         CFactura = CD.getCFactura();
-        
+
         /**Controladors de les vistes (han de tenir els controladors de domini que necessitin*/
         kvGProgs = new kVistaGProgrames(CPG);
         kvFranges = new kVistaFranges(CPG);
@@ -82,7 +76,7 @@ public class kVistes {
 
     public void initVistaPrincipal() {
         /**Nous escoltadors d'events*/
-        ActionListener accions[] = new ActionListener[10];
+        ActionListener accions[] = new ActionListener[11];
 
 
         /**Init de nous listeners*/
@@ -115,17 +109,18 @@ public class kVistes {
                     //El nom obtingut sera rutaFitxer
                     String rutaFitxer = (String) JOptionPane.showInputDialog(
                             null,
-                            "Introdueix el nom del fitxer a carregar:\n",
+                            "Introdueix la ruta del fitxer a carregar:\n",
                             "Importa Repositori de Programes",
                             JOptionPane.PLAIN_MESSAGE,
                             null,
                             null,
                             "RepositoriProgramesEXPIMP.db");
+                    if (rutaFitxer != null) {
+                        CPG.importarLlistaProgrames(rutaFitxer);
+                        kvGProgs.actualitzaVistaGProgrames();
 
-                    CPG.importarLlistaProgrames(rutaFitxer);
-                    kvGProgs.actualitzaVistaGProgrames();
-
-                    JOptionPane.showMessageDialog(null, "S'ha importat: " + rutaFitxer + " !");
+                        JOptionPane.showMessageDialog(null, "S'ha importat: " + rutaFitxer + " !");
+                    }
                 } catch (GestorDiscException ex) {
                     JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
                 }
@@ -137,6 +132,7 @@ public class kVistes {
 
             public void actionPerformed(ActionEvent arg0) {
                 CPG.netejaLlistaProgrames();
+                kvGProgs.actualitzaVistaGProgrames();
                 JOptionPane.showMessageDialog(null, "Esborrat de disc correctament!");
             }
         });
@@ -148,7 +144,7 @@ public class kVistes {
                 try {
                     String rutaFitxer = (String) JOptionPane.showInputDialog(
                             null,
-                            "Introdueix el nom del fitxer:\n",
+                            "Introdueix el la ruta del fitxer:\n",
                             "Exporta el Repositori de Programes",
                             JOptionPane.PLAIN_MESSAGE,
                             null,
@@ -156,7 +152,7 @@ public class kVistes {
                             "RepositoriProgramesEXPIMP.db");
 
                     CPG.exportarLlProgrames(rutaFitxer);
-                    JOptionPane.showMessageDialog(null, "S'ha guardat el repositori de programes" +
+                    JOptionPane.showMessageDialog(null, "S'ha guardat el repositori de programes " +
                             "al fitxer " + rutaFitxer);
 
                 } catch (GestorDiscException ex) {
@@ -200,10 +196,11 @@ public class kVistes {
                         null,
                         null,
                         "RepositoriFrangesEXPIMP.db");
-
-                CPG.exportaFranges(rutaFitxer);
-                JOptionPane.showMessageDialog(null, "S'ha guardat el repositori de franges" +
-                        "al fitxer " + rutaFitxer);
+                if (rutaFitxer != null) {
+                    CPG.exportaFranges(rutaFitxer);
+                    JOptionPane.showMessageDialog(null, "S'ha guardat el repositori de franges" +
+                            "al fitxer " + rutaFitxer);
+                }
             }
         });
 
@@ -219,11 +216,12 @@ public class kVistes {
                         null,
                         null,
                         "RepositoriFrangesEXPIMP.db");
-
-                CPG.impFranges(rutaFitxer);
-                kvFranges.resetFranges();
-                JOptionPane.showMessageDialog(null, "S'ha carregat el repositori de franges" +
-                        "del fitxer " + rutaFitxer);
+                if (rutaFitxer != null) {
+                    CPG.impFranges(rutaFitxer);
+                    kvFranges.resetFranges();
+                    JOptionPane.showMessageDialog(null, "S'ha carregat el repositori de franges" +
+                            "del fitxer " + rutaFitxer);
+                }
             }
         });
 
@@ -236,14 +234,38 @@ public class kVistes {
                 JOptionPane.showMessageDialog(null, "S'han esborrat les franges en memoria");
             }
         });
-        
-                /*Act llista clients MenuPrincipal:*/
+
+        /*Act llista clients MenuPrincipal:*/
         accions[9] = (new ActionListener() {
 
             public void actionPerformed(ActionEvent arg0) {
-                 //Despres de tornar refresquem la llista nostra
+                //Despres de tornar refresquem la llista nostra
                 initListaCliente();
                 vPrincipal.setLlistaClients(listaClientes);
+            }
+        });
+
+        /*Menu: sortir*/
+        accions[10] = (new ActionListener() {
+
+            public void actionPerformed(ActionEvent arg0) {
+                Object[] options = {"Si", "No"};
+                int n = JOptionPane.showOptionDialog(null,
+                        "Vols guardar abans de sortir?",
+                        "Guardar les modificacions",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE,
+                        null, options, options[0]);
+                if (n == 0) {
+                    try {
+                        CD.guardaClientActual();
+                        CCliente.actualizarClientes();
+                        CPG.saveGclientsAll();
+                        System.exit(0);
+                    } catch (GestorDiscException ex) {
+                        System.out.println("Warning! guardant tot - pot ser que no existisin dades.");
+                    }
+                }
             }
         });
 
@@ -251,22 +273,9 @@ public class kVistes {
         ListSelectionListener LSL = new ListSelectionListener() {
 
             public void valueChanged(ListSelectionEvent arg0) {
-                //Guardar client Actual?
-
                 String selectedID = vPrincipal.getSelectedID();
                 if (selectedID != null) {
-                    if (CD.clientSetted())
-                    {
-                   /** Object[] options = {"Si", "No"};
-                    int n = JOptionPane.showOptionDialog(null,
-                            "Vols guardar totes les modificacions del client actual seleccionat?",
-                            "Guardar les modificacions",
-                            JOptionPane.YES_NO_OPTION,
-                            JOptionPane.QUESTION_MESSAGE,
-                            null, options, options[0]);
-                    if (n == 0) {
-                        CD.guardaClientActual();
-                    }*/
+                    if (CD.clientSetted()) {
                         CD.guardaClientActual();
                     }
                     String informacio[] = CD.setClientActual(selectedID);

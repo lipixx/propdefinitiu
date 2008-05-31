@@ -12,9 +12,10 @@ package domini;
  * 
  *
  */
+import java.io.Serializable;
 import java.util.Calendar;
 
-public class Emissio extends ServeiPendent {
+public class Emissio extends ServeiPendent implements Serializable{
 
     private Calendar dataEmissio;
     private Calendar horaInici;

@@ -120,7 +120,6 @@ public class VistaGProgrames extends javax.swing.JPanel {
         buttonModificaPrograma.addActionListener(accions[5]);
         buttonEliminaPrograma.addActionListener(accions[6]);
         buttonSaveAll.addActionListener(accions[7]);
-        buttonQuit.addActionListener(accions[8]);
         
         llistaFiltres.getSelectionModel().addListSelectionListener(selFiltres);
         llistaProgrames.getSelectionModel().addListSelectionListener(selProgs);
@@ -149,7 +148,6 @@ public class VistaGProgrames extends javax.swing.JPanel {
         buttonModificaPrograma = new javax.swing.JButton();
         buttonEliminaPrograma = new javax.swing.JButton();
         buttonAddPrograma = new javax.swing.JButton();
-        buttonQuit = new javax.swing.JButton();
         buttonSaveAll = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         fitxaPrograma = new javax.swing.JTextArea();
@@ -194,9 +192,6 @@ public class VistaGProgrames extends javax.swing.JPanel {
         buttonEliminaPrograma.setText("Eliminar");
 
         buttonAddPrograma.setText("Afegir nou Programa");
-
-        buttonQuit.setText("Surt");
-        buttonQuit.setEnabled(false);
 
         buttonSaveAll.setText("Guardar Canvis");
 
@@ -253,10 +248,8 @@ public class VistaGProgrames extends javax.swing.JPanel {
                                         .addComponent(buttonModificaPrograma, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(layout.createSequentialGroup()
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                .addComponent(buttonQuit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(buttonSaveAll)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                                             .addComponent(buttonAddPrograma, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))))))
@@ -300,9 +293,7 @@ public class VistaGProgrames extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(25, 25, 25)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(buttonSaveAll)
-                                    .addComponent(buttonQuit)))
+                                .addComponent(buttonSaveAll))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
                                 .addComponent(buttonFiltreNom)))))
@@ -319,7 +310,6 @@ public class VistaGProgrames extends javax.swing.JPanel {
     private javax.swing.JToggleButton buttonFiltreTematica;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton buttonModificaPrograma;
-    private javax.swing.JButton buttonQuit;
     private javax.swing.JButton buttonSaveAll;
     private javax.swing.JTextArea fitxaPrograma;
     private javax.swing.JLabel jLabel1;

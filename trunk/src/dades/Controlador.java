@@ -227,10 +227,11 @@ public class Controlador <K,T extends ClasseAmbClau<K>>
     {   
         try{
         gDisc.esborra(archivo);
-        gDisc.guardaTots(llista, archivo);
+        if (!llista.isEmpty()) gDisc.guardaTots(llista, archivo);
         }
         catch(GestorDiscException g)
         {
+            if (!llista.isEmpty())
             gDisc.guardaTots(llista, archivo);
         }
     }

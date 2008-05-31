@@ -50,6 +50,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
         impFranges.addActionListener(actions[7]);
         esborraFrangesDisc.addActionListener(actions[8]);
         buttonActLlista.addActionListener(actions[9]);
+        menuSortir.addActionListener(actions[10]);
         llistaClients.getSelectionModel().addListSelectionListener(LSL);
     }
 
@@ -112,7 +113,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
         impFranges = new javax.swing.JMenuItem();
         esborraFrangesDisc = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        menuSortir = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem7 = new javax.swing.JMenuItem();
         jMenuItem8 = new javax.swing.JMenuItem();
@@ -277,13 +278,8 @@ public class VistaPrincipal extends javax.swing.JFrame {
         jMenu5.setEnabled(false);
         jMenu1.add(jMenu5);
 
-        jMenuItem1.setText("Sortir");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
-            }
-        });
-        jMenu1.add(jMenuItem1);
+        menuSortir.setText("Sortir");
+        jMenu1.add(menuSortir);
 
         jMenuBar1.add(jMenu1);
 
@@ -327,10 +323,6 @@ public class VistaPrincipal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-System.exit(0);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
-
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonActLlista;
@@ -354,7 +346,6 @@ System.exit(0);
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
@@ -364,6 +355,7 @@ System.exit(0);
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable llistaClients;
+    private javax.swing.JMenuItem menuSortir;
     private javax.swing.JMenuItem saveAll;
     // End of variables declaration//GEN-END:variables
     

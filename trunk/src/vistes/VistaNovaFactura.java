@@ -96,11 +96,11 @@ public class VistaNovaFactura extends javax.swing.JFrame {
      * @param inDatos 
      */
     public void setListaSeleccionados(Object[][] inDatos) {
-        listaParaFacturar = new Object[inDatos.length][3];
-        listaParaFacturar = inDatos;
+
         for(i=0;i<inDatos.length;i++){
             llistaSeleccionats.add(Integer.parseInt((String) inDatos[i][0]));
         }
+        
         actualizarListaSeleccionados();
     }
 
