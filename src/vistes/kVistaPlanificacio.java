@@ -289,6 +289,7 @@ public class kVistaPlanificacio {
             public void actionPerformed(ActionEvent e) {
                 try {
                     nousCriteris = vCriteris.getCriteris();
+                    //if(nousCriteris.)
                     vCriteris.setVisible(false);
                     vSprog.setLocationRelativeTo(vCriteris);
                     vSprog.setTitle("Seleccionar programes");
