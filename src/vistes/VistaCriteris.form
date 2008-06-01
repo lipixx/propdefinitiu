@@ -51,7 +51,7 @@
                                           <Component id="jLabel34" alignment="0" min="-2" max="-2" attributes="0"/>
                                           <Component id="jLabel36" alignment="0" min="-2" max="-2" attributes="0"/>
                                       </Group>
-                                      <EmptySpace max="32767" attributes="0"/>
+                                      <EmptySpace pref="43" max="32767" attributes="0"/>
                                       <Component id="botoNombrePlanis" min="-2" pref="38" max="-2" attributes="0"/>
                                   </Group>
                                   <Component id="botoDFi" min="-2" pref="110" max="-2" attributes="1"/>
@@ -71,16 +71,16 @@
                               <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace pref="65" max="32767" attributes="0"/>
+                      <EmptySpace pref="69" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="botoTercerCriteri" max="32767" attributes="1"/>
                           </Group>
                           <Component id="botoSegonCriteri" alignment="0" max="32767" attributes="1"/>
-                          <Component id="botoPrimerCriteri" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="botoQuartCriteri" alignment="0" max="32767" attributes="1"/>
                           <Component id="botoCinqueCriteri" alignment="0" max="32767" attributes="1"/>
+                          <Component id="botoPrimerCriteri" alignment="0" max="32767" attributes="1"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="botoReset" min="-2" max="-2" attributes="0"/>
@@ -124,7 +124,7 @@
                       </Group>
                   </Group>
               </Group>
-              <EmptySpace pref="43" max="32767" attributes="0"/>
+              <EmptySpace pref="48" max="32767" attributes="0"/>
           </Group>
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="56" max="-2" attributes="0"/>
@@ -251,7 +251,7 @@
                       </Group>
                   </Group>
               </Group>
-              <EmptySpace pref="138" max="32767" attributes="0"/>
+              <EmptySpace pref="165" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -260,12 +260,12 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
               <Component id="botoDInici" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="475" max="32767" attributes="0"/>
+              <EmptySpace pref="511" max="32767" attributes="0"/>
           </Group>
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
               <Component id="botoDFi" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="475" max="32767" attributes="0"/>
+              <EmptySpace pref="511" max="32767" attributes="0"/>
           </Group>
           <Group type="102" attributes="0">
               <Group type="103" groupAlignment="1" attributes="0">
@@ -309,8 +309,8 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="botoPrimerCriteri" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="botoReset" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="botoPrimerCriteri" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
