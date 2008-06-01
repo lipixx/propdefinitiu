@@ -45,7 +45,7 @@ public class kVistaPlanificacio {
     private String[] llistaProgrames;
     private String[] llistaFiltres;
 
-    public kVistaPlanificacio(ControladorProgrames controladorProg, ControladorPlanificacio controladorPlani) {
+    public kVistaPlanificacio(ControladorProgrames controladorProg, ControladorPlanificacio controladorPlani) throws ParseException {
 
         CPlani = controladorPlani;
         CPG = controladorProg;
@@ -62,6 +62,7 @@ public class kVistaPlanificacio {
 
         initVistaPlanificacio();
         initSetmana();
+        initGraella();
         initVistaCriteris();
         initVistaSelectProg();
         initVistaGenerat();
@@ -88,7 +89,11 @@ public class kVistaPlanificacio {
         selPlan = (new ListSelectionListener() {
 
             public void valueChanged(ListSelectionEvent e) {
-                seleccionatPlanificacio();
+                try {
+                    seleccionatPlanificacio();
+                } catch (ParseException ex) {
+                    Logger.getLogger(kVistaPlanificacio.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
 
@@ -120,13 +125,14 @@ public class kVistaPlanificacio {
         });
 
         actions[3] = (new ActionListener() {
-            /* Anular */
+            /* Anular programa */
 
             public void actionPerformed(ActionEvent e) {
 
                 String nomPrograma = vPlani.getGraellaSelected();
-                if (nomPrograma != null) {
-                    try {
+                try {
+                    if (nomPrograma != null || nomPrograma.compareToIgnoreCase("") != 0) {
+
                         String idPlanificacio = vPlani.getPlanSelected();
                         /* idPLanificacio son 2 calendars dd/mm/yyyy - dd/mm/yyyy */
 
@@ -141,11 +147,11 @@ public class kVistaPlanificacio {
                         dFi.setTime(dateFi);
 
                         CPlani.anularEmissio(nomPrograma, dIni, dFi, false); /* true implica que es TEMPORAL */
-                    } catch (ParseException ex) {
-                        System.out.println("Error: L 140");
-                        Logger.getLogger(kVistaPlanificacio.class.getName()).log(Level.SEVERE, null, ex);
-                    }
 
+                    }
+                } catch (ParseException ex) {
+                    System.out.println("Error: L 140");
+                    Logger.getLogger(kVistaPlanificacio.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -153,10 +159,23 @@ public class kVistaPlanificacio {
         vPlani.setActions(actions, selPlan);
     }
 
-    private void generarGraella(boolean temporal) {
+    private void generarGraella(boolean temporal) throws ParseException {
         String inici = "" + iniciSetmana.get(Calendar.DAY_OF_MONTH) + "-" + iniciSetmana.get(Calendar.MONTH) + "-" + iniciSetmana.get(Calendar.YEAR);
         String fi = "" + fiSetmana.get(Calendar.DAY_OF_MONTH) + "-" + fiSetmana.get(Calendar.MONTH) + "-" + fiSetmana.get(Calendar.YEAR);
         CPlani.genSet(inici, fi, vPlani.getPlanSelected(), temporal);
+    }
+
+    private void initGraella() throws ParseException {
+        if (CPlani.getClient() != null) {
+            generarGraella(false);
+            vPlani.pintarGraella(graella);
+        }
+
+    /*if (CPlani.getClient().getLlistaPlan().size() > 0) {
+    String pla = "" + CPlani.getClient().getLlistaPlan().get(0).getDataInici().get(Calendar.DAY_OF_MONTH) + "/" + CPlani.getClient().getLlistaPlan().get(0).getDataInici().get(Calendar.MONTH) + "/" + CPlani.getClient().getLlistaPlan().get(0).getDataInici().get(Calendar.YEAR) + " - " + CPlani.getClient().getLlistaPlan().get(0).getDataFi().get(Calendar.DAY_OF_MONTH) + "/" + CPlani.getClient().getLlistaPlan().get(0).getDataFi().get(Calendar.MONTH) + "/" + CPlani.getClient().getLlistaPlan().get(0).getDataFi().get(Calendar.YEAR);
+    graella = CPlani.genSet(iniciSetmana, fiSetmana, pla, false);
+    vPlani.pintarGraella(graella);
+    }*/
     }
 
     private void initVistaSelectProg() {
@@ -207,14 +226,18 @@ public class kVistaPlanificacio {
         accions[4] = (new ActionListener() {
 
             public void actionPerformed(ActionEvent arg0) {
+                try {
 
-                programesSeleccionats = vSprog.getLlistaSeleccionats();
-                // funcio ControladorProgrames.llistarProgramesNom(String[] nom) -> LinkedList<Programa>
-                llistaPlanificacions = CPlani.gene(programesSeleccionats, nousCriteris);
-                vSprog.setVisible(false);
-                vGen.setLocationRelativeTo(vSprog);
-                vGen.setTitle("Definir criteris planificacio");
-                vGen.setVisible(true);
+                    programesSeleccionats = vSprog.getLlistaSeleccionats();
+
+                    llistaPlanificacions = CPlani.gene(programesSeleccionats, nousCriteris);
+                    vSprog.setVisible(false);
+                    vGen.setLocationRelativeTo(vSprog);
+                    vGen.setTitle("Definir criteris planificacio");
+                    vGen.setVisible(true);
+                } catch (ParseException ex) {
+                    Logger.getLogger(kVistaPlanificacio.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
 
@@ -290,7 +313,11 @@ public class kVistaPlanificacio {
         selPlan = (new ListSelectionListener() {
 
             public void valueChanged(ListSelectionEvent e) {
-                seleccionatPlanGen();
+                try {
+                    seleccionatPlanGen();
+                } catch (ParseException ex) {
+                    Logger.getLogger(kVistaPlanificacio.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
 
@@ -300,7 +327,11 @@ public class kVistaPlanificacio {
             public void actionPerformed(ActionEvent e) {
                 retrocedirSetmana();
                 if (vGen.getPlanSelected() != null) {
-                    seleccionatPlanGen();
+                    try {
+                        seleccionatPlanGen();
+                    } catch (ParseException ex) {
+                        Logger.getLogger(kVistaPlanificacio.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
         });
@@ -311,7 +342,11 @@ public class kVistaPlanificacio {
             public void actionPerformed(ActionEvent e) {
                 avancarSetmana();
                 if (vGen.getPlanSelected() != null) {
-                    seleccionatPlanGen();
+                    try {
+                        seleccionatPlanGen();
+                    } catch (ParseException ex) {
+                        Logger.getLogger(kVistaPlanificacio.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
         });
@@ -382,7 +417,7 @@ public class kVistaPlanificacio {
         vGen.setActions(actions, selPlan);
     }
 
-    private void seleccionatPlanGen() {
+    private void seleccionatPlanGen() throws ParseException {
 // agafa sa planificacio seleccionada de sa vista gen anat dominitPlanificacio i cercar sa planificacio temporal
         // pillant sa seva data ini + fi de manera que retorna una tupla d'emissions
         // idPlanficacio = vPlanGen.getPlanSelected();
@@ -392,17 +427,15 @@ public class kVistaPlanificacio {
         // vPlanGen.pintarGraella(graella);
         // generar graella amb akesta tupla demissions (segons la setmana indicada en globals)
 
-        String idPlanificacio = vGen.getPlanSelected();
         initSetmana();
         generarGraella(false);
         vGen.pintarGraella(graella);
 
     }
 
-    private void seleccionatPlanificacio() {
+    private void seleccionatPlanificacio() throws ParseException {
         //mateix codi que seleccionat plangen pero canviar sa vista
 
-        String idPlanificacio = vPlani.getPlanSelected();
         initSetmana();
         generarGraella(true);
         vPlani.pintarGraella(graella);

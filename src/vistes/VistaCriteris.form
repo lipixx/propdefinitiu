@@ -28,38 +28,33 @@
                       <Group type="103" groupAlignment="1" attributes="0">
                           <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="0" attributes="1">
-                                      <Component id="jLabel1" min="-2" max="-2" attributes="1"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="botoPreuMax" min="-2" pref="59" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Component id="jLabel33" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <Group type="103" groupAlignment="1" attributes="0">
+                                          <Component id="botoDInici" alignment="1" min="-2" pref="80" max="-2" attributes="1"/>
+                                          <Group type="102" alignment="1" attributes="1">
+                                              <Component id="jLabel1" min="-2" max="-2" attributes="1"/>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="botoPreuMax" min="-2" pref="59" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <EmptySpace min="12" pref="12" max="12" attributes="0"/>
-                                              <Component id="botoDInici" min="-2" pref="80" max="-2" attributes="1"/>
-                                          </Group>
-                                          <Component id="jLabel33" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace min="24" pref="24" max="24" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Component id="jLabel34" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <EmptySpace min="12" pref="12" max="12" attributes="0"/>
-                                              <Group type="103" groupAlignment="0" attributes="0">
-                                                  <Component id="jLabel36" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="botoDFi" alignment="0" min="-2" pref="78" max="-2" attributes="1"/>
-                                              </Group>
-                                          </Group>
+                                          <Component id="jLabel36" alignment="0" min="-2" max="-2" attributes="0"/>
                                       </Group>
+                                      <EmptySpace max="32767" attributes="0"/>
+                                      <Component id="botoNombrePlanis" min="-2" pref="38" max="-2" attributes="0"/>
                                   </Group>
+                                  <Component id="botoDFi" min="-2" pref="78" max="-2" attributes="1"/>
                               </Group>
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="botoNombrePlanis" min="-2" pref="38" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -263,7 +258,12 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace pref="57" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabel33" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel34" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="24" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="1" attributes="0">
@@ -312,20 +312,7 @@
                               <EmptySpace max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Group type="103" groupAlignment="3" attributes="0">
-                                          <Component id="jLabel33" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jLabel34" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="3" attributes="0">
-                                          <Component id="botoDFi" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="botoDInici" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                  </Group>
-                                  <Component id="jLabel30" alignment="0" min="-2" max="-2" attributes="0"/>
-                              </Group>
+                              <Component id="jLabel30" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -494,7 +481,17 @@
                   <Component id="botoAcceptar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="botoCancelar" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
+              <Component id="botoDInici" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="475" max="32767" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
+              <Component id="botoDFi" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="475" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -1007,13 +1004,13 @@
         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(dfc)"/>
         <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="DateFormat formatCalendar = new SimpleDateFormat(&quot;H:mm&quot;);&#xa;DateFormatter dfc = new DateFormatter(formatCalendar);"/>
         <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="botoDInici.setInputVerifier(new Verificador());"/>
-        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="botoDInici.setValue(new Date());"/>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="Calendar cal = Calendar.getInstance();&#xa;int dia = cal.get(Calendar.DAY_OF_MONTH);&#xa;int mes = cal.get(Calendar.MONTH);&#xa;int any = cal.get(Calendar.YEAR);&#xa;botoDInici.setText(&quot;&quot;+dia+&quot;/&quot;+mes+&quot;/&quot;+any);&#xa;//botoDInici.setValue(&quot;dd/MM/yyyy&quot;);"/>
       </AuxValues>
     </Component>
     <Component class="javax.swing.JFormattedTextField" name="botoDFi">
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(dfc)"/>
-        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="botoDFi.setValue(new Date());&#xa;botoDFi.setInputVerifier(new Verificador());"/>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="cal = Calendar.getInstance();&#xa;dia = cal.get(Calendar.DAY_OF_MONTH);&#xa;mes = cal.get(Calendar.MONTH);&#xa;any = cal.get(Calendar.YEAR);&#xa;botoDFi.setText(&quot;&quot;+dia+&quot;/&quot;+mes+&quot;/&quot;+any);&#xa;//botoDFi.setValue(new Date());&#xa;botoDFi.setInputVerifier(new Verificador());"/>
       </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel33">

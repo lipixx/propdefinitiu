@@ -5,9 +5,7 @@
  */
 package vistes;
 
-import domini.tuplaEmissio;
 import java.awt.event.ActionListener;
-import java.text.ParseException;
 import javax.swing.event.ListSelectionListener;
 
 /**
@@ -29,21 +27,12 @@ public class VistaPlanificacio extends javax.swing.JPanel {
     String getGraellaSelected() {
         /* Retorna un String que identifica una Emissio */
         return (String) graella.getValueAt(graella.getSelectedColumn(), graella.getSelectedRow());
-
     }
 
     String getPlanSelected() {
 
         String pla = (String) llistaPlanificacionsV.getSelectedValue();
         return pla;
-    }
-
-    void pintarGraella(String[][] graella) {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
-
-    void pintarGraella(tuplaEmissio[] tEmissio) throws ParseException {
-
     }
 
     public void setGraella() {
@@ -65,6 +54,15 @@ public class VistaPlanificacio extends javax.swing.JPanel {
         botoSetmanaSeguent.addActionListener(actions[2]);
         botoAnular.addActionListener(actions[3]);
 
+    }
+
+    void pintarGraella(String[][] grill) {
+
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 144; j++) {
+                graella.setValueAt(grill[i][j], i, j);
+            }
+        }
     }
 
     void setSetmana(String setmana) {
@@ -146,8 +144,8 @@ public class VistaPlanificacio extends javax.swing.JPanel {
                         .addGap(84, 84, 84)
                         .addComponent(botoSetmanaAnterior)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(42, 42, 42)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29)
                         .addComponent(botoSetmanaSeguent)
                         .addGap(91, 91, 91)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

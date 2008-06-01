@@ -85,7 +85,7 @@ public class ControladorPlanificacio {
         }
         String[][] graella = new String[144][8];
         int comptador = 0;
-        int dia, hora, minut, hFi, mFi, duracio;
+        int dia, horaInici, minutInici, horaFi, minutFi, posIni, posFi;
         boolean diaSeg = false;
 
         Date iniD = formatHora.parse("00:00");
@@ -101,87 +101,88 @@ public class ControladorPlanificacio {
 
             graella[comptador][0] = "" + iniDia.get(Calendar.HOUR_OF_DAY) + ":" + iniDia.get(Calendar.MINUTE);
             iniDia.add(Calendar.MINUTE, +10);
+            comptador++;
         }
 
         for (int j = 0; j < p.getLlistaEmissions().size(); j++) {
 
-            iniD = formatHora.parse("00:00");
-            iniDia = Calendar.getInstance();
-            iniDia.setTime(iniD);
+            if (!((Emissio) p.getLlistaEmissions().get(j)).getDataEmissio().before(iniSetmana) && !((Emissio) p.getLlistaEmissions().get(j)).getDataEmissio().after(fiSetmana)) {
 
-            if (!((Emissio) p.getLlistaEmissions().get(j)).getHoraInici().before(iniSetmana) && !((Emissio) p.getLlistaEmissions().get(j)).getHoraInici().after(fiSetmana)) {
-
-                dia = ((Emissio) p.getLlistaEmissions().get(j)).getHoraInici().get(Calendar.DAY_OF_WEEK);
+                dia = ((Emissio) p.getLlistaEmissions().get(j)).getDataEmissio().get(Calendar.DAY_OF_WEEK);
                 if (dia == 1) {
                     dia = 7;
                 } else {
                     dia++;
                 }
-                hora = ((Emissio) p.getLlistaEmissions().get(j)).getHoraInici().get(Calendar.HOUR_OF_DAY);
-                minut = ((Emissio) p.getLlistaEmissions().get(j)).getHoraInici().get(Calendar.MINUTE);
-                duracio = ((Emissio) p.getLlistaEmissions().get(j)).getHoraFi().get(Calendar.HOUR);
-                if (hora > duracio) {
+                horaInici = ((Emissio) p.getLlistaEmissions().get(j)).getHoraInici().get(Calendar.HOUR_OF_DAY);
+                minutInici = ((Emissio) p.getLlistaEmissions().get(j)).getHoraInici().get(Calendar.MINUTE);
+                posIni = (horaInici * 6) + (minutInici / 10);
+
+                horaFi = ((Emissio) p.getLlistaEmissions().get(j)).getHoraFi().get(Calendar.HOUR);
+                minutFi = ((Emissio) p.getLlistaEmissions().get(j)).getHoraFi().get(Calendar.MINUTE);
+                posFi = (horaFi * 6) + (minutFi / 10);
+
+                if (posIni > posFi) {
                     diaSeg = true;
-                //di((Emissio) p.addEmissioPlanificacio().
-
-
-
-
                 } else {
                     diaSeg = false;
-                    duracio -= hora;
                 }
 
-                graella[hora][dia] = ((Emissio) p.getLlistaEmissions().get(j)).getPrograma().getNom();
-
-
+                while (posIni < posFi || (posIni > posFi && diaSeg) || (diaSeg && posIni > 144)) {
+                    if (diaSeg && posIni > 144) {
+                        dia++;
+                        diaSeg = false;
+                        posIni = 0;
+                    }
+                    graella[posIni][dia] = ((Emissio) p.getLlistaEmissions().get(j)).getPrograma().getNom();
+                    posIni += 10;
+                }
             }
-            comptador += 10;
-        }
 
+        }
 
         return graella;
     }
 
-    public String[] gene(Vector<String> programesSeleccionats, tuplaCriteris nousCriteris) {
-        String[] planificacions = new String[llistaPlanificacions.size()];
+    public String[] gene(Vector<String> programesSeleccionats, tuplaCriteris nousCriteris) throws ParseException {
+        /* Retorna un vector de String que identifiquen les planificacions generades mitjancant la seva data ini i fi */
+
+        llistaProgrames.clear();
 
         if (nousCriteris.autoGen) {
 
-            Vector<String> programa = new Vector<String>();
+            Vector<String> programesDefinitius = new Vector<String>();
             boolean[] filtres = {nousCriteris.adults, nousCriteris.concurs, nousCriteris.documental, nousCriteris.esport, nousCriteris.infantil, nousCriteris.musica, nousCriteris.noticies, nousCriteris.pelicula, nousCriteris.series, nousCriteris.tertulies};
             boolean hies = false;
 
             for (int k = 1; k <= 10; k++) {
 
-                filtres[k] = nousCriteris.adults;
                 if (filtres[k]) {
 
-                    //  programa = CProgrames.getllistaFiltrada(k, null);
+                    String[] programa = CProgrames.getllistaFiltrada("" + k, null);
 
-                    for (int j = 0; j < programa.size(); j++) {
+                    for (int j = 0; j < programa.length; j++) {
                         hies = false;
                         for (int i = 0; i < llistaProgrames.size() && !hies; i++) {
+                            /* Cercam si ja hi ha el programa dins llistaProgames */
                             if (llistaProgrames.get(i).getNom().equals("hool")) {
                                 hies = true;
                             }
                         }
                         if (!hies) {
-                        // llistaProgrames.add(programa.get(j));
+                            programesDefinitius.add(programa[j]);
 
                         }
                     }
                 }
             }
 
-            String[] aux = new String[programesSeleccionats.size()];
-        //llistaProgrames = CPG.getllistaFiltrada(tipusFiltre, null);
+            String[] aux = new String[programesDefinitius.size()];
+            llistaProgrames = CProgrames.llistarProgramesNom(programesDefinitius.toArray(aux));
 
         } else {
             String[] aux = new String[programesSeleccionats.size()];
             llistaProgrames = CProgrames.llistarProgramesNom(programesSeleccionats.toArray(aux));
-
-
         }
 
         FranjaHoraria franja;
@@ -190,35 +191,41 @@ public class ControladorPlanificacio {
             franja = new FranjaHoraria(nousCriteris.pre1Ini, nousCriteris.pre1Fi, (float) 0.10);
             llistaFrangesPreferides.add(franja);
         }
+
         if (nousCriteris.pre2Ini != null) {
             franja = new FranjaHoraria(nousCriteris.pre2Ini, nousCriteris.pre2Fi, (float) 0.10);
             llistaFrangesPreferides.add(franja);
         }
+
         if (nousCriteris.pre3Ini != null) {
             franja = new FranjaHoraria(nousCriteris.pre3Ini, nousCriteris.pre3Fi, (float) 0.10);
             llistaFrangesPreferides.add(franja);
         }
+
         if (nousCriteris.pre4Ini != null) {
             franja = new FranjaHoraria(nousCriteris.pre4Ini, nousCriteris.pre4Fi, (float) 0.10);
             llistaFrangesPreferides.add(franja);
         }
+
         if (nousCriteris.proh1Ini != null) {
             franja = new FranjaHoraria(nousCriteris.proh1Ini, nousCriteris.proh1Fi, (float) 0.10);
             llistaFrangesProhibides.add(franja);
         }
+
         if (nousCriteris.proh2Ini != null) {
             franja = new FranjaHoraria(nousCriteris.proh2Ini, nousCriteris.proh2Fi, (float) 0.10);
             llistaFrangesProhibides.add(franja);
         }
+
         if (nousCriteris.proh3Ini != null) {
             franja = new FranjaHoraria(nousCriteris.proh3Ini, nousCriteris.proh3Fi, (float) 0.10);
             llistaFrangesProhibides.add(franja);
         }
+
         if (nousCriteris.proh4Ini != null) {
             franja = new FranjaHoraria(nousCriteris.proh4Ini, nousCriteris.proh4Fi, (float) 0.10);
             llistaFrangesProhibides.add(franja);
         }
-
 
         prioritats[nousCriteris.primer] = 1;
         prioritats[nousCriteris.segon] = 2;
@@ -226,7 +233,13 @@ public class ControladorPlanificacio {
         prioritats[nousCriteris.quart] = 4;
         prioritats[nousCriteris.cinque] = 5;
 
-        //     llistaPlanificacions = generador.generar(llistaProgrames, nousCriteris.preuMaxim, prioritats, llistaFrangesPreferides, llistaFrangesProhibides, nousCriteris.dataIni, nousCriteris.dataFi, nousCriteris.nombrePlanis, (LinkedList<FranjaHoraria>) RepoFranges.listaObject(), nousCriteris.separades);
+        llistaPlanificacions = generador.generar(llistaProgrames, nousCriteris.preuMaxim, prioritats, llistaFrangesPreferides, llistaFrangesProhibides, nousCriteris.dataIni, nousCriteris.dataFi, nousCriteris.nombrePlanis, (LinkedList<FranjaHoraria>) RepoFranges.listaObject(), nousCriteris.separades);
+
+        /* Pasar cada planificacio al seu identificador ( data ini + data fi) */
+        String[] planificacions = new String[llistaPlanificacions.size()];
+        for (int i = 0; i < llistaPlanificacions.size(); i++) {
+            planificacions[i] = "" + llistaPlanificacions.get(i).getDataInici().get(Calendar.DAY_OF_MONTH) + "/" + (llistaPlanificacions.get(i).getDataInici().get(Calendar.MONTH) + 1) + "/" + llistaPlanificacions.get(i).getDataInici().get(Calendar.YEAR) + " - " + llistaPlanificacions.get(i).getDataFi().get(Calendar.DAY_OF_MONTH) + "/" + (llistaPlanificacions.get(i).getDataFi().get(Calendar.MONTH) + 1) + "/" + llistaPlanificacions.get(i).getDataFi().get(Calendar.YEAR);
+        }
 
         return planificacions;
     }
@@ -248,32 +261,44 @@ public class ControladorPlanificacio {
         llistaPlanificacions = cActual.getLlistaPlan();
     }
 
+    public Cliente getClient() {
+        return cActual;
+    }
+
     public void anularEmissio(String nomPrograma, Calendar dIni, Calendar dFi, boolean temporal) {
         //Transformar idPlanificacio a Calendari....
         // idPLanificacio son 2 calendars dd/mm/yyyy - dd/mm/yyyy 
         // true implica que es TEMPORAL
         boolean trobat = false;
         if (temporal == true) {
-            for (int i = 0; i < llistaPlanificacions.size() && !trobat; i++) {
+            for (int i = 0; i <
+                    llistaPlanificacions.size() && !trobat; i++) {
                 if (llistaPlanificacions.get(i).getDataInici().equals(dIni) && llistaPlanificacions.get(i).getDataFi().equals(dFi)) {
-                    for (int j = 0; j < llistaPlanificacions.get(i).getLlistaEmissions().size() && !trobat; j++) {
+                    for (int j = 0; j <
+                            llistaPlanificacions.get(i).getLlistaEmissions().size() && !trobat; j++) {
                         if (((Emissio) llistaPlanificacions.get(i).getLlistaEmissions().get(j)).getPrograma().equals(nomPrograma)) {
                             llistaPlanificacions.get(i).getLlistaEmissions().remove(llistaPlanificacions.get(i).getLlistaEmissions().get(j));
                             //  llistaPlanificacions.get(i).getLlistaEmissions().remove(j);
-                            trobat = true;
+                            trobat =
+                                    true;
 
                         }
+
                     }
                 }
             }
         } else {
-            for (int i = 0; i < cActual.getLlistaPlan().size() && !trobat; i++) {
+            for (int i = 0; i <
+                    cActual.getLlistaPlan().size() && !trobat; i++) {
                 if (cActual.getLlistaPlan().get(i).getDataInici().equals(dIni) && cActual.getLlistaPlan().get(i).getDataFi().equals(dFi)) {
-                    for (int j = 0; j < cActual.getLlistaPlan().get(i).getLlistaEmissions().size() && !trobat; j++) {
+                    for (int j = 0; j <
+                            cActual.getLlistaPlan().get(i).getLlistaEmissions().size() && !trobat; j++) {
                         if (((Emissio) cActual.getLlistaPlan().get(i).getLlistaEmissions().get(j)).getPrograma().getNom().equals(nomPrograma)) {
                             cActual.getLlistaPlan().get(i).getLlistaEmissions().remove(cActual.getLlistaPlan().get(i).getLlistaEmissions().get(j));
-                            trobat = true;
+                            trobat =
+                                    true;
                         }
+
                     }
                 }
             }
@@ -284,11 +309,14 @@ public class ControladorPlanificacio {
     public void contractar(Calendar dIni, Calendar dFi) {
         // identificam la planificacio per la seva data ini i data fin 
         boolean trobat = false;
-        for (int i = 0; i < llistaPlanificacions.size() && !trobat; i++) {
+        for (int i = 0; i <
+                llistaPlanificacions.size() && !trobat; i++) {
             if (llistaPlanificacions.get(i).getDataInici().equals(dIni) && llistaPlanificacions.get(i).getDataFi().equals(dFi)) {
                 cActual.listPlan.add(llistaPlanificacions.get(i));
-                trobat = true;
+                trobat =
+                        true;
             }
+
         }
 
     }
@@ -299,28 +327,33 @@ public class ControladorPlanificacio {
         if (llistaPClient == null) {
             return llista = new String[0];
         }
+
         llista = new String[llistaPClient.size()];
         String diaIni = "";
         String mesIni = "";
         String diaFi = "";
         String mesFi = "";
-        for (int i = 0; i < llistaPClient.size(); i++) {
+        for (int i = 0; i <
+                llistaPClient.size(); i++) {
 
             if ((((Planificacio) llistaPClient.get(i)).getDataInici()).get(Calendar.MONTH) < 10) {
                 mesIni = "0" + (((Planificacio) llistaPClient.get(i)).getDataInici()).get(Calendar.MONTH);
             } else {
                 mesIni = "" + (((Planificacio) llistaPClient.get(i)).getDataInici()).get(Calendar.MONTH);
             }
+
             if ((((Planificacio) llistaPClient.get(i)).getDataFi()).get(Calendar.MONTH) < 10) {
                 mesFi = "0" + (((Planificacio) llistaPClient.get(i)).getDataFi()).get(Calendar.MONTH);
             } else {
                 mesFi = "" + (((Planificacio) llistaPClient.get(i)).getDataFi()).get(Calendar.MONTH);
             }
+
             if ((((Planificacio) llistaPClient.get(i)).getDataInici()).get(Calendar.DAY_OF_MONTH) < 10) {
                 diaIni = "0" + (((Planificacio) llistaPClient.get(i)).getDataInici()).get(Calendar.DAY_OF_MONTH);
             } else {
                 diaIni = "" + (((Planificacio) llistaPClient.get(i)).getDataInici()).get(Calendar.DAY_OF_MONTH);
             }
+
             if ((((Planificacio) llistaPClient.get(i)).getDataFi()).get(Calendar.DAY_OF_MONTH) < 10) {
                 diaFi = "0" + (((Planificacio) llistaPClient.get(i)).getDataFi()).get(Calendar.DAY_OF_MONTH);
             } else {
@@ -329,6 +362,7 @@ public class ControladorPlanificacio {
 
             llista[i] = "" + diaIni + "/" + mesIni + "/" + (((Planificacio) llistaPClient.get(i)).getDataInici()).get(Calendar.YEAR) + " - " + diaFi + "/" + mesFi + "/" + (((Planificacio) llistaPClient.get(i)).getDataFi()).get(Calendar.YEAR);
         }
+
         return llista;
     }
 }
