@@ -51,6 +51,7 @@ public class ControladorPlanificacio {
     public String[][] genSet(String inici, String fin, String plani, boolean temporal) throws ParseException {
 
         SimpleDateFormat formatCalendar = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat formatHora = new SimpleDateFormat("H:mm");
 
         Date ini = formatCalendar.parse(inici);
         Calendar iniSetmana = Calendar.getInstance();
@@ -86,7 +87,27 @@ public class ControladorPlanificacio {
         int comptador = 0;
         int dia, hora, minut, hFi, mFi, duracio;
         boolean diaSeg = false;
+
+        Date iniD = formatHora.parse("00:00");
+        Calendar iniDia = Calendar.getInstance();
+        iniDia.setTime(iniD);
+
+        Date fiD = formatHora.parse("23:59");
+        Calendar fiDia = Calendar.getInstance();
+        fiDia.setTime(fiP);
+
+
+        while (iniDia.before(fiDia)) {
+
+            graella[comptador][0] = "" + iniDia.get(Calendar.HOUR_OF_DAY) + ":" + iniDia.get(Calendar.MINUTE);
+            iniDia.add(Calendar.MINUTE, +10);
+        }
+
         for (int j = 0; j < p.getLlistaEmissions().size(); j++) {
+
+            iniD = formatHora.parse("00:00");
+            iniDia = Calendar.getInstance();
+            iniDia.setTime(iniD);
 
             if (!((Emissio) p.getLlistaEmissions().get(j)).getHoraInici().before(iniSetmana) && !((Emissio) p.getLlistaEmissions().get(j)).getHoraInici().after(fiSetmana)) {
 
@@ -101,8 +122,11 @@ public class ControladorPlanificacio {
                 duracio = ((Emissio) p.getLlistaEmissions().get(j)).getHoraFi().get(Calendar.HOUR);
                 if (hora > duracio) {
                     diaSeg = true;
-                    di((Emissio) p.addEmissioPlanificacio().
-                
+                //di((Emissio) p.addEmissioPlanificacio().
+
+
+
+
                 } else {
                     diaSeg = false;
                     duracio -= hora;
