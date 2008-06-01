@@ -198,6 +198,7 @@ public class VistaGProgrames extends javax.swing.JPanel {
         fitxaPrograma.setColumns(1);
         fitxaPrograma.setEditable(false);
         fitxaPrograma.setRows(6);
+        fitxaPrograma.setAutoscrolls(false);
         jScrollPane3.setViewportView(fitxaPrograma);
 
         jLabel1.setText("Fitxa del programa:");
