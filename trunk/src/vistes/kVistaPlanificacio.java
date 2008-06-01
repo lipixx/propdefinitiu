@@ -39,7 +39,6 @@ public class kVistaPlanificacio {
     tuplaCriteris nousCriteris;
     tuplaEmissio tEmissio[];
     private Calendar iniciSetmana,  fiSetmana;
-    private tuplaPrograma dadesPrograma;
     SimpleDateFormat formatCalendar;
     private Vector<String> programesSeleccionats;
     private String[] llistaProgrames;
@@ -162,7 +161,7 @@ public class kVistaPlanificacio {
     private void generarGraella(boolean temporal) throws ParseException {
         String inici = "" + iniciSetmana.get(Calendar.DAY_OF_MONTH) + "-" + iniciSetmana.get(Calendar.MONTH) + "-" + iniciSetmana.get(Calendar.YEAR);
         String fi = "" + fiSetmana.get(Calendar.DAY_OF_MONTH) + "-" + fiSetmana.get(Calendar.MONTH) + "-" + fiSetmana.get(Calendar.YEAR);
-        CPlani.genSet(inici, fi, vPlani.getPlanSelected(), temporal);
+        graella = CPlani.genSet(inici, fi, vPlani.getPlanSelected(), temporal);
     }
 
     private void initGraella() throws ParseException {
