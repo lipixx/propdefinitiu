@@ -71,7 +71,7 @@
                               <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace pref="69" max="32767" attributes="0"/>
+                      <EmptySpace pref="96" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
@@ -251,7 +251,7 @@
                       </Group>
                   </Group>
               </Group>
-              <EmptySpace pref="165" max="32767" attributes="0"/>
+              <EmptySpace pref="174" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -275,7 +275,7 @@
                           <Component id="jLabel33" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel34" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="18" max="32767" attributes="0"/>
+                      <EmptySpace pref="54" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
@@ -997,15 +997,12 @@
     <Component class="javax.swing.JFormattedTextField" name="botoDInici">
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(dfc)"/>
-        <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="DateFormat formatCalendar = new SimpleDateFormat(&quot;dd-MM-yyyy&quot;);&#xa;DateFormatter dfc = new DateFormatter(formatCalendar);"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="DateFormat formatCalendar = new SimpleDateFormat(&quot;dd/MM/yyyy&quot;);&#xa;DateFormatter dfc = new DateFormatter(formatCalendar);"/>
         <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="botoDInici.setInputVerifier(new Verificador());"/>
         <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="botoDInici.setValue(new Date());"/>
       </AuxValues>
     </Component>
     <Component class="javax.swing.JFormattedTextField" name="botoDFi">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botoDFiActionPerformed"/>
-      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(dfc)"/>
         <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="botoDFi.setValue(new Date());&#xa;botoDFi.setInputVerifier(new Verificador());"/>

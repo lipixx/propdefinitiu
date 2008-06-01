@@ -149,7 +149,7 @@ public class VistaCriteris extends javax.swing.JDialog {
         } else {
 
 
-            hora = formatCalendar.parse("dd/MM/yyyy");
+            //9hora = formatCalendar.parse("dd/MM/yyyy");
 
             hora = formatCalendar.parse(botoDInici.getText());
             criteris.dataIni = Calendar.getInstance();
@@ -284,7 +284,7 @@ public class VistaCriteris extends javax.swing.JDialog {
         botoAcceptar = new javax.swing.JButton();
         botoCancelar = new javax.swing.JButton();
         botoReset = new javax.swing.JButton();
-        DateFormat formatCalendar = new SimpleDateFormat("dd-MM-yyyy");
+        DateFormat formatCalendar = new SimpleDateFormat("dd/MM/yyyy");
         DateFormatter dfc = new DateFormatter(formatCalendar);
         botoDInici = new javax.swing.JFormattedTextField(dfc);
         botoDFi = new javax.swing.JFormattedTextField(dfc);
@@ -494,11 +494,6 @@ public class VistaCriteris extends javax.swing.JDialog {
 
         botoDFi.setValue(new Date());
         botoDFi.setInputVerifier(new Verificador());
-        botoDFi.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botoDFiActionPerformed(evt);
-            }
-        });
 
         jLabel33.setFont(new java.awt.Font("Bitstream Vera Sans", 1, 10));
         jLabel33.setText("Inici Període planificació");
@@ -552,7 +547,7 @@ public class VistaCriteris extends javax.swing.JDialog {
                                 .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 96, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -692,7 +687,7 @@ public class VistaCriteris extends javax.swing.JDialog {
                                 .addComponent(botoProhFi4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(botoActivarProh4)))))
-                .addContainerGap(165, Short.MAX_VALUE))
+                .addContainerGap(174, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -711,7 +706,7 @@ public class VistaCriteris extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel33)
                             .addComponent(jLabel34))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel30)
@@ -1025,11 +1020,6 @@ criteris.primer = botoPrimerCriteri.getSelectedIndex();
         botoCinqueCriteri.setSelectedIndex(4);
         botoCinqueCriteri.setEnabled(false);
 }//GEN-LAST:event_botoResetActionPerformed
-
-    private void botoDFiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botoDFiActionPerformed
-        criteris.quart = botoQuartCriteri.getSelectedIndex();
-        op[4] = criteris.cinque;
-    }//GEN-LAST:event_botoDFiActionPerformed
 
     public void setActions(ActionListener actions) {
         botoAcceptar.addActionListener(actions);
