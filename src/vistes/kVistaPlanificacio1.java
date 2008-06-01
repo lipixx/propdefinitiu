@@ -26,7 +26,7 @@ import javax.swing.event.ListSelectionListener;
  *
  * @author Josep Marti
  */
-public class kVistaPlanificacio {
+public class kVistaPlanificacio1 {
 
     private ControladorPlanificacio CPlani;
     private VistaPlanificacio vPlani;
@@ -44,7 +44,7 @@ public class kVistaPlanificacio {
     private String[] llistaProgrames;
     private String[] llistaFiltres;
 
-    public kVistaPlanificacio(ControladorProgrames controladorProg, ControladorPlanificacio controladorPlani) throws ParseException {
+    public kVistaPlanificacio1(ControladorProgrames controladorProg, ControladorPlanificacio controladorPlani) throws ParseException {
 
         CPlani = controladorPlani;
         CPG = controladorProg;
@@ -91,7 +91,7 @@ public class kVistaPlanificacio {
                 try {
                     seleccionatPlanificacio();
                 } catch (ParseException ex) {
-                    Logger.getLogger(kVistaPlanificacio.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(kVistaPlanificacio1.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -150,7 +150,7 @@ public class kVistaPlanificacio {
                     }
                 } catch (ParseException ex) {
                     System.out.println("Error: L 140");
-                    Logger.getLogger(kVistaPlanificacio.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(kVistaPlanificacio1.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -235,7 +235,7 @@ public class kVistaPlanificacio {
                     vGen.setTitle("Definir criteris planificacio");
                     vGen.setVisible(true);
                 } catch (ParseException ex) {
-                    Logger.getLogger(kVistaPlanificacio.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(kVistaPlanificacio1.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -295,7 +295,7 @@ public class kVistaPlanificacio {
                     vSprog.setVisible(true);
                 } catch (ParseException ex) {
                     System.out.println("Error: L 273");
-                    Logger.getLogger(kVistaPlanificacio.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(kVistaPlanificacio1.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -315,7 +315,7 @@ public class kVistaPlanificacio {
                 try {
                     seleccionatPlanGen();
                 } catch (ParseException ex) {
-                    Logger.getLogger(kVistaPlanificacio.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(kVistaPlanificacio1.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -329,7 +329,7 @@ public class kVistaPlanificacio {
                     try {
                         seleccionatPlanGen();
                     } catch (ParseException ex) {
-                        Logger.getLogger(kVistaPlanificacio.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(kVistaPlanificacio1.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             }
@@ -344,7 +344,7 @@ public class kVistaPlanificacio {
                     try {
                         seleccionatPlanGen();
                     } catch (ParseException ex) {
-                        Logger.getLogger(kVistaPlanificacio.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(kVistaPlanificacio1.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             }
@@ -373,7 +373,7 @@ public class kVistaPlanificacio {
                         CPlani.anularEmissio(nomPrograma, dIni, dFi, true); // true implica que es TEMPORAL
                     } catch (ParseException ex) {
                         System.out.println("Error: L 339");
-                        Logger.getLogger(kVistaPlanificacio.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(kVistaPlanificacio1.class.getName()).log(Level.SEVERE, null, ex);
                     }
 
                 }
@@ -405,7 +405,7 @@ public class kVistaPlanificacio {
                     // cerca sa planificacio de sa llista temporal i fa un client.addPlanificacio(plani);
                     } catch (ParseException ex) {
                         System.out.println("Error: L 372");
-                        Logger.getLogger(kVistaPlanificacio.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(kVistaPlanificacio1.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 // cerca sa planificacio de sa llista temporal i fa un client.addPlanificacio(plani);              
 
