@@ -46,7 +46,7 @@ public class VistaCriteris extends javax.swing.JDialog {
         } else {
             criteris.preuMaxim = Float.parseFloat(preu);
             if (criteris.preuMaxim <= 0) {
-                JOptionPane.showMessageDialog(null, "El format de les dades Ã©s incorrecte. Preu mÃ xim > 0");
+                JOptionPane.showMessageDialog(null, "El format de les dades és incorrecte. Preu màxim > 0");
                 return null;
             }
         }
@@ -161,13 +161,6 @@ public class VistaCriteris extends javax.swing.JDialog {
 
         }
 
-        if (botoDInici == null || botoDFi == null) {
-            JOptionPane.showMessageDialog(null, "El periode de la planificacio ha d'estar definit");
-            return null;
-        } else {
-
-        }
-
         criteris.nombrePlanis = (Integer) botoNombrePlanis.getValue();
 
         return criteris;
@@ -188,7 +181,7 @@ public class VistaCriteris extends javax.swing.JDialog {
         String[] aux = new String[4];
         boolean trobat = false;
         int j = 0, cont = 0;
-        for (int i = 0; i < 5; i++) {
+        for (int i = 1; i < 5; i++) {
             trobat = false;
             j = 0;
             while (j < 5 && !trobat) {
@@ -306,12 +299,12 @@ public class VistaCriteris extends javax.swing.JDialog {
         jLabel1.setFont(new java.awt.Font("Bitstream Vera Sans", 1, 10));
         jLabel1.setText("Preu Maxim:");
 
-        jLabel2.setText("â¬");
+        jLabel2.setText("€");
 
         jLabel3.setFont(new java.awt.Font("Bitstream Vera Sans", 1, 10));
         jLabel3.setText("Prioritat dels criteris:");
 
-        botoPrimerCriteri.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Preu", "Franja Preferida", "Franja Prohibida", "Programes Seleccionats", "Periode Planificacio" }));
+        botoPrimerCriteri.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " ---- ", "Preu", "Franja Preferida", "Franja Prohibida", "Programes Seleccionats", "Periode Planificacio" }));
         botoPrimerCriteri.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botoPrimerCriteriActionPerformed(evt);
@@ -326,10 +319,11 @@ public class VistaCriteris extends javax.swing.JDialog {
 
         jLabel7.setText("Quart:");
 
-        jLabel8.setText("CinquÃš:");
+        jLabel8.setText("Cinquè:");
 
         botoSegonCriteri.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Preu", "Franja Preferida", "Franja Prohibida", "Programes Seleccionats", "Periode Planificacio" }));
         botoSegonCriteri.setSelectedIndex(1);
+        botoSegonCriteri.setEnabled(false);
         botoSegonCriteri.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botoSegonCriteriActionPerformed(evt);
@@ -338,6 +332,7 @@ public class VistaCriteris extends javax.swing.JDialog {
 
         botoTercerCriteri.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Preu", "Franja Preferida", "Franja Prohibida", "Programes Seleccionats", "Periode Planificacio" }));
         botoTercerCriteri.setSelectedIndex(2);
+        botoTercerCriteri.setEnabled(false);
         botoTercerCriteri.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botoTercerCriteriActionPerformed(evt);
@@ -346,6 +341,7 @@ public class VistaCriteris extends javax.swing.JDialog {
 
         botoQuartCriteri.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Preu", "Franja Preferida", "Franja Prohibida", "Programes Seleccionats", "Periode Planificacio" }));
         botoQuartCriteri.setSelectedIndex(3);
+        botoQuartCriteri.setEnabled(false);
         botoQuartCriteri.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botoQuartCriteriActionPerformed(evt);
@@ -354,6 +350,7 @@ public class VistaCriteris extends javax.swing.JDialog {
 
         botoCinqueCriteri.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Preu", "Franja Preferida", "Franja Prohibida", "Programes Seleccionats", "Periode Planificacio" }));
         botoCinqueCriteri.setSelectedIndex(4);
+        botoCinqueCriteri.setEnabled(false);
 
         jLabel9.setFont(new java.awt.Font("Bitstream Vera Sans", 1, 10));
         jLabel9.setText("Franges Preferides:");
@@ -448,32 +445,32 @@ public class VistaCriteris extends javax.swing.JDialog {
         jLabel29.setText("Activar");
 
         jLabel30.setFont(new java.awt.Font("Bitstream Vera Sans", 1, 12));
-        jLabel30.setText("AUTOGENERACIÃ");
+        jLabel30.setText("AUTOGENERACIÓ");
 
         jLabel31.setText("Filtratge per tipus:");
 
-        botoASeries.setText("SÃšries");
+        botoASeries.setText("Sèries");
 
         botoAConcursos.setText("Concursos");
 
-        botoANoticies.setText("NotÃ­cies");
+        botoANoticies.setText("Notícies");
 
         botoAInfantil.setText("Infantil");
 
-        botoAPelicules.setText("PelÂ·lÃ­cules");
+        botoAPelicules.setText("Pel·lícules");
 
         botoADocumentals.setText("Documentals");
 
         botoAEsports.setText("Esports");
 
-        botoAMusica.setText("MÃºsica");
+        botoAMusica.setText("Música");
 
-        botoATertulies.setText("TertÃºlies");
+        botoATertulies.setText("Tertúlies");
 
         botoAAdults.setText("Adults");
 
         jLabel32.setFont(new java.awt.Font("Bitstream Vera Sans", 1, 10));
-        jLabel32.setText("Activar Auto GeneraciÃ³ ?");
+        jLabel32.setText("Activar Auto Generació ?");
 
         botoAcceptar.setFont(new java.awt.Font("Bitstream Vera Sans", 1, 12));
         botoAcceptar.setText("ACCPETAR");
@@ -504,14 +501,14 @@ public class VistaCriteris extends javax.swing.JDialog {
         });
 
         jLabel33.setFont(new java.awt.Font("Bitstream Vera Sans", 1, 10));
-        jLabel33.setText("Inici PerÃ­ode planificaciÃ³");
+        jLabel33.setText("Inici Període planificació");
 
         jLabel34.setFont(new java.awt.Font("Bitstream Vera Sans", 1, 10));
-        jLabel34.setText("Fi PerÃ­ode planificaciÃ³");
+        jLabel34.setText("Fi Període planificació");
 
         botoNombrePlanis.setModel(new javax.swing.SpinnerNumberModel(1, 1, 50, 1));
 
-        jLabel36.setText("Nombre mÃ xim planificacions:");
+        jLabel36.setText("Nombre màxim planificacions:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -542,7 +539,7 @@ public class VistaCriteris extends javax.swing.JDialog {
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel34)
                                             .addComponent(jLabel36))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
                                         .addComponent(botoNombrePlanis, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(botoDFi, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
@@ -555,7 +552,7 @@ public class VistaCriteris extends javax.swing.JDialog {
                                 .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -595,7 +592,7 @@ public class VistaCriteris extends javax.swing.JDialog {
                                     .addComponent(botoADocumentals)
                                     .addComponent(botoAMusica)
                                     .addComponent(botoATertulies))))))
-                .addContainerGap(43, Short.MAX_VALUE))
+                .addContainerGap(48, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(56, 56, 56)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -889,8 +886,7 @@ public class VistaCriteris extends javax.swing.JDialog {
 }//GEN-LAST:event_botoCancelarActionPerformed
 
     private void botoPrimerCriteriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botoPrimerCriteriActionPerformed
-
-        criteris.primer = botoPrimerCriteri.getSelectedIndex();
+criteris.primer = botoPrimerCriteri.getSelectedIndex();
         op[0] = criteris.primer;
 
         switch (criteris.primer) {
@@ -902,42 +898,27 @@ public class VistaCriteris extends javax.swing.JDialog {
                 break;
             case 1:
                 botoSegonCriteri.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"----", "Franja Preferida", "Franja Prohibida", "Programes Seleccionats", "Periode Planificacio"}));
-                botoTercerCriteri.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Franja Preferida", "Franja Prohibida", "Programes Seleccionats", "Periode Planificacio"}));
-                botoQuartCriteri.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Franja Preferida", "Franja Prohibida", "Programes Seleccionats", "Periode Planificacio"}));
-                botoCinqueCriteri.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Franja Preferida", "Franja Prohibida", "Programes Seleccionats", "Periode Planificacio"}));
                 break;
-            case 2: /*Franja Preferida*/
+            case 2:
                 botoSegonCriteri.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"----", "Preu", "Franja Prohibida", "Programes Seleccionats", "Periode Planificacio"}));
-                botoTercerCriteri.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Preu", "Franja Prohibida", "Programes Seleccionats", "Periode Planificacio"}));
-                botoQuartCriteri.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Preu", "Franja Prohibida", "Programes Seleccionats", "Periode Planificacio"}));
-                botoCinqueCriteri.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Preu", "Franja Prohibida", "Programes Seleccionats", "Periode Planificacio"}));
                 break;
-            case 3: /* Franja Prohibida */
+            case 3:
                 botoSegonCriteri.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"----", "Preu", "Franja Preferida", "Programes Seleccionats", "Periode Planificacio"}));
-                botoTercerCriteri.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Preu", "Franja Preferida", "Programes Seleccionats", "Periode Planificacio"}));
-                botoQuartCriteri.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Preu", "Franja Preferida", "Programes Seleccionats", "Periode Planificacio"}));
-                botoCinqueCriteri.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Preu", "Franja Preferida", "Programes Seleccionats", "Periode Planificacio"}));
                 break;
-            case 4: /* Programes Seleccionats */
+            case 4:
                 botoSegonCriteri.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"----", "Preu", "Franja Preferida", "Franja Prohibida", "Periode Planificacio"}));
-                botoTercerCriteri.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Preu", "Franja Preferida", "Franja Prohibida", "Periode Planificacio"}));
-                botoQuartCriteri.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Preu", "Franja Preferida", "Franja Prohibida", "Periode Planificacio"}));
-                botoCinqueCriteri.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Preu", "Franja Preferida", "Franja Prohibida", "Periode Planificacio"}));
                 break;
-            case 5: /* Periode Planificacio */
+            case 5:
                 botoSegonCriteri.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"----", "Preu", "Franja Preferida", "Franja Prohibida", "Programes Seleccionats"}));
-                botoTercerCriteri.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Preu", "Franja Preferida", "Franja Prohibida", "Programes Seleccionats"}));
-                botoQuartCriteri.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Preu", "Franja Preferida", "Franja Prohibida", "Programes Seleccionats"}));
-                botoCinqueCriteri.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Preu", "Franja Preferida", "Franja Prohibida", "Programes Seleccionats"}));
                 break;
             default:
                 break;
         }
         botoSegonCriteri.setSelectedIndex(0);
-        botoTercerCriteri.setSelectedIndex(1);
-        botoQuartCriteri.setSelectedIndex(2);
-        botoCinqueCriteri.setSelectedIndex(3);
-     
+        botoSegonCriteri.setEnabled(true);
+        botoTercerCriteri.setEnabled(false);
+        botoQuartCriteri.setEnabled(false);
+        botoCinqueCriteri.setEnabled(false);
     }//GEN-LAST:event_botoPrimerCriteriActionPerformed
 
     private void botoSegonCriteriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botoSegonCriteriActionPerformed
@@ -968,7 +949,9 @@ public class VistaCriteris extends javax.swing.JDialog {
 
         }
         botoTercerCriteri.setSelectedIndex(0);
-
+        botoTercerCriteri.setEnabled(true);
+        botoQuartCriteri.setEnabled(false);
+        botoCinqueCriteri.setEnabled(false);
         
     }//GEN-LAST:event_botoSegonCriteriActionPerformed
 
@@ -994,8 +977,9 @@ public class VistaCriteris extends javax.swing.JDialog {
                 break;
         }
         botoQuartCriteri.setSelectedIndex(0);
+        botoQuartCriteri.setEnabled(true);
 
-
+        botoCinqueCriteri.setEnabled(false);
     }//GEN-LAST:event_botoTercerCriteriActionPerformed
 
     private void botoQuartCriteriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botoQuartCriteriActionPerformed
@@ -1021,25 +1005,25 @@ public class VistaCriteris extends javax.swing.JDialog {
 
     private void botoResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botoResetActionPerformed
 
-        botoPrimerCriteri.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Preu", "Franja Preferida", "Franja Prohibida", "Programes Seleccionats", "Periode Planificacio"}));
-        botoPrimerCriteri.setSelectedIndex(1);
+        botoPrimerCriteri.setModel(new javax.swing.DefaultComboBoxModel(new String[]{" ---- ", "Preu", "Franja Preferida", "Franja Prohibida", "Programes Seleccionats", "Periode Planificacio"}));
+        botoPrimerCriteri.setSelectedIndex(0);
         botoPrimerCriteri.setEnabled(true);
 
         botoSegonCriteri.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Preu", "Franja Preferida", "Franja Prohibida", "Programes Seleccionats", "Periode Planificacio"}));
         botoSegonCriteri.setSelectedIndex(1);
-
+        botoSegonCriteri.setEnabled(false);
 
         botoTercerCriteri.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Preu", "Franja Preferida", "Franja Prohibida", "Programes Seleccionats", "Periode Planificacio"}));
         botoTercerCriteri.setSelectedIndex(2);
-
+        botoTercerCriteri.setEnabled(false);
 
         botoQuartCriteri.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Preu", "Franja Preferida", "Franja Prohibida", "Programes Seleccionats", "Periode Planificacio"}));
         botoQuartCriteri.setSelectedIndex(3);
-
+        botoQuartCriteri.setEnabled(false);
 
         botoCinqueCriteri.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Preu", "Franja Preferida", "Franja Prohibida", "Programes Seleccionats", "Periode Planificacio"}));
         botoCinqueCriteri.setSelectedIndex(4);
-
+        botoCinqueCriteri.setEnabled(false);
 }//GEN-LAST:event_botoResetActionPerformed
 
     private void botoDFiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botoDFiActionPerformed
