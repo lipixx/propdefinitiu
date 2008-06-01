@@ -251,6 +251,7 @@
             <Property name="columns" type="int" value="1"/>
             <Property name="editable" type="boolean" value="false"/>
             <Property name="rows" type="int" value="6"/>
+            <Property name="autoscrolls" type="boolean" value="false"/>
           </Properties>
         </Component>
       </SubComponents>
