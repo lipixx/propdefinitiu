@@ -524,7 +524,7 @@
     <Component class="javax.swing.JComboBox" name="botoPrimerCriteri">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="new javax.swing.DefaultComboBoxModel(new String[] { &quot;Preu&quot;, &quot;Franja Preferida&quot;, &quot;Franja Prohibida&quot;, &quot;Programes Seleccionats&quot;, &quot;Periode Planificacio&quot; })" type="code"/>
+          <Connection code="new javax.swing.DefaultComboBoxModel(new String[] { &quot; ---- &quot;, &quot;Preu&quot;, &quot;Franja Preferida&quot;, &quot;Franja Prohibida&quot;, &quot;Programes Seleccionats&quot;, &quot;Periode Planificacio&quot; })" type="code"/>
         </Property>
       </Properties>
       <Events>
@@ -568,6 +568,7 @@
           </StringArray>
         </Property>
         <Property name="selectedIndex" type="int" value="1"/>
+        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botoSegonCriteriActionPerformed"/>
@@ -585,6 +586,7 @@
           </StringArray>
         </Property>
         <Property name="selectedIndex" type="int" value="2"/>
+        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botoTercerCriteriActionPerformed"/>
@@ -602,6 +604,7 @@
           </StringArray>
         </Property>
         <Property name="selectedIndex" type="int" value="3"/>
+        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botoQuartCriteriActionPerformed"/>
@@ -619,6 +622,7 @@
           </StringArray>
         </Property>
         <Property name="selectedIndex" type="int" value="4"/>
+        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel9">
