@@ -176,10 +176,9 @@ public class kVistaPlanificacio {
     vPlani.pintarGraella(graella);
     }*/
     }
+private void initVistaSelectProg() {
 
-    private void initVistaSelectProg() {
-
-        ListSelectionListener selFiltre, selPrograma;
+        ListSelectionListener selFiltre, selPrograma, selSel;
         ActionListener accions[] = new ActionListener[7];
 
 
@@ -192,28 +191,28 @@ public class kVistaPlanificacio {
         vSprog.clearFitxa();
 
         /**Init de nous listeners*/
-        /** EventHandle.create(Qui fa sa crida, Classe a sa que es cerca sa funcio, nom de sa funcio)*/
+        /**Button: Format*/
         accions[0] = (new ActionListener() {
 
             public void actionPerformed(ActionEvent arg0) {
                 setLlistaFiltre();
             }
         });
-
+        /**Button: Categoria*/
         accions[1] = (new ActionListener() {
 
             public void actionPerformed(ActionEvent arg0) {
                 setLlistaFiltre();
             }
         });
-
+        /**Button: Nom*/
         accions[2] = (new ActionListener() {
 
             public void actionPerformed(ActionEvent arg0) {
                 setLlistaFiltre();
             }
         });
-
+        /**Button: Tematica*/
         accions[3] = (new ActionListener() {
 
             public void actionPerformed(ActionEvent arg0) {
@@ -221,21 +220,35 @@ public class kVistaPlanificacio {
             }
         });
 
-
+        /**Button: Generar*/
         accions[4] = (new ActionListener() {
 
             public void actionPerformed(ActionEvent arg0) {
                 try {
 
                     programesSeleccionats = vSprog.getLlistaSeleccionats();
+                    if (programesSeleccionats.size() != 0) {
+                        llistaPlanificacions = CPlani.gene(programesSeleccionats, nousCriteris);
 
-                    llistaPlanificacions = CPlani.gene(programesSeleccionats, nousCriteris);
-                    vSprog.setVisible(false);
-                    vGen.setLocationRelativeTo(vSprog);
-                    vGen.setTitle("Definir criteris planificacio");
-                    vGen.setVisible(true);
+                        /**Netejem la pantalla*/
+                        vSprog.neteja();
+                        actLlistaFiltres(0);
+                        actLlistaProgrames("tots", "");
+                        vSprog.setLlistaProgrames(llistaProgrames);
+                        vSprog.setLlistaFiltres(llistaFiltres);
+                        vSprog.clearFitxa();
+                        vSprog.setVisible(false);
+                        /**/
+                        vGen.setLocationRelativeTo(vSprog);
+                        vGen.setTitle("Planificacio Generada! - Resum");
+                        vGen.setLlistaPlans(llistaPlanificacions);
+                        vGen.setVisible(true);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Has de seleccionar algun programa." +
+                                "\n (no has seleccionat 'Autogeneracio')");
+                    }
                 } catch (ParseException ex) {
-                    Logger.getLogger(kVistaPlanificacio.class.getName()).log(Level.SEVERE, null, ex);
+                    System.out.println("DEBUG: Error seleccionant programes: " + ex.getMessage());
                 }
             }
         });
@@ -251,11 +264,18 @@ public class kVistaPlanificacio {
         selPrograma = (new ListSelectionListener() {
 
             public void valueChanged(ListSelectionEvent arg0) {
-                seleccionatPrograma();
+                seleccionatPrograma(false);
             }
         });
 
-        vSprog.setListeners(accions, selFiltre, selPrograma);
+        selSel = (new ListSelectionListener() {
+
+            public void valueChanged(ListSelectionEvent arg0) {
+                seleccionatPrograma(true);
+            }
+        });
+
+        vSprog.setListeners(accions, selFiltre, selPrograma, selSel);
     }
 
     private void initSetmana() {
@@ -467,16 +487,21 @@ public class kVistaPlanificacio {
         vSprog.setLlistaFiltres(llistaFiltres);
     }
 
-    public void seleccionatPrograma() {
-        //Agafem nom del programa seleccionat
-        String nomP = vSprog.getProgramaSelected();
+     public void seleccionatPrograma(boolean llistaSeleccio) {
+        //Agafem nom del programa seleccionat de la llistaSeleccio o de la llistaProgrames:
+        String nomP;
+        if (llistaSeleccio) {
+            nomP = vSprog.getSeleccioSelected();
+        } else {
+            nomP = vSprog.getProgramaSelected();
+        }
 
         //Agafem fitxa del programa seleccionat
         //i actualizem la fitxa
 
         tuplaPrograma dadesP = CPG.veureFitxa(nomP.toLowerCase());
         if (dadesP != null) {
-            String fitxa = "Nom: " + dadesP.nom + "\nPreu: " + dadesP.preu + "\nFormat: " + dadesP.format + "\nCategoria: " + dadesP.categoria + "\nDescripcio: " + dadesP.descripcio + "\nData Caducitat: " + dadesP.dataCad.get(Calendar.DATE) + "/" + dadesP.dataCad.get(Calendar.MONTH) +
+            String fitxa = "Nom: " + dadesP.nom + "\nPreu: " + dadesP.preu + "\nFormat: " + dadesP.format + "\nCategoria: " + dadesP.categoria + "\nDescripcio: " + dadesP.descripcio + "\nData Caducitat: " + dadesP.dataCad.get(Calendar.DATE) + "/" + (dadesP.dataCad.get(Calendar.MONTH) + 1) +
                     "/" + dadesP.dataCad.get(Calendar.YEAR);
 
             if (dadesP.format == 2 || dadesP.format == 0) {
@@ -484,7 +509,7 @@ public class kVistaPlanificacio {
             }
 
             if (dadesP.format == 2) {
-                fitxa = fitxa + "\nData Inici Emissio:" + dadesP.iniciEmissio.get(Calendar.DATE) + "/" + dadesP.iniciEmissio.get(Calendar.MONTH) +
+                fitxa = fitxa + "\nData Inici Emissio:" + dadesP.iniciEmissio.get(Calendar.DATE) + "/" + (dadesP.iniciEmissio.get(Calendar.MONTH) + 1) +
                         "/" + dadesP.iniciEmissio.get(Calendar.YEAR) + " a les " + dadesP.iniciEmissio.get(Calendar.HOUR_OF_DAY) + ":" + dadesP.iniciEmissio.get(Calendar.MINUTE);
             }
 
