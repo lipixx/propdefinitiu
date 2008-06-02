@@ -20,9 +20,10 @@ import javax.swing.table.DefaultTableModel;
  */
 public class VistaGenerada extends javax.swing.JDialog {
 
-    private String[] headGraella =  {"Hora","Dilluns", "Dimarts", "Dimecres", 
-                                    "Dijous","Divendres", "Dissabte", "Diumenge"};
-                                                                                  
+    private String[] headGraella = {"Hora", "Dilluns", "Dimarts", "Dimecres",
+        "Dijous", "Divendres", "Dissabte", "Diumenge"
+    };
+
     /** Creates new form VistaPlanificacio2 */
     public VistaGenerada(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -39,9 +40,12 @@ public class VistaGenerada extends javax.swing.JDialog {
 
     }
 
-    void pintarGraella(String[][] novaGraella) 
-    {
-        ((DefaultTableModel) (graella.getModel())).setDataVector(novaGraella, headGraella);
+    void setSetmana(String setmana) {
+        botoSetmana.setText(setmana);
+    }
+
+    void setPreu(String preu) {
+        preuTotalV.setText(preu);
     }
 
     /** This method is called from within the constructor to
@@ -66,6 +70,8 @@ public class VistaGenerada extends javax.swing.JDialog {
         butoSetmanaAnterior = new javax.swing.JButton();
         butoSetmanaSeguent = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        botoSetmana = new javax.swing.JTextPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -108,6 +114,11 @@ public class VistaGenerada extends javax.swing.JDialog {
 
         jLabel1.setText("€");
 
+        botoSetmana.setEditable(false);
+        botoSetmana.setAlignmentX(1.0F);
+        botoSetmana.setAlignmentY(1.0F);
+        jScrollPane3.setViewportView(botoSetmana);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -118,9 +129,11 @@ public class VistaGenerada extends javax.swing.JDialog {
                         .addGap(23, 23, 23)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 655, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(191, 191, 191)
+                        .addGap(103, 103, 103)
                         .addComponent(butoSetmanaAnterior)
-                        .addGap(33, 33, 33)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(butoSetmanaSeguent)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -150,11 +163,12 @@ public class VistaGenerada extends javax.swing.JDialog {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel4)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(butoSetmanaAnterior)
-                        .addComponent(butoSetmanaSeguent)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jLabel4)
+                        .addComponent(butoSetmanaAnterior))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(butoSetmanaSeguent))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -204,45 +218,22 @@ public class VistaGenerada extends javax.swing.JDialog {
         llistaPlanificacionsV.setListData(llistaPlanificacions);
     }
 
-    void pintarGraella(tuplaEmissio[] tEmissio) throws ParseException {
-        Calendar rightNow = Calendar.getInstance();
-        Calendar inici = Calendar.getInstance();
-        Calendar fi = Calendar.getInstance();
-        int ara = rightNow.get(Calendar.DAY_OF_WEEK);
-        /* SUNDAY=0, MONDAY=1, TUESDAY=2, WEDNESDAY=3, THURSDAY=4, FRIDAY=5 and SATURDAY=6 */
+    public void pintarGraella(String[][] grill) {
 
-        int sumar = 0;
-        if (ara == 0) {
-            sumar = 6;
-        } else {
-            sumar = ara - 1;
+        for (int i = 0; i < 144; i++) {
+            for (int j = 0; j < 8; j++) {
+                graella.setValueAt(grill[i][j], i, j);
+            }
         }
-
-        inici.add(Calendar.DAY_OF_MONTH, -(sumar));
-        int dia = inici.get(Calendar.DAY_OF_MONTH);
-        int mes = inici.get(Calendar.MONTH);
-        int any = inici.get(Calendar.YEAR);
-
-        SimpleDateFormat formatCalendar = new SimpleDateFormat("dd-MM-yyyy");
-        Date dateInici = formatCalendar.parse("" + dia + "-" + mes + "-" + any);
-        inici = Calendar.getInstance();
-        inici.setTime(dateInici);
-        Date dateFi = formatCalendar.parse("" + dia + "-" + mes + "-" + any);
-        fi = Calendar.getInstance();
-        fi.setTime(dateFi);
-        fi.add(Calendar.DAY_OF_MONTH, +7);
-
-
-
-
     }
 
     public void setGraella() {
-        String[][] graellaAuxiliar = new String[144][7];
+
+        String[][] graellaAuxiliar = new String[144][8];
         graella.setModel(new javax.swing.table.DefaultTableModel(
                 graellaAuxiliar,
                 new String[]{
-            "Dilluns", "Dimarts", "Dimecres", "Dijous", "Divendres", "Dissabte", "Diumenge"
+            "Hora", "Dilluns", "Dimarts", "Dimecres", "Dijous", "Divendres", "Dissabte", "Diumenge"
         }));
 
     }
@@ -258,6 +249,7 @@ public class VistaGenerada extends javax.swing.JDialog {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botoContractar;
+    private javax.swing.JTextPane botoSetmana;
     private javax.swing.JButton butoAnular;
     private javax.swing.JButton butoCancelar;
     private javax.swing.JButton butoSetmanaAnterior;
@@ -269,9 +261,38 @@ public class VistaGenerada extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JList llistaPlanificacionsV;
     private javax.swing.JTextField preuTotalV;
     // End of variables declaration//GEN-END:variables
+    /*void pintarGraella(String[][] novaGraella) {
+    ((DefaultTableModel) (graella.getModel())).setDataVector(novaGraella, headGraella);
+    }*/
+    /* void pintarGraella(tuplaEmissio[] tEmissio) throws ParseException {
+    Calendar rightNow = Calendar.getInstance();
+    Calendar inici = Calendar.getInstance();
+    Calendar fi = Calendar.getInstance();
+    int ara = rightNow.get(Calendar.DAY_OF_WEEK);
+    // SUNDAY=0, MONDAY=1, TUESDAY=2, WEDNESDAY=3, THURSDAY=4, FRIDAY=5 and SATURDAY=6 
+    int sumar = 0;
+    if (ara == 0) {
+    sumar = 6;
+    } else {
+    sumar = ara - 1;
+    }
+    inici.add(Calendar.DAY_OF_MONTH, -(sumar));
+    int dia = inici.get(Calendar.DAY_OF_MONTH);
+    int mes = inici.get(Calendar.MONTH);
+    int any = inici.get(Calendar.YEAR);
+    SimpleDateFormat formatCalendar = new SimpleDateFormat("dd-MM-yyyy");
+    Date dateInici = formatCalendar.parse("" + dia + "-" + mes + "-" + any);
+    inici = Calendar.getInstance();
+    inici.setTime(dateInici);
+    Date dateFi = formatCalendar.parse("" + dia + "-" + mes + "-" + any);
+    fi = Calendar.getInstance();
+    fi.setTime(dateFi);
+    fi.add(Calendar.DAY_OF_MONTH, +7);
+    }*/
     /**
      * @param args the command line arguments
      */
