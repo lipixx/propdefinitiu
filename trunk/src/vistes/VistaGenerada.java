@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -19,6 +20,9 @@ import javax.swing.event.ListSelectionListener;
  */
 public class VistaGenerada extends javax.swing.JDialog {
 
+    private String[] headGraella =  {"Hora","Dilluns", "Dimarts", "Dimecres", 
+                                    "Dijous","Divendres", "Dissabte", "Diumenge"};
+                                                                                  
     /** Creates new form VistaPlanificacio2 */
     public VistaGenerada(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -29,14 +33,15 @@ public class VistaGenerada extends javax.swing.JDialog {
         String pla = (String) llistaPlanificacionsV.getSelectedValue();
         return pla;
     }
-    
-     String getGraellaSelected() {
+
+    String getGraellaSelected() {
         return (String) graella.getValueAt(graella.getSelectedColumn(), graella.getSelectedRow());
 
     }
 
-    void pintarGraella(String[][] graella) {
-        throw new UnsupportedOperationException("Not yet implemented");
+    void pintarGraella(String[][] novaGraella) 
+    {
+        ((DefaultTableModel) (graella.getModel())).setDataVector(novaGraella, headGraella);
     }
 
     /** This method is called from within the constructor to
@@ -70,9 +75,12 @@ public class VistaGenerada extends javax.swing.JDialog {
                 "Hora","Dilluns", "Dimarts", "Dimecres", "Dijous","Divendres", "Dissabte", "Diumenge"
             }
         ));
+        graella.setColumnSelectionAllowed(true);
         graella.setInheritsPopupMenu(true);
         graella.setRowSelectionAllowed(false);
+        graella.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(graella);
+        graella.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
         jScrollPane2.setViewportView(llistaPlanificacionsV);
 
@@ -118,7 +126,7 @@ public class VistaGenerada extends javax.swing.JDialog {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(59, 59, 59)
                         .addComponent(butoCancelar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 93, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 105, Short.MAX_VALUE)
                         .addComponent(botoContractar))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(47, 47, 47)
@@ -169,7 +177,7 @@ public class VistaGenerada extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 995, Short.MAX_VALUE)
+            .addGap(0, 1044, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)

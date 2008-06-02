@@ -278,7 +278,7 @@ public class kVistes {
                 try {
                     kvFact.inicializarListaFacturas();
                 } catch (Exception ex) {
-                    Logger.getLogger(kVistes.class.getName()).log(Level.SEVERE, null, ex);
+                    System.out.println("Error syncing Fact "+ex.getMessage());
                 }
             }
         });
