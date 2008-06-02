@@ -550,7 +550,7 @@ public class Generador {
              * 
              *  Normalment acaba sobre les 00:00 o 01:00.
              *      
-             *      En canvi, les hores d'inici varien més:
+             *      En canvi, les hores d'inici varien mÃ©s:
              * 
              *      La Sexta:   20:30 
              *      Cuatro:     22:00
@@ -585,7 +585,7 @@ public class Generador {
             for (int i = 0; i <
                     listFranAux.size(); i++) {
 
-                /* La primera franja comença a les 00:00    */
+                /* La primera franja comenÃ§a a les 00:00    */
                 if (listFranAux.get(i).getHoraInici().equals(zero)) {
                     ini = listFranAux.get(i).getHoraFi();
                 } else if (primeraV && listFranAux.get(listFranAux.size() - 1).getHoraFi().before(listFranAux.get(listFranAux.size() - 1).getHoraInici())) {
@@ -605,7 +605,7 @@ public class Generador {
                         fi = listFranAux.get(i + 1).getHoraInici();
                     }
 
-                /* Si no hi ha cap més franja i no hi ha cavalgament */
+                /* Si no hi ha cap mÃ©s franja i no hi ha cavalgament */
                 } else if (!cavalga) {
                     if (!listFranAux.get(i).getHoraFi().equals(zero) && !listFranAux.get(i).getHoraInici().equals(zero) && !ini.equals(listFranAux.get(i).getHoraFi())) {
                         fi = listFranAux.get(i).getHoraInici();
@@ -664,7 +664,7 @@ public class Generador {
             duracio = ((Normal) prog).getDuracio();
         } else {
             /* Simplemenet per afergir un poc de pseudo alietorietat afegirem un random per determinat la
-            duracio dels programes de format continu, perquè l'usuari sense intervenir pugui obtenir 
+            duracio dels programes de format continu, perquÃš l'usuari sense intervenir pugui obtenir 
             planificacions diferents. Per tant ho farem un poc mes "aleatori"  */
 
             Random rnd = new Random();
@@ -703,7 +703,7 @@ public class Generador {
 
     private String[] factible(Programa prog, FranjaHoraria franja, Calendar dataEmissio) throws ParseException {
         /* Es pot emetre el Programa prog dins la FranjaHoraria franja dia dataEmissio sense que es solapi amb una altra Emissio?
-         * si es aixi ens encarregarem d'inicialitzar les hores de l'emissio: calendarInici, calendarFi mitjançant la funcio "solapa"   */
+         * si es aixi ens encarregarem d'inicialitzar les hores de l'emissio: calendarInici, calendarFi mitjanÃ§ant la funcio "solapa"   */
 
         String valor[] = new String[2];
 
