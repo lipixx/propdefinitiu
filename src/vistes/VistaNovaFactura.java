@@ -146,8 +146,6 @@ public class VistaNovaFactura extends javax.swing.JFrame {
         lsProgramesSeleccionats = new javax.swing.JTable();
         bNetejarFactura = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
         lsProgramesPendents.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
