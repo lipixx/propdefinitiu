@@ -45,7 +45,6 @@ public class VistaFacturacio extends javax.swing.JPanel {
     public void setListaFacturas(Object[][] inDatos) {
         ((DefaultTableModel) (lsFacturas.getModel())).setDataVector(inDatos, CabeceraListaFacturas);
         lsFacturas.getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-
     }
 
     public void setListaDesglose(Object[][] inDatos) {
@@ -73,6 +72,9 @@ public class VistaFacturacio extends javax.swing.JPanel {
         
         if (lsFacturas.getSelectedRowCount() == 1) {
             return lsFacturas.getSelectedRow();
+        }
+        else if  (lsFacturas.getRowCount()>0){
+            return 1;
         }
         
         return -1;

@@ -77,7 +77,7 @@ public class ControladorDomini
         ControlClient.modificarCliente(clientActual);
     }
     
-    public String[] setClientActual(String id)
+    public String[] setClientActual(String id) throws Exception
     {
         String[] informacio = new String[2];
         

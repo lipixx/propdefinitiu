@@ -83,7 +83,7 @@
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="etTitolFactura" max="32767" attributes="0"/>
+                      <Component id="etTitolFactura" pref="1" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -130,7 +130,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="bNetejarFactura" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jScrollPane1" pref="508" max="32767" attributes="0"/>
+                      <Component id="jScrollPane1" pref="510" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace min="-2" max="-2" attributes="0"/>
@@ -226,7 +226,7 @@
               <Table columnCount="5" rowCount="20">
                 <Column editable="false" title="ID" type="java.lang.Integer"/>
                 <Column editable="false" title="Nom Programa" type="java.lang.String"/>
-                <Column editable="false" title="Format" type="java.lang.String"/>
+                <Column editable="false" title="Preu Base" type="java.lang.String"/>
                 <Column editable="false" title="Data Emissi&#xf3;" type="java.lang.String"/>
                 <Column editable="false" title="Preu" type="java.lang.String"/>
               </Table>
@@ -235,27 +235,27 @@
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
               <TableColumnModel selectionModel="1">
                 <Column maxWidth="-1" minWidth="-1" prefWidth="25" resizable="false">
-                  <Title/>
+                  <Title noResource="true"/>
                   <Editor/>
                   <Renderer/>
                 </Column>
                 <Column maxWidth="-1" minWidth="-1" prefWidth="200" resizable="false">
-                  <Title/>
+                  <Title noResource="true"/>
                   <Editor/>
                   <Renderer/>
                 </Column>
                 <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
-                  <Title/>
+                  <Title noResource="true"/>
                   <Editor/>
                   <Renderer/>
                 </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="100" resizable="false">
-                  <Title/>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="100" resizable="true">
+                  <Title noResource="true"/>
                   <Editor/>
                   <Renderer/>
                 </Column>
                 <Column maxWidth="-1" minWidth="-1" prefWidth="50" resizable="false">
-                  <Title/>
+                  <Title noResource="true"/>
                   <Editor/>
                   <Renderer/>
                 </Column>
@@ -294,22 +294,22 @@
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
               <TableColumnModel selectionModel="0">
                 <Column maxWidth="-1" minWidth="-1" prefWidth="25" resizable="false">
-                  <Title/>
+                  <Title noResource="true"/>
                   <Editor/>
                   <Renderer/>
                 </Column>
                 <Column maxWidth="-1" minWidth="-1" prefWidth="200" resizable="false">
-                  <Title/>
+                  <Title noResource="true"/>
                   <Editor/>
                   <Renderer/>
                 </Column>
                 <Column maxWidth="-1" minWidth="-1" prefWidth="100" resizable="false">
-                  <Title/>
+                  <Title noResource="true"/>
                   <Editor/>
                   <Renderer/>
                 </Column>
                 <Column maxWidth="-1" minWidth="-1" prefWidth="40" resizable="false">
-                  <Title/>
+                  <Title noResource="true"/>
                   <Editor/>
                   <Renderer/>
                 </Column>

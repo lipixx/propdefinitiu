@@ -12,10 +12,11 @@ package domini;
  */
 
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.LinkedList;
 
-public class Factura {
+public class Factura implements Serializable {
 
     public enum enumFormaPagament { 
 
