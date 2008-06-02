@@ -37,11 +37,11 @@ public class VistaPlanificacio extends javax.swing.JPanel {
 
     public void setGraella() {
         /* ?¿ */
-        String[][] graellaAuxiliar = new String[144][7];
+        String[][] graellaAuxiliar = new String[144][8];
         graella.setModel(new javax.swing.table.DefaultTableModel(
                 graellaAuxiliar,
                 new String[]{
-            "Dilluns", "Dimarts", "Dimecres", "Dijous", "Divendres", "Dissabte", "Diumenge"
+            "Hora", "Dilluns", "Dimarts", "Dimecres", "Dijous", "Divendres", "Dissabte", "Diumenge"
         }));
 
     }
@@ -58,8 +58,8 @@ public class VistaPlanificacio extends javax.swing.JPanel {
 
     void pintarGraella(String[][] grill) {
 
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 144; j++) {
+        for (int i = 0; i < 144; i++) {
+            for (int j = 0; j < 8; j++) {
                 graella.setValueAt(grill[i][j], i, j);
             }
         }
@@ -102,8 +102,9 @@ public class VistaPlanificacio extends javax.swing.JPanel {
                 "Hora","Dilluns", "Dimarts", "Dimecres", "Dijous","Divendres", "Dissabte", "Diumenge"
             }
         ));
-        graella.setCellSelectionEnabled(true);
+        graella.setColumnSelectionAllowed(false);
         graella.setInheritsPopupMenu(true);
+        graella.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(graella);
 
         botoNovaPlanificacio.setFont(new java.awt.Font("Bitstream Vera Sans", 1, 12));
@@ -158,7 +159,7 @@ public class VistaPlanificacio extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(97, 97, 97)
                         .addComponent(jLabel4)))
-                .addGap(28, 28, 28))
+                .addGap(42, 42, 42))
             .addGroup(layout.createSequentialGroup()
                 .addGap(40, 40, 40)
                 .addComponent(jLabel3)

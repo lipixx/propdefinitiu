@@ -111,6 +111,13 @@ public class ControladorPlanificacio {
             }
         }
         String[][] graella = new String[144][8];
+        for (int o=0; o<144; o++)
+        {
+            for (int l=0; l<8; l++)
+            {
+                graella[o][l] = "-";
+            }
+        }
         int comptador = 0;
         int dia, horaInici, minutInici, horaFi, minutFi, posIni, posFi;
         boolean diaSeg = false;
@@ -135,8 +142,8 @@ public class ControladorPlanificacio {
 
                 Emissio temp = (Emissio) p.getLlistaEmissions().get(j);
             if (!temp.getDataEmissio().before(iniSetmana) && !(temp.getDataEmissio().after(fiSetmana))
-                        ||temp.getDataEmissio().equals(iniSetmana) 
-                        || temp.getDataEmissio().equals(fiSetmana)) {
+                        || temp.getDataEmissio().equals(iniSetmana) 
+                        || temp.getDataEmissio().equals(fiSetmana) /* || true*/) {
 
                 dia = temp.getDataEmissio().get(Calendar.DAY_OF_WEEK);
                 if (dia == 1) {
