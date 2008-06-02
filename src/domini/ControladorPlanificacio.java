@@ -58,21 +58,30 @@ public class ControladorPlanificacio {
         Date ini = formatCalendar.parse(inici);
         Calendar iniSetmana = Calendar.getInstance();
         iniSetmana.setTime(ini);
-
+        iniSetmana.set(Calendar.HOUR, 0);
+        iniSetmana.set(Calendar.MINUTE, 0);
+        iniSetmana.set(Calendar.SECOND,0);
+        
+        
         Date fi = formatCalendar.parse(fin);
         Calendar fiSetmana = Calendar.getInstance();
         fiSetmana.setTime(fi);
-
+        fiSetmana.set(Calendar.HOUR, 23);
+        fiSetmana.set(Calendar.MINUTE,59);
+        fiSetmana.set(Calendar.SECOND, 59);
+        
         Date iniP = formatCalendar2.parse(plani.substring(0, 10));
-        Calendar iniPlani = Calendar.getInstance();
-        iniPlani.setTime(iniP);
-        iniPlani.add(Calendar.MONTH, 1);
+        Calendar iniPlaniAux = Calendar.getInstance();
+        iniPlaniAux.setTime(iniP);
+        
         
         //Comprovar que es 23 esta be, que no es surti de rang
         Date fiP = formatCalendar2.parse(plani.substring(13, 23));
-        Calendar fiPlani = Calendar.getInstance();
-        fiPlani.setTime(fiP);
-
+        Calendar fiPlaniAux = Calendar.getInstance();
+        fiPlaniAux.setTime(fiP);
+        
+        Calendar iniPlani;
+        Calendar fiPlani;
         
         LinkedList<Planificacio> llistaP;
         if (temporal) {
@@ -83,7 +92,20 @@ public class ControladorPlanificacio {
         Planificacio p = null;
         boolean trobat = false;
         for (int i = 0; i < llistaP.size() && !trobat; i++) {
-            if (llistaP.get(i).getDataInici().equals(iniPlani) && llistaP.get(i).getDataFi().equals(fiPlani)) {
+            //Aço seteja es mateixos milisegons, hores, minuts...
+            iniPlani = (Calendar) llistaP.get(i).getDataInici().clone();
+            iniPlani.set(Calendar.DATE, iniPlaniAux.get(Calendar.DATE));
+            iniPlani.set(Calendar.MONTH,iniPlaniAux.get(Calendar.MONTH));
+            iniPlani.set(Calendar.YEAR,iniPlaniAux.get(Calendar.YEAR));
+            
+            fiPlani = (Calendar) llistaP.get(i).getDataFi().clone();
+            fiPlani.set(Calendar.DATE, fiPlaniAux.get(Calendar.DATE));
+            fiPlani.set(Calendar.MONTH, fiPlaniAux.get(Calendar.MONTH));
+            fiPlani.set(Calendar.YEAR, fiPlaniAux.get(Calendar.YEAR));
+            
+            if (llistaP.get(i).getDataInici().equals(iniPlani) 
+                    && llistaP.get(i).getDataFi().equals(fiPlani))   
+            {
                 trobat = true;
                 p = llistaP.get(i);
             }
@@ -111,20 +133,23 @@ public class ControladorPlanificacio {
 
         for (int j = 0; j < p.getLlistaEmissions().size(); j++) {
 
-            if (!((Emissio) p.getLlistaEmissions().get(j)).getDataEmissio().before(iniSetmana) && !((Emissio) p.getLlistaEmissions().get(j)).getDataEmissio().after(fiSetmana)) {
+                Emissio temp = (Emissio) p.getLlistaEmissions().get(j);
+            if (!temp.getDataEmissio().before(iniSetmana) && !(temp.getDataEmissio().after(fiSetmana))
+                        ||temp.getDataEmissio().equals(iniSetmana) 
+                        || temp.getDataEmissio().equals(fiSetmana)) {
 
-                dia = ((Emissio) p.getLlistaEmissions().get(j)).getDataEmissio().get(Calendar.DAY_OF_WEEK);
+                dia = temp.getDataEmissio().get(Calendar.DAY_OF_WEEK);
                 if (dia == 1) {
                     dia = 7;
                 } else {
                     dia++;
                 }
-                horaInici = ((Emissio) p.getLlistaEmissions().get(j)).getHoraInici().get(Calendar.HOUR_OF_DAY);
-                minutInici = ((Emissio) p.getLlistaEmissions().get(j)).getHoraInici().get(Calendar.MINUTE);
+                horaInici = temp.getHoraInici().get(Calendar.HOUR_OF_DAY);
+                minutInici = temp.getHoraInici().get(Calendar.MINUTE);
                 posIni = (horaInici * 6) + (minutInici / 10);
 
-                horaFi = ((Emissio) p.getLlistaEmissions().get(j)).getHoraFi().get(Calendar.HOUR);
-                minutFi = ((Emissio) p.getLlistaEmissions().get(j)).getHoraFi().get(Calendar.MINUTE);
+                horaFi = temp.getHoraFi().get(Calendar.HOUR);
+                minutFi =temp.getHoraFi().get(Calendar.MINUTE);
                 posFi = (horaFi * 6) + (minutFi / 10);
 
                 if (posIni > posFi) {
@@ -134,12 +159,13 @@ public class ControladorPlanificacio {
                 }
 
                 while (posIni < posFi || (posIni > posFi && diaSeg) || (diaSeg && posIni > 144)) {
+                    String nom = temp.getPrograma().getNom();
                     if (diaSeg && posIni > 144) {
                         dia++;
                         diaSeg = false;
                         posIni = 0;
                     }
-                    graella[posIni][dia] = ((Emissio) p.getLlistaEmissions().get(j)).getPrograma().getNom();
+                    graella[posIni][dia] = nom;
                     posIni += 10;
                 }
             }
