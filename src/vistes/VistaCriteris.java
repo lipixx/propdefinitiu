@@ -321,6 +321,8 @@ public class VistaCriteris extends javax.swing.JDialog {
         jLabel1.setFont(new java.awt.Font("Bitstream Vera Sans", 1, 10));
         jLabel1.setText("Preu Maxim:");
 
+        botoPreuMax.setText("250");
+
         jLabel2.setText("€");
 
         jLabel3.setFont(new java.awt.Font("Bitstream Vera Sans", 1, 10));
