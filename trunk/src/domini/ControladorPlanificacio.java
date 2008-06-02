@@ -42,6 +42,7 @@ public class ControladorPlanificacio {
         CProgrames = CProgs;
         RepoFranges = nRepoFranges;
         RepoProgs = repoProgs;
+        generador = new Generador();
         llistaFrangesPreferides = new LinkedList<FranjaHoraria>();
         llistaFrangesProhibides = new LinkedList<FranjaHoraria>();
         llistaPlanificacions = new LinkedList<Planificacio>();
@@ -248,6 +249,7 @@ public class ControladorPlanificacio {
 
         LinkedList<FranjaHoraria> frangesH = RepoFranges.listaObject();
         llistaPlanificacions = generador.generar(llistaProgrames, nousCriteris.preuMaxim, prioritats, llistaFrangesPreferides, llistaFrangesProhibides, nousCriteris.dataIni, nousCriteris.dataFi, nousCriteris.nombrePlanis, frangesH, nousCriteris.separades);
+
 
         /* Pasar cada planificacio al seu identificador ( data ini + data fi) */
         String[] planificacions = new String[llistaPlanificacions.size()];

@@ -47,7 +47,8 @@ public class Generador {
     }
 
     public LinkedList<Planificacio> generar(LinkedList<Programa> llistaProgs, float preuMax, int[] prioritats, LinkedList<FranjaHoraria> fPreferides, LinkedList<FranjaHoraria> fProhibides, Calendar dataIni, Calendar dataFi, int nPlanis, LinkedList<FranjaHoraria> llistaFranT, int separat) throws ParseException {
-
+    
+        
         int total = 0;
         int countadorIguals = 0;
         int maxIteracions = 500;
