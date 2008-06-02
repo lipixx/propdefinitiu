@@ -46,10 +46,17 @@ public class VistaCriteris extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Preu Maxim no pot estar buit.");
             return null;
         } else {
+            try {
             criteris.preuMaxim = Float.parseFloat(preu);
             if (criteris.preuMaxim <= 0) {
                 JOptionPane.showMessageDialog(null, "El format de les dades és incorrecte. Preu màxim > 0");
                 return null;
+            }
+            }
+            catch (Exception ex)
+            {
+              JOptionPane.showMessageDialog(null, "El format de les dades és incorrecte. Ha de ser numèric. " +ex.getMessage());
+              return null;
             }
         }
 
@@ -490,9 +497,9 @@ public class VistaCriteris extends javax.swing.JDialog {
         jLabel32.setText("Activar Auto Generació ?");
 
         botoAcceptar.setFont(new java.awt.Font("Bitstream Vera Sans", 1, 12));
-        botoAcceptar.setText("ACCPETAR");
+        botoAcceptar.setText("Accepta");
 
-        botoCancelar.setText("CANCELAR");
+        botoCancelar.setText("Cancel·la");
         botoCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botoCancelarActionPerformed(evt);
@@ -577,7 +584,7 @@ public class VistaCriteris extends javax.swing.JDialog {
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel34)
                                             .addComponent(jLabel36))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
                                         .addComponent(botoNombrePlanis, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(botoDFi, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
@@ -730,18 +737,18 @@ public class VistaCriteris extends javax.swing.JDialog {
                                 .addComponent(botoProhFi4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(botoActivarProh4)))))
-                .addContainerGap(174, Short.MAX_VALUE))
+                .addContainerGap(192, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(45, 45, 45)
                 .addComponent(botoDInici, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(511, Short.MAX_VALUE))
+                .addContainerGap(547, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(45, 45, 45)
                 .addComponent(botoDFi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(511, Short.MAX_VALUE))
+                .addContainerGap(547, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()

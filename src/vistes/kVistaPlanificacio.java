@@ -64,7 +64,7 @@ public class kVistaPlanificacio {
         initGraella();
         initVistaCriteris();
         iniDataClient();
-     //   initVistaSelectProg();
+        //   initVistaSelectProg();
         initVistaGenerat();
 
     }
@@ -172,32 +172,41 @@ public class kVistaPlanificacio {
         String[] patata = new String[mida];
 
         if (mida > 0) {
+            int nPatates = 0;
             for (int i = 0; i < mida; i++) {
 
                 aux = CPG.veureFitxa(llistaProgrames[i].toLowerCase());
-                if (aux != null)
-                {
-                switch (aux.format) {
-                    case 0: //Normal
+                if (aux != null) {
+                    switch (aux.format) {
+                        case 0: //Normal
 
-                        if (aux.dataCad.after(nousCriteris.dataIni))
-                            patata[i] = llistaProgrames[i];
-                        break;
-                    case 1: //Continu
-                         if (aux.dataCad.after(nousCriteris.dataIni))
-                            patata[i] = llistaProgrames[i];
-                        break;
-                    case 2: //Directe
-                       if (aux.iniciEmissio.after(nousCriteris.dataIni) && aux.iniciEmissio.before(nousCriteris.dataFi) && aux.dataCad.after(nousCriteris.dataIni));
-                            patata[i] = llistaProgrames[i];
-                        break;
-                    default:
-                        break;
-                }
+                            if (aux.dataCad.after(nousCriteris.dataIni)) {
+                                patata[i] = llistaProgrames[i];
+                                nPatates++;
+                            }
+                            break;
+                        case 1: //Continu
+                            if (aux.dataCad.after(nousCriteris.dataIni)) {
+                                patata[i] = llistaProgrames[i];
+                                nPatates++;
+                            }
+                            break;
+                        case 2: //Directe
+                            if (aux.iniciEmissio.after(nousCriteris.dataIni) && aux.iniciEmissio.before(nousCriteris.dataFi) && aux.dataCad.after(nousCriteris.dataIni)) {
+                                patata[i] = llistaProgrames[i];
+                                nPatates++;
+                            }
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
-        llistaProgrames = patata;
-        }    
+            llistaProgrames = new String[nPatates];
+            for (int k = 0; k < nPatates; k++) {
+                llistaProgrames[k] = patata[k];
+            }
+        }
     }
 
     private void generarGraella(boolean temporal) throws ParseException {
@@ -364,6 +373,11 @@ public class kVistaPlanificacio {
                         vCriteris.setVisible(false);
                         vSprog.setLocationRelativeTo(vCriteris);
                         vSprog.setTitle("Seleccionar programes");
+                        initVistaSelectProg();
+                        if (llistaProgrames.length == 0) {
+                            JOptionPane.showMessageDialog(null, "Atenció, no hi ha cap programa en el període especificat." +
+                                    "\n Llista Buida.");
+                        }
                         vSprog.setVisible(true);
                     }
 
@@ -618,7 +632,7 @@ public class kVistaPlanificacio {
             llistaProgrames = new String[1];
             llistaProgrames[0] = "";
         }
-
+        filtraPeriode();
         vSprog.setLlistaProgrames(llistaProgrames);
     }
 
