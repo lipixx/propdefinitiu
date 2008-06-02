@@ -51,6 +51,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
         esborraFrangesDisc.addActionListener(actions[8]);
         buttonActLlista.addActionListener(actions[9]);
         menuSortir.addActionListener(actions[10]);
+        vFact.bSync.addActionListener(actions[11]);
         llistaClients.getSelectionModel().addListSelectionListener(LSL);
     }
 

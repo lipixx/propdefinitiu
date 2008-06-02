@@ -12,27 +12,33 @@ public class ControladorFactura {
 
     private Factura factura;
     private String compte;
-    private LinkedList<Emissio> llistaConceptes;
+    private LinkedList<ServeiPendent> llistaConceptes;
     private LinkedList<Integer> llistaConceptesActuals;
     private LinkedList<Factura> llistaFactures;
     private Cliente clientActual;
     
     public ControladorFactura() {
-        this.llistaConceptes = new LinkedList();
-        this.llistaConceptesActuals = new LinkedList();
-        this.llistaFactures = new LinkedList();
+        this.llistaConceptes = new LinkedList<ServeiPendent>();
+        this.llistaConceptesActuals = new LinkedList<Integer>();
+        this.llistaFactures = new LinkedList<Factura>();
     }
-
-    public boolean setClient(Cliente nouClient)
+    
+    public boolean setClient(Cliente nouClient) throws Exception
     {
+        boolean b = false;
+        
         clientActual = nouClient;
         if (clientActual != null)
         {
            setListaConceptos();
            setListaFactures();
-           // retorna true si realitzarAutoFacturacio a partir de la data d'avui es fa
+           b = autofacturaComprovacioPeriode(clientActual.intervalFact, clientActual.ultFact);
+           if(b) {
+                facturaNova();
+           }
+               
         }
-        return true;
+        return b;
     }
 
     
@@ -71,22 +77,27 @@ public class ControladorFactura {
      *          Lista de conceptos pendetes por facturar
      */
     public void setListaConceptos() {
-         //Agafem la llista de planificacions del client
+        if(clientActual!=null){
+            llistaConceptes.clear();
+            //Agafem la llista de planificacions del client
             LinkedList<Planificacio> plansClient = clientActual.getLlistaPlan();
             
             //Per tota planificacio:
             for (int i=0; i<plansClient.size(); i++)
             {
                 //Agafa la llista de serveis pendents (emissions)
-               LinkedList<ServeiPendent> aux;
+               LinkedList<ServeiPendent> aux = new LinkedList<ServeiPendent>();
                aux = plansClient.get(i).getLlistaEmissions();
                
                //En coloca els ServeisPendents (emissions) a la llista privada de conceptes
-               for (int j=0; i<aux.size();i++)
+               for (int j=0; j<aux.size();j++)
                {
-                  llistaConceptes.add((Emissio)aux.get(j));
+                   if(!(aux.get(j).getFacturat())){
+                        llistaConceptes.add((Emissio)aux.get(j));
+                   }
                }
             }
+        }
     }
 
     /**
@@ -96,20 +107,25 @@ public class ControladorFactura {
      * La lista de emisiones pendientes del usuario
      */
     public Object[][] getListaConceptos() {
+        
         Object[][] Conceptes = new Object[llistaConceptes.size()][5];
         int i = 0;
 
         for (i = 0; i < llistaConceptes.size(); i++) {
 
             Conceptes[i][0] = i;
-            Conceptes[i][1] = llistaConceptes.get(i).getPrograma().getNom();
-            Conceptes[i][2] = "Continu";
-            Conceptes[i][3] = llistaConceptes.get(i).getDataEmissio().get(Calendar.DAY_OF_MONTH) + "/" + llistaConceptes.get(i).getDataEmissio().get(Calendar.MONTH) + "/" + llistaConceptes.get(i).getDataEmissio().get(Calendar.YEAR);
-            Conceptes[i][4] = llistaConceptes.get(i).getPreuEmissio();
+            Conceptes[i][1] = ((Emissio) llistaConceptes.get(i)).getPrograma().getNom();
+            Conceptes[i][2] = ((Emissio) llistaConceptes.get(i)).getPrograma().getPreuBase();
+            Conceptes[i][3] = ((Emissio) llistaConceptes.get(i)).getDataEmissio().get(Calendar.DAY_OF_MONTH) + "/" + ((Emissio) llistaConceptes.get(i)).getDataEmissio().get(Calendar.MONTH) + "/" + ((Emissio) llistaConceptes.get(i)).getDataEmissio().get(Calendar.YEAR);
+            Conceptes[i][4] = llistaConceptes.get(i).getPreu();
 
         }
 
         return Conceptes;
+    }
+    
+    public int getListaConceptosSize()  {
+        return llistaConceptes.size();
     }
 
     /**
@@ -124,9 +140,9 @@ public class ControladorFactura {
 
         for (i = 0; i < llistaConceptesActuals.size(); i++) {
             Conceptes[i][0] = llistaConceptesActuals.get(i);
-            Conceptes[i][1] = llistaConceptes.get(llistaConceptesActuals.get(i)).getPrograma().getNom();
-            Conceptes[i][2] = llistaConceptes.get(llistaConceptesActuals.get(i)).getDataEmissio().get(Calendar.DAY_OF_MONTH) + "/" + llistaConceptes.get(llistaConceptesActuals.get(i)).getDataEmissio().get(Calendar.MONTH) + "/" + llistaConceptes.get(llistaConceptesActuals.get(i)).getDataEmissio().get(Calendar.YEAR);
-            Conceptes[i][3] = llistaConceptes.get(llistaConceptesActuals.get(i)).getPreuEmissio();
+            Conceptes[i][1] = ((Emissio) llistaConceptes.get(llistaConceptesActuals.get(i))).getPrograma().getNom();
+            Conceptes[i][2] = ((Emissio) llistaConceptes.get(llistaConceptesActuals.get(i))).getDataEmissio().get(Calendar.DAY_OF_MONTH) + "/" + ((Emissio) llistaConceptes.get(llistaConceptesActuals.get(i))).getDataEmissio().get(Calendar.MONTH) + "/" + ((Emissio) llistaConceptes.get(llistaConceptesActuals.get(i))).getDataEmissio().get(Calendar.YEAR);
+            Conceptes[i][3] = ((Emissio) llistaConceptes.get(llistaConceptesActuals.get(i))).getPreu();
         }
         return Conceptes;
     }
@@ -149,7 +165,9 @@ public class ControladorFactura {
         }
         return Factures;
     }
-
+    public int getListaFacturasSize() {
+        return llistaFactures.size();
+    }
     /**
      * Obtiene la lista de facturas
      * 
@@ -159,7 +177,7 @@ public class ControladorFactura {
      * @throws Exception 
      */
     public Object[][] getListaEmisionsFactura(int index) throws Exception {
-        LinkedList<ServeiPendent> lsEmissions = new LinkedList();
+        LinkedList<ServeiPendent> lsEmissions = new LinkedList<ServeiPendent>();
 
         lsEmissions = llistaFactures.get(index).getLlistaConceptos();
 
@@ -193,14 +211,15 @@ public class ControladorFactura {
             this.factura = new Factura();
 
             for (i = 0; i < llistaConceptesActuals.size(); i++) {
-                llistaConceptes.get(llistaConceptesActuals.get(i)).setEmes(true);
+                llistaConceptes.get(llistaConceptesActuals.get(i)).setFacturat(true);
                 while (!(this.factura.addConcepte(llistaConceptes.get(llistaConceptesActuals.get(i))))){}
                 llistaConceptes.remove(llistaConceptesActuals.get(i));
             }
-
-            this.factura.cobrarFacturar(compte);
-            llistaFactures.add(factura);
+            
+            this.factura.cobrarFacturar("01");
+            //llistaFactures.add(factura);
             clientActual.addFactura(factura);
+            this.llistaConceptes.clear();
             
             return factura;
         } catch (Exception e) {
@@ -221,20 +240,20 @@ public class ControladorFactura {
      */
     public Object[][] autofacturaPreumax(double inPreuMax) throws Exception {
 
-        LinkedList<Emissio> llista;
+        LinkedList<ServeiPendent> llista;
 
 
         double _preu = 0;
         int i = 0;
 
-        LinkedList<Integer> llistaAutofacturats = new LinkedList();
+        LinkedList<Integer> llistaAutofacturats = new LinkedList<Integer>();
 
         llista = this.llistaPendents();
 
         while ((_preu < inPreuMax) && (i < llista.size())) {
-            if ((llista.get(i).getPreuEmissio() + _preu) <= inPreuMax) {
+            if ((llista.get(i).getPreu() + _preu) <= inPreuMax) {
                 llistaAutofacturats.add(i);
-                _preu += llista.get(i).getPreuEmissio();
+                _preu += llista.get(i).getPreu();
             }
             i++;
         }
@@ -244,9 +263,9 @@ public class ControladorFactura {
 
         for (i = 0; i < llistaAutofacturats.size(); i++) {
             Conceptes[i][0] = llistaAutofacturats.get(i);
-            Conceptes[i][1] = llistaConceptes.get(llistaAutofacturats.get(i)).getPrograma().getNom();
-            Conceptes[i][2] = llistaConceptes.get(llistaAutofacturats.get(i)).getDataEmissio().get(Calendar.DAY_OF_MONTH) + "/" +  llistaConceptes.get(llistaAutofacturats.get(i)).getDataEmissio().get(Calendar.MONTH) + "/" +  llistaConceptes.get(llistaAutofacturats.get(i)).getDataEmissio().get(Calendar.YEAR);
-            Conceptes[i][3] = llistaConceptes.get(llistaAutofacturats.get(i)).getPreuEmissio();
+            Conceptes[i][1] = ((Emissio) llistaConceptes.get(llistaAutofacturats.get(i))).getPrograma().getNom();
+            Conceptes[i][2] = ((Emissio) llistaConceptes.get(llistaAutofacturats.get(i))).getDataEmissio().get(Calendar.DAY_OF_MONTH) + "/" +  ((Emissio) llistaConceptes.get(llistaAutofacturats.get(i))).getDataEmissio().get(Calendar.MONTH) + "/" +  ((Emissio) llistaConceptes.get(llistaAutofacturats.get(i))).getDataEmissio().get(Calendar.YEAR);
+            Conceptes[i][3] = llistaConceptes.get(llistaAutofacturats.get(i)).getPreu();
         }
 
         llistaConceptesActuals.clear();
@@ -319,9 +338,9 @@ public class ControladorFactura {
 
         for (i = 0; i < llistaAutofacturats.size(); i++) {
             Conceptes[i][0] = llistaAutofacturats.get(i);
-            Conceptes[i][1] = llistaConceptes.get(llistaAutofacturats.get(i)).getPrograma().getNom();
-            Conceptes[i][2] = llistaConceptes.get(llistaAutofacturats.get(i)).getDataEmissio().get(Calendar.DAY_OF_MONTH) + "/" +  llistaConceptes.get(llistaAutofacturats.get(i)).getDataEmissio().get(Calendar.MONTH) + "/" +  llistaConceptes.get(llistaAutofacturats.get(i)).getDataEmissio().get(Calendar.YEAR);
-            Conceptes[i][3] = llistaConceptes.get(llistaAutofacturats.get(i)).getPreuEmissio();
+            Conceptes[i][1] = ((Emissio) llistaConceptes.get(llistaAutofacturats.get(i))).getPrograma().getNom();
+            Conceptes[i][2] = ((Emissio) llistaConceptes.get(llistaAutofacturats.get(i))).getDataEmissio().get(Calendar.DAY_OF_MONTH) + "/" +  ((Emissio) llistaConceptes.get(llistaAutofacturats.get(i))).getDataEmissio().get(Calendar.MONTH) + "/" +  ((Emissio) llistaConceptes.get(llistaAutofacturats.get(i))).getDataEmissio().get(Calendar.YEAR);
+            Conceptes[i][3] = ((Emissio) llistaConceptes.get(llistaAutofacturats.get(i))).getPreu();
         }
 
         llistaConceptesActuals.clear();
@@ -343,7 +362,7 @@ public class ControladorFactura {
      * @pre    Cert.
      * @post   Retorna cert si hi ha alguna factura pendent al periode indicat
      */
-    public boolean autofacturaComprovacioPeriode(String periode, Calendar dUltimafactura) throws Exception {
+    public boolean autofacturaComprovacioPeriode(int periode, Calendar dUltimafactura) throws Exception {
 
         LinkedList<Integer> llistaAutofacturats;
 
@@ -351,11 +370,11 @@ public class ControladorFactura {
         Calendar dIP = dUltimafactura;
         Calendar Ahora = Calendar.getInstance();
 
-        if (periode.equalsIgnoreCase("MENSUAL")) {
+        if (periode == 0) {
             dFP.add(Calendar.MONTH, 1);
-        } else if (periode.equalsIgnoreCase("SETMANAL")) {
+        } else if (periode == 1) {
             dFP.add(Calendar.DATE, 7);
-        } else if (periode.equalsIgnoreCase("DIARI")) {
+        } else if (periode == 2) {
             dFP.add(Calendar.DATE, 1);
         }
 
@@ -380,9 +399,9 @@ public class ControladorFactura {
      * @pre    Cert.
      * @post   Retorna la llista de Conceptes pendentes per facturar
      */
-    private LinkedList<Emissio> llistaPendents() throws Exception {
+    private LinkedList<ServeiPendent> llistaPendents() throws Exception {
         int i = 0;
-        LinkedList<Emissio> _llista = new LinkedList();
+        LinkedList<ServeiPendent> _llista = new LinkedList<ServeiPendent>();
 
         while (i < llistaConceptes.size()) {
             if (!llistaConceptes.get(i).getFacturat()) {
@@ -411,12 +430,12 @@ public class ControladorFactura {
      */
     private LinkedList<Integer> llistaPendentsPeriode(Calendar inPI, Calendar inPF) throws Exception {
         int i = 0;
-        LinkedList<Integer> llista = new LinkedList();
+        LinkedList<Integer> llista = new LinkedList<Integer>();
         Calendar dataEmissio = Calendar.getInstance();
 
         while (i < llistaConceptes.size()) {
-            dataEmissio = llistaConceptes.get(i).getDataEmissio();
-            if (!(llistaConceptes.get(i).getFacturat()) && (dataEmissio.before(inPI)) && (dataEmissio.before(inPF))) {
+            dataEmissio = ((Emissio) llistaConceptes.get(i)).getDataEmissio();
+            if (!(llistaConceptes.get(i).getFacturat()) && (dataEmissio.after(inPI)) && (dataEmissio.before(inPF))) {
 
                 llista.add(i);
             }

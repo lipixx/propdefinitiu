@@ -20,7 +20,7 @@ import javax.swing.table.DefaultTableModel;
 @SuppressWarnings("unchecked")
 public class VistaNovaFactura extends javax.swing.JFrame {
 
-    private static String[] CabeceraListaPendientes = {"ID", "Nom Programa", "Format", "Data Emissió", "Preu"};
+    private static String[] CabeceraListaPendientes = {"ID", "Nom Programa", "Preu Base", "Data Emissió", "Preu"};
     private static String[] CabeceraListaParaFacturar = {"ID", "Nom Programa", "Data Emissió", "Preu"};
     Object[][] listaParaFacturar;
     LinkedList<Integer> llistaSeleccionats;
@@ -29,7 +29,7 @@ public class VistaNovaFactura extends javax.swing.JFrame {
     /** Creates new form vistaNovaFactura */
     public VistaNovaFactura() {
         initComponents();
-        llistaSeleccionats = new LinkedList();
+        llistaSeleccionats = new LinkedList<Integer>();
     }
 
     public void aviso(String inmsg) {
@@ -70,6 +70,9 @@ public class VistaNovaFactura extends javax.swing.JFrame {
 
     public String[] getSeleccionadoListaPendientes() {
         String[] e = new String[4];
+        
+        e[0] = String.valueOf(-1);
+        
         if (lsProgramesPendents.getSelectedRowCount() == 1) {
             e[0] = String.valueOf(lsProgramesPendents.getModel().getValueAt(lsProgramesPendents.getSelectedRow(), 0));
             e[1] = (String) lsProgramesPendents.getModel().getValueAt(lsProgramesPendents.getSelectedRow(), 1);
@@ -96,9 +99,14 @@ public class VistaNovaFactura extends javax.swing.JFrame {
      * @param inDatos 
      */
     public void setListaSeleccionados(Object[][] inDatos) {
-
+        
         for(i=0;i<inDatos.length;i++){
-            llistaSeleccionats.add(Integer.parseInt((String) inDatos[i][0]));
+            llistaSeleccionats.add(Integer.parseInt((String.valueOf(inDatos[i][0]))));
+            listaParaFacturar[i][0] = inDatos[i][0];
+            listaParaFacturar[i][1] = inDatos[i][1];
+            listaParaFacturar[i][2] = inDatos[i][2];
+            listaParaFacturar[i][3] = inDatos[i][3];    
+            tbTotal.setText(String.valueOf(Double.parseDouble(tbTotal.getText()) + Double.parseDouble(String.valueOf(inDatos[i][3])))); 
         }
         
         actualizarListaSeleccionados();
@@ -201,7 +209,7 @@ public class VistaNovaFactura extends javax.swing.JFrame {
                 {null, null, null, null, null}
             },
             new String [] {
-                "ID", "Nom Programa", "Format", "Data Emissió", "Preu"
+                "ID", "Nom Programa", "Preu Base", "Data Emissió", "Preu"
             }
         ) {
             Class[] types = new Class [] {
@@ -229,7 +237,6 @@ public class VistaNovaFactura extends javax.swing.JFrame {
         lsProgramesPendents.getColumnModel().getColumn(1).setResizable(false);
         lsProgramesPendents.getColumnModel().getColumn(1).setPreferredWidth(200);
         lsProgramesPendents.getColumnModel().getColumn(2).setResizable(false);
-        lsProgramesPendents.getColumnModel().getColumn(3).setResizable(false);
         lsProgramesPendents.getColumnModel().getColumn(3).setPreferredWidth(100);
         lsProgramesPendents.getColumnModel().getColumn(4).setResizable(false);
         lsProgramesPendents.getColumnModel().getColumn(4).setPreferredWidth(50);
@@ -319,7 +326,7 @@ public class VistaNovaFactura extends javax.swing.JFrame {
         etTotal.setText("Total a pagar"); // NOI18N
         etTotal.setName("etTotal"); // NOI18N
 
-        tbTotal.setFont(new java.awt.Font("Lucida Grande 16 12", 0, 12));
+        tbTotal.setFont(new java.awt.Font("Lucida Grande 16 12", 0, 12)); // NOI18N
         tbTotal.setText("0"); // NOI18N
         tbTotal.setName("tbTotal"); // NOI18N
 
@@ -383,7 +390,7 @@ public class VistaNovaFactura extends javax.swing.JFrame {
                                 .add(243, 243, 243)
                                 .add(bNetejarFactura)))
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(etTitolFactura, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .add(etTitolFactura, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -418,7 +425,7 @@ public class VistaNovaFactura extends javax.swing.JFrame {
                     .add(layout.createSequentialGroup()
                         .add(bNetejarFactura)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 508, Short.MAX_VALUE)))
+                        .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE)))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(bAfegirSeleccio)
@@ -433,10 +440,11 @@ public class VistaNovaFactura extends javax.swing.JFrame {
 
 private void bAfegirSeleccioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAfegirSeleccioMouseClicked
 // TODO add your handling code here:
+    
     String e[] = new String[4];
     e = getSeleccionadoListaPendientes();
     
-    if (!(llistaSeleccionats.contains(Integer.parseInt(e[0])))) {
+    if(!(e[0].equals("-1")) && !(llistaSeleccionats.contains(Integer.parseInt(e[0])))) {
         llistaSeleccionats.add(Integer.parseInt(e[0]));
     
         listaParaFacturar[i][0] = e[0];
@@ -446,9 +454,11 @@ private void bAfegirSeleccioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-F
         i = i + 1;
 
         actualizarListaSeleccionados();
-        tbTotal.setText(String.valueOf(Float.parseFloat(tbTotal.getText()) + Float.parseFloat(e[3])));
+        tbTotal.setText(String.valueOf(Double.parseDouble(tbTotal.getText()) + Double.parseDouble(e[3])));   
+    }
+    
 }//GEN-LAST:event_bAfegirSeleccioMouseClicked
-}                                            
+                                          
 
 private void bNetejarFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bNetejarFacturaActionPerformed
 // TODO add your handling code here:

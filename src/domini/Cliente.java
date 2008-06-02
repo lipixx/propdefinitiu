@@ -2,7 +2,7 @@ package domini;
 
 
 //import dades.Factura;
-import domini.programa.AltresC;
+import domini.programa.*;
 import java.io.Serializable;
 import java.util.Calendar;
 
@@ -68,7 +68,7 @@ public class Cliente implements Serializable, ClasseAmbClau<String>{
         //Fi Crear Emissio
         
         //Creem una nova planificacio amb 10 programes
-        Planificacio P = new Planificacio(data1,data2);
+       Planificacio P = new Planificacio(data1,data2);
        for (int ka=0; ka<3; ka++)
        {
            P = new Planificacio(data1,data2);
@@ -79,9 +79,12 @@ public class Cliente implements Serializable, ClasseAmbClau<String>{
            
         for (int i=0; i<10; i++)
         {
-            P.addEmissioPlanificacio(emi);
-            emi.getPrograma().setNom("Test"+i);
+            programa = new AltresC("Prog " + i +":" + ka,data1,"Descripcio",k);
+            emi = new  Emissio(data1, true, false, programa,nouFranja,data1,data2);
+            //emi.getPrograma().setNom("Test Emission "+ i);
             emi.setPreu(emi.getPreu()+i);
+            
+            P.addEmissioPlanificacio(emi);
         }
            listPlan.add(P);
        }

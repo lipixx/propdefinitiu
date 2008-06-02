@@ -10,8 +10,9 @@ import domini.ControladorFactura;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowListener;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.event.ListSelectionListener;
 
 
@@ -27,24 +28,20 @@ public class kVistaFacturacio {
     ControladorFactura cf;
     //ControladorDomini cd;
     Object[] datos;
-    Object[][] listaPendientes;
     Object[][] listaFacturas;
 
-    
-   static SimpleDateFormat d = new SimpleDateFormat("dd/mm/yyyy");
     /**
      * Constructora de Vista Facturacion
      * 
      */
     public kVistaFacturacio(ControladorFactura CFactura) {
 
-        listaPendientes = null;
 
         try {
-
+            listaFacturas = new Object[1000][2];
             cf = CFactura;
-inicializarVistaExploradorFactura();
-inicializarVistaNuevaFactura();
+            inicializarVistaExploradorFactura();
+            inicializarVistaNuevaFactura();
         } catch (Exception e) {
             if (vnf.isVisible()) {
                 vnf.aviso("No se pudieron cargar los datos del disco:\n" + e.getMessage());
@@ -53,8 +50,8 @@ inicializarVistaNuevaFactura();
             }
         }
     }
-
     
+  
     //Retorna la vista principal de la facturacio
     public VistaFacturacio getVistaFact() {
        return vf;
@@ -86,18 +83,29 @@ inicializarVistaNuevaFactura();
 
         ListSelectionListener lista;
         ActionListener accion;
+        
         accion = new ActionListener() {
 
             public void actionPerformed(ActionEvent arg0) {
-                mostrarNuevaFactura(true);
+                try {
+                    abrirNuevaFactura();
+                } catch (Exception ex) {
+                    Logger.getLogger(kVistaFacturacio.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         };
+        
+
         
         lista = (ListSelectionListener) java.beans.EventHandler.create(ListSelectionListener.class, this, "verDesglose");
         
         vf.setAction(lista, accion);
     }
 
+    public void actualitzarVFacturacio() throws Exception{
+        inicializarListaFacturas();
+    }
+    
     /**
      * La ventana vistaExploradorFacturas se pone visible según el booleano que
      * se le pasa por parametro.
@@ -121,10 +129,11 @@ inicializarVistaNuevaFactura();
         int i;
         i = vf.getIndexFactura();
 
-        vf.setFechaFactura((String) listaFacturas[i][0]);
-        vf.setListaDesglose(cf.getListaEmisionsFactura(i));
-        vf.setTotal(String.valueOf(listaFacturas[i][1]));
-
+        if(i >= 0){
+            vf.setFechaFactura((String) listaFacturas[i][0]);
+            vf.setListaDesglose(cf.getListaEmisionsFactura(i));
+            vf.setTotal(String.valueOf(listaFacturas[i][1]));
+        }
     }
    
     /**
@@ -152,10 +161,7 @@ inicializarVistaNuevaFactura();
      * @throws Exception 
      */
     public void inicializarListaFacturas() throws Exception {
-
-        listaFacturas = cf.getListaFacturas();
-        vf.setListaFacturas(listaFacturas);
-
+        vf.setListaFacturas(cf.getListaFacturas());
     }
 
     /*
@@ -164,14 +170,6 @@ inicializarVistaNuevaFactura();
     Vista Nueva Factura 
     
     
-     */
-    /**
-     * Carga la lista de emisiones pendientes del cliente actual
-     * 
-     */
-    public void inicializarListaPendientes() {
-        listaPendientes = cf.getListaConceptos();
-    }
 
     /** 
      * Inicializa la ventana vistaNovaFactura
@@ -179,8 +177,8 @@ inicializarVistaNuevaFactura();
      */
     public void inicializarVistaNuevaFactura() {
         vnf = new VistaNovaFactura();
-        inicializarListaPendientes();
-        vnf.setListaPendientes(listaPendientes);
+        cf.setListaConceptos();
+        vnf.setListaPendientes(cf.getListaConceptos());
 
         ActionListener acciones[] = new ActionListener[3];
         WindowListener ventana;
@@ -189,7 +187,6 @@ inicializarVistaNuevaFactura();
         acciones[2] = (ActionListener) java.beans.EventHandler.create(ActionListener.class, this, "cobrarFactura");
         ventana = (WindowListener) java.beans.EventHandler.create(WindowListener.class, this, "finalizaNuevaFactura", "NewState", "windowClosing");
         vnf.setAction(acciones, ventana);
-        vnf.setListaPendientes(listaPendientes);
     }
 
     /**
@@ -254,16 +251,21 @@ inicializarVistaNuevaFactura();
         int[] LlistaParaFacturar = vnf.getListaParaFacturar();
         int i;
         
-        cf.clearConceptesFactura();
+        if(LlistaParaFacturar.length!=0)
+        {
+            cf.clearConceptesFactura();
         
-        for(i=0;i<LlistaParaFacturar.length;i++){
-            cf.addConcepteFactura(LlistaParaFacturar[i]);
+            for(i=0;i<LlistaParaFacturar.length;i++){
+                cf.addConcepteFactura(LlistaParaFacturar[i]);
+            }
+        
+            cf.facturaNova();
+            vf.bSync.doClick();
         }
         
-        cf.facturaNova();
         finalizaNuevaFactura(0);
-        vf.bSync.doClick();
     }
+    
 
     /**
      * Cierra la ventana de NuevaFactura

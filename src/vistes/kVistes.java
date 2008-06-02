@@ -12,6 +12,8 @@ import domini.ControladorPlanificacio;
 import domini.ControladorProgrames;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -76,7 +78,7 @@ public class kVistes {
 
     public void initVistaPrincipal() {
         /**Nous escoltadors d'events*/
-        ActionListener accions[] = new ActionListener[11];
+        ActionListener accions[] = new ActionListener[12];
 
 
         /**Init de nous listeners*/
@@ -269,28 +271,46 @@ public class kVistes {
             }
         });
 
+               // Sincronizacion cliente actual facturacion //
+       accions[11] = (new ActionListener() {
+
+            public void actionPerformed(ActionEvent arg0) {
+                try {
+                    kvFact.inicializarListaFacturas();
+                } catch (Exception ex) {
+                    Logger.getLogger(kVistes.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        
         /*Seleccio del client actual*/
         ListSelectionListener LSL = new ListSelectionListener() {
 
             public void valueChanged(ListSelectionEvent arg0) {
                 String selectedID = vPrincipal.getSelectedID();
                 if (selectedID != null) {
-                    if (CD.clientSetted()) {
-                        CD.guardaClientActual();
-                    }
-                    String informacio[] = CD.setClientActual(selectedID);
+                    try {
+                        if (CD.clientSetted()) {
+                            CD.guardaClientActual();
+                        }
+                        String[] informacio = CD.setClientActual(selectedID);
 
-                    if (informacio != null) {
-                        /*Ja tenim setejat el nou client a CD i als respectius controladors
-                        de domini, per tant ara nomes falta actualitzar les vistes que
-                        faixin servir el clientActual de CD*/
+                        if (informacio != null) {
 
-//          kVistaFactura.actualitzaVista() 
+
+                            /*Ja tenim setejat el nou client a CD i als respectius controladors
+                            de domini, per tant ara nomes falta actualitzar les vistes que
+                            faixin servir el clientActual de CD*/
+
+                           kvFact.actualitzarVFacturacio();
+//          kVistaFactura.actualitzaVista()
 //          kVistaPlanificacio.actualizaVista();
-
-                        /*Setejem la fitxa i les fact pendents de la finestra principal*/
-                        vPrincipal.setFitxa(informacio[0]);
-                        vPrincipal.setFacturesPendents(informacio[1]);
+                            /*Setejem la fitxa i les fact pendents de la finestra principal*/
+                            vPrincipal.setFitxa(informacio[0]);
+                            vPrincipal.setFacturesPendents(informacio[1]);
+                        }
+                    } catch (Exception ex) {
+                        Logger.getLogger(kVistes.class.getName()).log(Level.SEVERE, null, ex);
                     }
 
                 }
