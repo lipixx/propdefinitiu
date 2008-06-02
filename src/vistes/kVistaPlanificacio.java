@@ -64,7 +64,7 @@ public class kVistaPlanificacio {
         initGraella();
         initVistaCriteris();
         iniDataClient();
-        initVistaSelectProg();
+     //   initVistaSelectProg();
         initVistaGenerat();
 
     }
@@ -157,6 +157,47 @@ public class kVistaPlanificacio {
         });
 
         vPlani.setActions(actions, selPlan);
+    }
+
+    /*
+     * Filtra una llista de noms de programes, donat un periode, segons si son
+     * de format normal, continu o directe.
+     * 
+     * @pre La llistaNoms implicita no es buida
+     * @post A llistaNoms se li eliminen aquells que no es troben dins el periode
+     */
+    private void filtraPeriode() {
+        int mida = llistaProgrames.length;
+        tuplaPrograma aux;
+        String[] patata = new String[mida];
+
+        if (mida > 0) {
+            for (int i = 0; i < mida; i++) {
+
+                aux = CPG.veureFitxa(llistaProgrames[i].toLowerCase());
+                if (aux != null)
+                {
+                switch (aux.format) {
+                    case 0: //Normal
+
+                        if (aux.dataCad.after(nousCriteris.dataIni))
+                            patata[i] = llistaProgrames[i];
+                        break;
+                    case 1: //Continu
+                         if (aux.dataCad.after(nousCriteris.dataIni))
+                            patata[i] = llistaProgrames[i];
+                        break;
+                    case 2: //Directe
+                       if (aux.iniciEmissio.after(nousCriteris.dataIni) && aux.iniciEmissio.before(nousCriteris.dataFi) && aux.dataCad.after(nousCriteris.dataIni));
+                            patata[i] = llistaProgrames[i];
+                        break;
+                    default:
+                        break;
+                }
+                }
+            }
+        llistaProgrames = patata;
+        }    
     }
 
     private void generarGraella(boolean temporal) throws ParseException {
@@ -594,6 +635,7 @@ public class kVistaPlanificacio {
      */
     public void actLlistaProgrames(String tipusFiltre, String valor) {
         llistaProgrames = CPG.getllistaFiltrada(tipusFiltre, null);
+        filtraPeriode();
     }
 
     private void actLlistaFiltres(int i) {
