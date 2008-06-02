@@ -29,20 +29,20 @@ public class kVistes {
      * - Controladors de vistes
      * - VistaPrincipal
      */
-    ControladorDomini CD;
-    ControladorProgrames CPG;
-    ControladorCliente CCliente;
-    ControladorVistasCliente kvCliente;
-    kVistaGProgrames kvGProgs;
-    kVistaFranges kvFranges;
+    private ControladorDomini CD;
+    private ControladorProgrames CPG;
+    private ControladorCliente CCliente;
+    private ControladorVistasCliente kvCliente;
+    private kVistaGProgrames kvGProgs;
+    private kVistaFranges kvFranges;
     //Falten
-    ControladorPlanificacio CPlani;
-    ControladorFactura CFactura;
-    kVistaPlanificacio kvPlan;
-    kVistaFacturacio kvFact;
+    private ControladorPlanificacio CPlani;
+    private ControladorFactura CFactura;
+    private kVistaPlanificacio kvPlan;
+    private kVistaFacturacio kvFact;
     //Fi Falten
     /**Les dues pestanyes que te incloses*/
-    VistaPrincipal vPrincipal;
+    private VistaPrincipal vPrincipal;
     /**Necessari per generar la llista de clients*/
     public Object[][] listaClientes;
 
@@ -303,8 +303,8 @@ public class kVistes {
                             faixin servir el clientActual de CD*/
 
                            kvFact.actualitzarVFacturacio();
-//          kVistaFactura.actualitzaVista()
-//          kVistaPlanificacio.actualizaVista();
+                           kvPlan.actualitzaVista();
+                           
                             /*Setejem la fitxa i les fact pendents de la finestra principal*/
                             vPrincipal.setFitxa(informacio[0]);
                             vPrincipal.setFacturesPendents(informacio[1]);
