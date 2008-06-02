@@ -23,7 +23,6 @@ import javax.swing.text.DateFormatter;
 public class VistaCriteris extends javax.swing.JDialog {
 
     private tuplaCriteris criteris;
-    private String[] vec = {"Preu", "Franja Preferida", "Franja Prohibida", "Programes Seleccionats", "Periode Planificacio"};
     private int[] op = {-1, -1, -1, -1, -1};
     private Calendar ultimaPlani;
 
@@ -59,7 +58,6 @@ public class VistaCriteris extends javax.swing.JDialog {
               return null;
             }
         }
-
 
         Date hora = formatHora.parse("00:00");
 

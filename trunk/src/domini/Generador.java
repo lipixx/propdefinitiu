@@ -90,16 +90,13 @@ public class Generador {
                 crearFrangesNoProhibidesNiPreferides(fPreferides, fProhibides);
                 System.out.println("Size llistaFranges No Prohib Ni Pref =" + llistaFranges.size());
                 for (int k = 0; k < llistaFranges.size(); k++) {
-                    listFranAux.add(fPreferides.get(k));
+                    listFranAux.add(llistaFranges.get(k));
                 }
             }
             System.out.println("Size listFranAux =" + listFranAux.size());
             llistaFranges = ordenarFrangesPreu(listFranAux);
             System.out.println("Size llistaFranges =" + llistaFranges.size());
 
-            for (int k = 0; k < llistaFranges.size(); k++) {
-                System.out.println("FRANGA: inici=" + llistaFranges.get(k).getHoraInici().get(Calendar.HOUR_OF_DAY) + ":" + llistaFranges.get(k).getHoraFi().get(Calendar.MINUTE) + " fi=" + llistaFranges.get(k).getHoraFi().get(Calendar.HOUR_OF_DAY) + ":" + llistaFranges.get(k).getHoraFi().get(Calendar.MINUTE));
-            }
 
         } else if (criteris[1][0] == 1 || criteris[2][0] == 1) {
             System.out.println("CRITERI == FRANGES");
@@ -117,31 +114,29 @@ public class Generador {
                     System.out.println("FRANGA: inici=" + llistaFranges.get(k).getHoraInici().get(Calendar.HOUR_OF_DAY) + ":" + llistaFranges.get(k).getHoraFi().get(Calendar.MINUTE) + " fi=" + llistaFranges.get(k).getHoraFi().get(Calendar.HOUR_OF_DAY) + ":" + llistaFranges.get(k).getHoraFi().get(Calendar.MINUTE));
                 }
             }
-            System.out.println("Size llistaProgrames =" + llistaProgrames.size());
+
             listProgsAux = seleccionarDirectes(llistaProgrames);
-            System.out.println("Size listProgsAux =" + listProgsAux.size());
+
             if (listProgsAux.size() == 0) {
-                System.out.println("llistaProgrames == 0");
+
                 for (int i = 0; i < llistaProgs.size(); i++) {
                     llistaProgrames.add(llistaProgs.get(i));
                 }
-                System.out.println("llistaProgrames =" + llistaProgrames.size());
+
             }
 
         } else {
-            System.out.println("CRITERI != PREU && != FRANGES");
-            System.out.println("Size fPreferides =" + fPreferides.size());
+
+
             for (int i = 0; i < fPreferides.size(); i++) {
                 listFranAux.add(fPreferides.get(i));
             }
-            System.out.println("Size listFranAux =" + listFranAux.size());
+
             if (listFranAux.size() == 0) {
-                System.out.println("Size listFranAux == 0 -> crear FRANGES NO PROHIB NI PREF");
+
                 crearFrangesNoProhibidesNiPreferides(fPreferides, fProhibides);
-                System.out.println("Size llistaFranges No Prohib Ni Pref =" + llistaFranges.size());
-                for (int k = 0; k < llistaFranges.size(); k++) {
-                    System.out.println("FRANGA: inici=" + llistaFranges.get(k).getHoraInici().get(Calendar.HOUR_OF_DAY) + ":" + llistaFranges.get(k).getHoraFi().get(Calendar.MINUTE) + " fi=" + llistaFranges.get(k).getHoraFi().get(Calendar.HOUR_OF_DAY) + ":" + llistaFranges.get(k).getHoraFi().get(Calendar.MINUTE));
-                }
+
+                
             }
         }
         /* Fi inicialitzacio de programes i franges */
@@ -447,7 +442,7 @@ public class Generador {
                     for (int k = 0; k < plani.getLlistaEmissions().size() && !igual; k++) {
                         for (int j = 0; j < llistaPlanificacionsGenerades.get(i).getLlistaEmissions().size() && !igual; j++) {
 
-                            if (k == j && ((Emissio)llistaPlanificacionsGenerades.get(i).getLlistaEmissions().get(j)).getPrograma().getNom().compareTo(((Emissio)plani.getLlistaEmissions().get(j)).getPrograma().getNom()) == 0 && ((Emissio)llistaPlanificacionsGenerades.get(i).getLlistaEmissions().get(j)).getDataEmissio().equals(((Emissio)plani.getLlistaEmissions().get(j)).getDataEmissio()) && ((Emissio)llistaPlanificacionsGenerades.get(i).getLlistaEmissions().get(j)).getHoraInici().equals(((Emissio)plani.getLlistaEmissions().get(j)).getHoraInici()) && ((Emissio)llistaPlanificacionsGenerades.get(i).getLlistaEmissions().get(j)).getHoraFi().equals(((Emissio)plani.getLlistaEmissions().get(j)).getHoraFi())) {
+                            if (k == j && ((Emissio) llistaPlanificacionsGenerades.get(i).getLlistaEmissions().get(j)).getPrograma().getNom().compareTo(((Emissio) plani.getLlistaEmissions().get(j)).getPrograma().getNom()) == 0 && ((Emissio) llistaPlanificacionsGenerades.get(i).getLlistaEmissions().get(j)).getDataEmissio().equals(((Emissio) plani.getLlistaEmissions().get(j)).getDataEmissio()) && ((Emissio) llistaPlanificacionsGenerades.get(i).getLlistaEmissions().get(j)).getHoraInici().equals(((Emissio) plani.getLlistaEmissions().get(j)).getHoraInici()) && ((Emissio) llistaPlanificacionsGenerades.get(i).getLlistaEmissions().get(j)).getHoraFi().equals(((Emissio) plani.getLlistaEmissions().get(j)).getHoraFi())) {
                                 if (countadorIguals == 2) {
                                     in.add(Calendar.DAY_OF_MONTH, +1);
                                     countadorIguals = -1;
@@ -495,7 +490,7 @@ public class Generador {
 
     private void afluixarCriteris() {
         int pos = 0;
-        for (int i =1 ; i <
+        for (int i = 1; i <
                 5; i++) {
             if (criteris[i][0] > criteris[i - 1][0] && criteris[i][1] != 0) {
                 pos = i;
@@ -875,7 +870,7 @@ public class Generador {
         if (plani != null) {
             for (int k = 0; k <
                     plani.getLlistaEmissions().size(); k++) {
-                if (((Emissio)plani.getLlistaEmissions().get(k)).getPrograma().getNom().compareTo(prog.getNom()) == 0) {
+                if (((Emissio) plani.getLlistaEmissions().get(k)).getPrograma().getNom().compareTo(prog.getNom()) == 0) {
                     System.out.println("SI pertany a la planificacio");
                     return true;
                 }
@@ -1008,12 +1003,9 @@ public class Generador {
                 System.out.println("PROG DIRECTE ==> " + prog.getNom());
                 System.out.println("Inici Emissio" + ((Directe) prog).getIniciEmissio().get(Calendar.DAY_OF_MONTH));
 
-                calendarInici =
-                        ((Directe) prog).getIniciEmissio();
-                horaIni =
-                        calendarInici.get(Calendar.HOUR_OF_DAY);
-                minutIni =
-                        calendarInici.get(Calendar.MINUTE);
+                calendarInici = ((Directe) prog).getIniciEmissio();
+                horaIni = calendarInici.get(Calendar.HOUR_OF_DAY);
+                minutIni = calendarInici.get(Calendar.MINUTE);
 
                 horaFi =
                         ((minutIni + dura) / 60) + horaIni;
@@ -1033,15 +1025,11 @@ public class Generador {
 
                 calendarInici = franja.getHoraInici();
 
-                horaIni =
-                        calendarInici.get(Calendar.HOUR_OF_DAY);
-                minutIni =
-                        calendarInici.get(Calendar.MINUTE);
+                horaIni = calendarInici.get(Calendar.HOUR_OF_DAY);
+                minutIni = calendarInici.get(Calendar.MINUTE);
 
-                horaFi =
-                        ((minutIni + dura) / 60) + horaIni;
-                minutFi =
-                        (dura + minutIni) % 60;
+                horaFi = ((minutIni + dura) / 60) + horaIni;
+                minutFi = (dura + minutIni) % 60;
 
                 if (minutFi < 10) {
                     hora = formatCalendar2.parse("" + horaFi + ":0" + minutFi);
@@ -1064,7 +1052,7 @@ public class Generador {
                     plani.getLlistaEmissions().size() && !solapa; j++) {
 
 
-                if (((Emissio)plani.getLlistaEmissions().get(j)).getDataEmissio().equals(dataEmissio)) {
+                if (((Emissio) plani.getLlistaEmissions().get(j)).getDataEmissio().equals(dataEmissio)) {
 
                     do {
 
@@ -1122,7 +1110,7 @@ public class Generador {
 
                         }
 
-                        if ((!calendarFi.after(franja.getHoraFi()) && !calendarInici.before(franja.getHoraInici())) && (!calendarFi.after(((Emissio)plani.getLlistaEmissions().get(j)).getHoraInici()) || !calendarInici.before(((Emissio)plani.getLlistaEmissions().get(j)).getHoraFi()))) {
+                        if ((!calendarFi.after(franja.getHoraFi()) && !calendarInici.before(franja.getHoraInici())) && (!calendarFi.after(((Emissio) plani.getLlistaEmissions().get(j)).getHoraInici()) || !calendarInici.before(((Emissio) plani.getLlistaEmissions().get(j)).getHoraFi()))) {
 
                             fi = true;
                         }

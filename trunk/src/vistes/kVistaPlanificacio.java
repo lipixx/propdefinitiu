@@ -370,15 +370,17 @@ public class kVistaPlanificacio {
                 try {
                     nousCriteris = vCriteris.getCriteris();
                     if (nousCriteris != null) {
-                        vCriteris.setVisible(false);
+
                         vSprog.setLocationRelativeTo(vCriteris);
                         vSprog.setTitle("Seleccionar programes");
                         initVistaSelectProg();
                         if (llistaProgrames.length == 0) {
                             JOptionPane.showMessageDialog(null, "Atenció, no hi ha cap programa en el període especificat." +
                                     "\n Llista Buida.");
+                        } else {
+                            vCriteris.setVisible(false);
+                            vSprog.setVisible(true);
                         }
-                        vSprog.setVisible(true);
                     }
 
                 } catch (ParseException ex) {
