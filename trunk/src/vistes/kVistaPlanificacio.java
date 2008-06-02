@@ -209,7 +209,8 @@ public class kVistaPlanificacio {
         }
     }
 
-    private void generarGraella(boolean temporal) throws ParseException {
+    private void generarGraella(boolean temporal) throws ParseException 
+    {
         String inici = "" + iniciSetmana.get(Calendar.DAY_OF_MONTH) + "-" + iniciSetmana.get(Calendar.MONTH) + "-" + iniciSetmana.get(Calendar.YEAR);
         String fi = "" + fiSetmana.get(Calendar.DAY_OF_MONTH) + "-" + fiSetmana.get(Calendar.MONTH) + "-" + fiSetmana.get(Calendar.YEAR);
         graella = CPlani.genSet(inici, fi, vPlani.getPlanSelected(), temporal);
@@ -525,18 +526,31 @@ public class kVistaPlanificacio {
         // generar graella amb akesta tupla demissions (segons la setmana indicada en globals)
 
         initSetmana();
-        generarGraella(false);
+        
+        boolean temporal = true;
+        generarGraella(temporal);
+        
+        if (tEmissio != null)
+        {
         vGen.pintarGraella(graella);
-
+        }
     }
 
     private void seleccionatPlanificacio() throws ParseException {
-        //mateix codi que seleccionat plangen pero canviar sa vista
 
         initSetmana();
-        generarGraella(true);
+        
+        //Aixo vol dir que cercara ses planificacions des client i no ses
+        //generades per s'algoritme
+        boolean temporal = false;
+        
+        //Seteja sa Graella amb ses noves tEmissio[]
+        generarGraella(temporal);
+        
+        if (tEmissio != null)
+        { //Pintar-la
         vPlani.pintarGraella(graella);
-
+        }
     }
 
     private void retrocedirSetmana() {
