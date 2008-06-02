@@ -52,6 +52,7 @@ public class ControladorPlanificacio {
     public String[][] genSet(String inici, String fin, String plani, boolean temporal) throws ParseException {
 
         SimpleDateFormat formatCalendar = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat formatCalendar2 = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat formatHora = new SimpleDateFormat("H:mm");
 
         Date ini = formatCalendar.parse(inici);
@@ -62,11 +63,11 @@ public class ControladorPlanificacio {
         Calendar fiSetmana = Calendar.getInstance();
         fiSetmana.setTime(fi);
 
-        Date iniP = formatCalendar.parse(plani.substring(0, 10));
+        Date iniP = formatCalendar2.parse(plani.substring(0, 10));
         Calendar iniPlani = Calendar.getInstance();
         iniPlani.setTime(iniP);
         //Comprovar que es 23 esta be, que no es surti de rang
-        Date fiP = formatCalendar.parse(plani.substring(13, 23));
+        Date fiP = formatCalendar2.parse(plani.substring(13, 23));
         Calendar fiPlani = Calendar.getInstance();
         fiPlani.setTime(fiP);
 
@@ -97,8 +98,8 @@ public class ControladorPlanificacio {
         Calendar fiDia = Calendar.getInstance();
         fiDia.setTime(fiP);
 
-
-        while (iniDia.before(fiDia)) {
+        //Rellenem sa primera columna amb ses hores:
+        while (iniDia.before(fiDia) && comptador < 144) {
 
             graella[comptador][0] = "" + iniDia.get(Calendar.HOUR_OF_DAY) + ":" + iniDia.get(Calendar.MINUTE);
             iniDia.add(Calendar.MINUTE, +10);
