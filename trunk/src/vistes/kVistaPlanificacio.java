@@ -63,6 +63,7 @@ public class kVistaPlanificacio {
         initSetmana();
         initGraella();
         initVistaCriteris();
+        iniDataClient();
         initVistaSelectProg();
         initVistaGenerat();
 
@@ -164,6 +165,14 @@ public class kVistaPlanificacio {
         graella = CPlani.genSet(inici, fi, vPlani.getPlanSelected(), temporal);
     }
 
+    private void iniDataClient() {
+        if (CPlani.getClient() != null && CPlani.getClient().getLlistaPlan().size() > 0) {
+            vCriteris.setDataUltimaPlani(CPlani.getClient().getLlistaPlan().get((CPlani.getClient().getLlistaPlan().size() - 1)).getDataInici());
+        } else {
+            vCriteris.setDataUltimaPlani(null);
+        }
+    }
+
     private void initGraella() throws ParseException {
         if (CPlani.getClient() != null) {
             generarGraella(false);
@@ -176,7 +185,8 @@ public class kVistaPlanificacio {
     vPlani.pintarGraella(graella);
     }*/
     }
-private void initVistaSelectProg() {
+
+    private void initVistaSelectProg() {
 
         ListSelectionListener selFiltre, selPrograma, selSel;
         ActionListener accions[] = new ActionListener[7];
@@ -309,17 +319,22 @@ private void initVistaSelectProg() {
             public void actionPerformed(ActionEvent e) {
                 try {
                     nousCriteris = vCriteris.getCriteris();
-                    //if(nousCriteris.)
-                    vCriteris.setVisible(false);
-                    vSprog.setLocationRelativeTo(vCriteris);
-                    vSprog.setTitle("Seleccionar programes");
-                    vSprog.setVisible(true);
+                    if (nousCriteris != null) {
+                        vCriteris.setVisible(false);
+                        vSprog.setLocationRelativeTo(vCriteris);
+                        vSprog.setTitle("Seleccionar programes");
+                        vSprog.setVisible(true);
+                    }
+
                 } catch (ParseException ex) {
-                    System.out.println("Error: L 273");
-                    Logger.getLogger(kVistaPlanificacio.class.getName()).log(Level.SEVERE, null, ex);
+                    System.out.println("Finestra de: Format incorrecte");
+                    JOptionPane.showMessageDialog(null, "Format incorrecte");
+                //Logger.getLogger(kVistaPlanificacio.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
+
+
         vCriteris.setActions(actions);
     }
 
@@ -330,7 +345,8 @@ private void initVistaSelectProg() {
 
         ListSelectionListener selPlan;
 
-        selPlan = (new ListSelectionListener() {
+        selPlan =
+                (new ListSelectionListener() {
 
             public void valueChanged(ListSelectionEvent e) {
                 try {
@@ -353,6 +369,7 @@ private void initVistaSelectProg() {
                         Logger.getLogger(kVistaPlanificacio.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
+
             }
         });
 
@@ -368,6 +385,7 @@ private void initVistaSelectProg() {
                         Logger.getLogger(kVistaPlanificacio.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
+
             }
         });
 
@@ -398,6 +416,7 @@ private void initVistaSelectProg() {
                     }
 
                 }
+
             }
         });
 
@@ -431,6 +450,7 @@ private void initVistaSelectProg() {
                 // cerca sa planificacio de sa llista temporal i fa un client.addPlanificacio(plani);              
 
                 }
+
             }
         });
 
@@ -487,7 +507,7 @@ private void initVistaSelectProg() {
         vSprog.setLlistaFiltres(llistaFiltres);
     }
 
-     public void seleccionatPrograma(boolean llistaSeleccio) {
+    public void seleccionatPrograma(boolean llistaSeleccio) {
         //Agafem nom del programa seleccionat de la llistaSeleccio o de la llistaProgrames:
         String nomP;
         if (llistaSeleccio) {
@@ -513,19 +533,22 @@ private void initVistaSelectProg() {
                         "/" + dadesP.iniciEmissio.get(Calendar.YEAR) + " a les " + dadesP.iniciEmissio.get(Calendar.HOUR_OF_DAY) + ":" + dadesP.iniciEmissio.get(Calendar.MINUTE);
             }
 
-
             if (dadesP.tematiques != null) {
                 fitxa = fitxa + "\nTemes: ";
-                for (int i = 0; i < dadesP.tematiques.length; i++) {
+                for (int i = 0; i <
+                        dadesP.tematiques.length; i++) {
                     if (i == 5) {
                         fitxa = fitxa + "\n";
                     }
+
                     fitxa = fitxa + dadesP.tematiques[i] + " ";
                 }
+
             }
 
             vSprog.setCuadreFitxa(fitxa);
         }
+
     }
 
     public void actualitzaLlProgrames() {
@@ -543,10 +566,10 @@ private void initVistaSelectProg() {
             valorFiltre = vSprog.getFiltreSelected(false);
         }
 
-
         if (valorFiltre.equals("-2") || valorFiltre.equals("-1") || valorFiltre.equals("tots")) {
             tipusFiltre = "tots";
         }
+
         llistaProgrames = CPG.getllistaFiltrada(tipusFiltre, valorFiltre);
 
         //Actualitza llista
@@ -600,7 +623,7 @@ private void initVistaSelectProg() {
                     //  vGProgs.selectCercaNom();
                     return;
                 }
-                //If you're here, the return value was null/empty.
+//If you're here, the return value was null/empty.
                 llistaFiltres = new String[0];
                 break;
             case 3: //Llista de Tematiques disponibles
@@ -609,6 +632,5 @@ private void initVistaSelectProg() {
             default:
                 break;
         }
-
     }
 }

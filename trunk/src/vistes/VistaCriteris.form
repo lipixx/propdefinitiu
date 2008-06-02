@@ -999,13 +999,13 @@
         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(dfc)"/>
         <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="DateFormat formatCalendar = new SimpleDateFormat(&quot;dd/MM/yyyy&quot;);&#xa;DateFormatter dfc = new DateFormatter(formatCalendar);"/>
         <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="botoDInici.setInputVerifier(new Verificador());"/>
-        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="botoDInici.setValue(new Date());"/>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="Calendar avui = Calendar.getInstance();&#xa;if(ultimaPlani==null || (ultimaPlani!=null &amp;&amp; avui.after(ultimaPlani))){&#xa;botoDInici.setValue(new Date());&#xa;}else{&#xa;botoDInici.setValue(ultimaPlani);&#xa;}"/>
       </AuxValues>
     </Component>
     <Component class="javax.swing.JFormattedTextField" name="botoDFi">
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(dfc)"/>
-        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="botoDFi.setValue(new Date());&#xa;botoDFi.setInputVerifier(new Verificador());"/>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="try{&#xa;int finde=6;&#xa;avui = Calendar.getInstance();&#xa;if(ultimaPlani==null || (ultimaPlani!=null &amp;&amp; avui.after(ultimaPlani))){&#xa;finde = avui.get(Calendar.DAY_OF_WEEK);&#xa;}else{&#xa;finde = ultimaPlani.get(Calendar.DAY_OF_WEEK);&#xa;}&#xa;if(finde==1){&#xa;    finde=0;&#xa;}else{&#xa;    finde=(7-finde)+1;&#xa;}&#xa;&#xa;int dia = avui.get(Calendar.DAY_OF_MONTH)+finde;&#xa;int mes = avui.get(Calendar.MONTH);&#xa;int any = avui.get(Calendar.YEAR);&#xa;Date d = formatCalendar.parse(&quot;&quot;+dia+&quot;/&quot;+mes+&quot;/&quot;+any);&#xa;botoDFi.setValue(d);&#xa;botoDFi.setInputVerifier(new Verificador());&#xa;} catch (ParseException ex) {&#xa;                    System.out.println(&quot;&quot;);&#xa;                }"/>
       </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel33">

@@ -227,11 +227,24 @@ public class ControladorPlanificacio {
             llistaFrangesProhibides.add(franja);
         }
 
-        prioritats[nousCriteris.primer] = 1;
-        prioritats[nousCriteris.segon] = 2;
-        prioritats[nousCriteris.tercer] = 3;
-        prioritats[nousCriteris.quart] = 4;
-        prioritats[nousCriteris.cinque] = 5;
+        prioritats[nousCriteris.primer - 1] = 1;
+        prioritats[nousCriteris.segon - 1] = 2;
+        prioritats[nousCriteris.tercer - 1] = 3;
+        prioritats[nousCriteris.quart - 1] = 4;
+        prioritats[nousCriteris.cinque - 1] = 5;
+
+        /* DETECCIO */
+        System.out.println("llistaprogrames = " + llistaProgrames.size());
+        System.out.println("nousCriteris.preuMax =" + nousCriteris.preuMaxim);
+        System.out.println("prioritats" + prioritats.length);
+        System.out.println("llistaFrangesPreferides = " + llistaFrangesPreferides.size());
+        System.out.println("llistaFrangesProhibides =" + llistaFrangesProhibides.size());
+        System.out.println("data ini =" + nousCriteris.dataIni.get(Calendar.DAY_OF_MONTH));
+        System.out.println("DATA FI = " + nousCriteris.dataFi.get(Calendar.DAY_OF_MONTH));
+        System.out.println("NOMBRE PLANI =" + nousCriteris.nombrePlanis);
+        System.out.println(" REPRO =" + RepoFranges.listaObject().size());
+        System.out.println("SEPARADES = " + nousCriteris.separades);
+        /**/
 
         llistaPlanificacions = generador.generar(llistaProgrames, nousCriteris.preuMaxim, prioritats, llistaFrangesPreferides, llistaFrangesProhibides, nousCriteris.dataIni, nousCriteris.dataFi, nousCriteris.nombrePlanis, (LinkedList<FranjaHoraria>) RepoFranges.listaObject(), nousCriteris.separades);
 

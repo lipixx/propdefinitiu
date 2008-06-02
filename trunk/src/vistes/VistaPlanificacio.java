@@ -6,6 +6,7 @@
 package vistes;
 
 import java.awt.event.ActionListener;
+import java.util.Calendar;
 import javax.swing.event.ListSelectionListener;
 
 /**
@@ -65,7 +66,7 @@ public class VistaPlanificacio extends javax.swing.JPanel {
         }
     }
 
-    void setSetmana(String setmana) {
+   void setSetmana(String setmana) {
         botoSetmana.setText(setmana);
     }
 
