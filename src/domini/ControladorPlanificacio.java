@@ -65,7 +65,7 @@ public class ControladorPlanificacio {
         Date iniP = formatCalendar.parse(plani.substring(0, 10));
         Calendar iniPlani = Calendar.getInstance();
         iniPlani.setTime(iniP);
-
+        //Comprovar que es 23 esta be, que no es surti de rang
         Date fiP = formatCalendar.parse(plani.substring(13, 23));
         Calendar fiPlani = Calendar.getInstance();
         fiPlani.setTime(fiP);
@@ -380,5 +380,53 @@ public class ControladorPlanificacio {
         }
 
         return llista;
+    }
+
+    /*Poden ser utils:*/
+    
+    /*
+     * Donada una dataInici i una dataFi, que seran l'"ID" de la planificacio, i un boolea
+     * que ens dira si s'ha de cercar en el client o en la llista generade per el generador,
+     * retornara les emissions d'aquella planificacio, en forma de tupla.
+     *  
+     */
+    public tuplaEmissio[] getLlistaEmissionsPlanificacio(Calendar dataIni1, Calendar dataFi1, boolean temporal) {
+        Planificacio P = null;
+        LinkedList<ServeiPendent> emissionsPlanif;
+        tuplaEmissio sortida[] = null;
+        Emissio tmp;
+
+        if (temporal) {
+            P = this.getPlanificacio(dataIni1, dataFi1);
+        } else //Vol dir que hem de mirar les del client
+        {
+            P = cActual.getPlanificacio(dataIni1, dataFi1);
+        }
+
+        if (P != null) {
+            emissionsPlanif = P.getLlistaEmissions();
+            sortida = new tuplaEmissio[emissionsPlanif.size()];
+
+            for (int i = 0; i < emissionsPlanif.size(); i++) {
+                tmp = (Emissio) emissionsPlanif.get(i);
+                sortida[i].dataEmissio = tmp.getDataEmissio();
+                sortida[i].emes = tmp.getEmes();
+                sortida[i].facturat = tmp.getFacturat();
+                sortida[i].horaFi = tmp.getHoraFi();
+                sortida[i].horaInici = tmp.getHoraInici();
+                sortida[i].nomPrograma = emissionsPlanif.get(i).getIdentificador();
+                sortida[i].preuEmissio = (float) tmp.getPreu();
+            }
+        }
+        return sortida;
+    }
+
+    private Planificacio getPlanificacio(Calendar dataIni, Calendar dataFi) {
+        for (Planificacio p : llistaPlanificacions) {
+            if (p.getDataInici().equals(dataIni) && p.getDataFi().equals(dataFi)) {
+                return p;
+            }
+        }
+        return null;
     }
 }

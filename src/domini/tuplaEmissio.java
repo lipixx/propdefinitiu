@@ -18,13 +18,14 @@ public class tuplaEmissio {
     public boolean emes;
     public boolean facturat;
     public float preuEmissio;
-    public String nomProgama;
+    public String nomPrograma;
 
     public tuplaEmissio() {
         dataEmissio=null;
         horaInici=null;
         horaFi=null;
-        
-    
+        nomPrograma = "";
+        emes = false;
+        facturat = false;   
     }
 }
