@@ -78,6 +78,9 @@ public class kVistaPlanificacio {
         vPlani.setLlistaPlans(llistaPlanificacions);
     }
 
+   public void actualitzaVista() {
+        setLlistaPlani();
+    }
     public void initVistaPlanificacio() {
 
         vPlani = new VistaPlanificacio();
