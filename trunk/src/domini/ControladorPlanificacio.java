@@ -246,7 +246,8 @@ public class ControladorPlanificacio {
         System.out.println("SEPARADES = " + nousCriteris.separades);
         /**/
 
-        llistaPlanificacions = generador.generar(llistaProgrames, nousCriteris.preuMaxim, prioritats, llistaFrangesPreferides, llistaFrangesProhibides, nousCriteris.dataIni, nousCriteris.dataFi, nousCriteris.nombrePlanis, (LinkedList<FranjaHoraria>) RepoFranges.listaObject(), nousCriteris.separades);
+        LinkedList<FranjaHoraria> frangesH = RepoFranges.listaObject();
+        llistaPlanificacions = generador.generar(llistaProgrames, nousCriteris.preuMaxim, prioritats, llistaFrangesPreferides, llistaFrangesProhibides, nousCriteris.dataIni, nousCriteris.dataFi, nousCriteris.nombrePlanis, frangesH, nousCriteris.separades);
 
         /* Pasar cada planificacio al seu identificador ( data ini + data fi) */
         String[] planificacions = new String[llistaPlanificacions.size()];

@@ -738,7 +738,7 @@ public class ControladorProgrames {
         Programa p;
 
         for (int i = 0; i < nProgs; i++) {
-            p = (Programa) RepoProg.getPrograma(llistaNoms[i]);
+            p = (Programa) RepoProg.getPrograma(llistaNoms[i].toLowerCase());
             llista.add(p);
         }
         return llista;
