@@ -66,11 +66,14 @@ public class ControladorPlanificacio {
         Date iniP = formatCalendar2.parse(plani.substring(0, 10));
         Calendar iniPlani = Calendar.getInstance();
         iniPlani.setTime(iniP);
+        iniPlani.add(Calendar.MONTH, 1);
+        
         //Comprovar que es 23 esta be, que no es surti de rang
         Date fiP = formatCalendar2.parse(plani.substring(13, 23));
         Calendar fiPlani = Calendar.getInstance();
         fiPlani.setTime(fiP);
 
+        
         LinkedList<Planificacio> llistaP;
         if (temporal) {
             llistaP = llistaPlanificacions;
@@ -354,15 +357,15 @@ public class ControladorPlanificacio {
                 llistaPClient.size(); i++) {
 
             if ((((Planificacio) llistaPClient.get(i)).getDataInici()).get(Calendar.MONTH) < 10) {
-                mesIni = "0" + (((Planificacio) llistaPClient.get(i)).getDataInici()).get(Calendar.MONTH);
+                mesIni = "0" + ((((Planificacio) llistaPClient.get(i)).getDataInici()).get(Calendar.MONTH)+1);
             } else {
-                mesIni = "" + (((Planificacio) llistaPClient.get(i)).getDataInici()).get(Calendar.MONTH);
+                mesIni = "" + ((((Planificacio) llistaPClient.get(i)).getDataInici()).get(Calendar.MONTH)+1);
             }
 
             if ((((Planificacio) llistaPClient.get(i)).getDataFi()).get(Calendar.MONTH) < 10) {
-                mesFi = "0" + (((Planificacio) llistaPClient.get(i)).getDataFi()).get(Calendar.MONTH);
+                mesFi = "0" + ((((Planificacio) llistaPClient.get(i)).getDataFi()).get(Calendar.MONTH)+1);
             } else {
-                mesFi = "" + (((Planificacio) llistaPClient.get(i)).getDataFi()).get(Calendar.MONTH);
+                mesFi = "" + ((((Planificacio) llistaPClient.get(i)).getDataFi()).get(Calendar.MONTH)+1);
             }
 
             if ((((Planificacio) llistaPClient.get(i)).getDataInici()).get(Calendar.DAY_OF_MONTH) < 10) {
