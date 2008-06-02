@@ -415,7 +415,7 @@ public class kVistaPlanificacio {
                 try {
                     seleccionatPlanGen();
                 } catch (ParseException ex) {
-                    Logger.getLogger(kVistaPlanificacio.class.getName()).log(Level.SEVERE, null, ex);
+                    System.out.println("Error L418 kVistaPlanif: "+ex.getMessage());
                 }
             }
         });
@@ -423,13 +423,14 @@ public class kVistaPlanificacio {
         actions[0] = (new ActionListener() {
             /* Setmana Anterior */
 
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e) 
+            {
                 retrocedirSetmana();
                 if (vGen.getPlanSelected() != null) {
                     try {
                         seleccionatPlanGen();
                     } catch (ParseException ex) {
-                        Logger.getLogger(kVistaPlanificacio.class.getName()).log(Level.SEVERE, null, ex);
+                       System.out.println("Error L433 kVistaPlanif in retrocedirSetmana..: "+ex.getMessage());
                     }
                 }
 
@@ -445,7 +446,7 @@ public class kVistaPlanificacio {
                     try {
                         seleccionatPlanGen();
                     } catch (ParseException ex) {
-                        Logger.getLogger(kVistaPlanificacio.class.getName()).log(Level.SEVERE, null, ex);
+                       System.out.println("Error L450 kVistaPlanif in avansarSetmana..: "+ex.getMessage());
                     }
                 }
 
@@ -471,11 +472,12 @@ public class kVistaPlanificacio {
                         Calendar dFi = Calendar.getInstance();
                         dIni.setTime(dateInici);
                         dFi.setTime(dateFi);
-
                         CPlani.anularEmissio(nomPrograma, dIni, dFi, true); // true implica que es TEMPORAL
+                        //S'ha de repintar la graella:
+                        vGen.setLlistaPlans(llistaPlanificacions);
+
                     } catch (ParseException ex) {
-                        System.out.println("Error: L 339");
-                        Logger.getLogger(kVistaPlanificacio.class.getName()).log(Level.SEVERE, null, ex);
+                        System.out.println("Error anulant emissio de PL temporal in kVistaPl 480");
                     }
 
                 }
@@ -506,14 +508,14 @@ public class kVistaPlanificacio {
 
                         CPlani.contractar(dIni, dFi);
                     // cerca sa planificacio de sa llista temporal i fa un client.addPlanificacio(plani);
+                        
+                        vGen.setVisible(false);
+                        actualitzaVista();
+                        
                     } catch (ParseException ex) {
                         System.out.println("Error: L 372");
-                        Logger.getLogger(kVistaPlanificacio.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                // cerca sa planificacio de sa llista temporal i fa un client.addPlanificacio(plani);              
-
                 }
-
             }
         });
 
@@ -529,15 +531,25 @@ public class kVistaPlanificacio {
         // generarGraella();
         // vPlanGen.pintarGraella(graella);
         // generar graella amb akesta tupla demissions (segons la setmana indicada en globals)
-
+        if (vGen.getPlanSelected()!=null)
+        {
         initSetmana();
 
+        //Aixo vol dir que cercara ses planificacions des client i no ses
+        //generades per s'algoritme
         boolean temporal = true;
+
+        //Seteja sa Graella amb ses noves tEmissio[]
+       
+
         generarGraella(temporal);
 
-        if (tEmissio != null) {
+        if (graella != null)//Pintar-la
+        {
             vGen.pintarGraella(graella);
         }
+        }
+    
     }
 
     private void seleccionatPlanificacio() throws ParseException {
