@@ -162,7 +162,6 @@ public class VistaPrincipal extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(llistaClients);
-        llistaClients.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
         jLabel1.setText("Factures pendents:");
 
