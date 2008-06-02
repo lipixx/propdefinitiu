@@ -25,12 +25,14 @@ public class VistaCriteris extends javax.swing.JDialog {
     private tuplaCriteris criteris;
     private String[] vec = {"Preu", "Franja Preferida", "Franja Prohibida", "Programes Seleccionats", "Periode Planificacio"};
     private int[] op = {-1, -1, -1, -1, -1};
+    private Calendar ultimaPlani;
 
     /** Creates new form VistaCriteris */
     public VistaCriteris(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         criteris = new tuplaCriteris();
+        ultimaPlani = null;
     }
 
     public tuplaCriteris getCriteris() throws ParseException {
@@ -63,6 +65,10 @@ public class VistaCriteris extends javax.swing.JDialog {
             hora = formatHora.parse(botoPreFi1.getText());
             criteris.pre1Fi = Calendar.getInstance();
             criteris.pre1Fi.setTime(hora);
+            if (criteris.pre1Fi.before(criteris.pre1Ini)) {
+                JOptionPane.showMessageDialog(null, "La hora de fi ha de ser posterios a la hora d'inici");
+                return null;
+            }
         }
         if (botoActivarPre2.isSelected()) {
 
@@ -72,6 +78,10 @@ public class VistaCriteris extends javax.swing.JDialog {
             hora = formatHora.parse(botoPreFi2.getText());
             criteris.pre2Fi = Calendar.getInstance();
             criteris.pre2Fi.setTime(hora);
+            if (criteris.pre2Fi.before(criteris.pre2Ini)) {
+                JOptionPane.showMessageDialog(null, "La hora de fi ha de ser posterios a la hora d'inici");
+                return null;
+            }
         }
         if (botoActivarPre3.isSelected()) {
 
@@ -81,6 +91,10 @@ public class VistaCriteris extends javax.swing.JDialog {
             hora = formatHora.parse(botoPreFi3.getText());
             criteris.pre3Fi = Calendar.getInstance();
             criteris.pre3Fi.setTime(hora);
+            if (criteris.pre3Fi.before(criteris.pre3Ini)) {
+                JOptionPane.showMessageDialog(null, "La hora de fi ha de ser posterios a la hora d'inici");
+                return null;
+            }
         }
         if (botoActivarPre4.isSelected()) {
 
@@ -90,6 +104,10 @@ public class VistaCriteris extends javax.swing.JDialog {
             hora = formatHora.parse(botoPreFi4.getText());
             criteris.pre4Fi = Calendar.getInstance();
             criteris.pre4Fi.setTime(hora);
+            if (criteris.pre4Fi.before(criteris.pre4Ini)) {
+                JOptionPane.showMessageDialog(null, "La hora de fi ha de ser posterios a la hora d'inici");
+                return null;
+            }
         }
         if (botoActivarProh1.isSelected()) {
 
@@ -99,6 +117,10 @@ public class VistaCriteris extends javax.swing.JDialog {
             hora = formatHora.parse(botoProhFi1.getText());
             criteris.proh1Fi = Calendar.getInstance();
             criteris.proh1Fi.setTime(hora);
+            if (criteris.proh1Fi.before(criteris.proh1Ini)) {
+                JOptionPane.showMessageDialog(null, "La hora de fi ha de ser posterios a la hora d'inici");
+                return null;
+            }
         }
         if (botoActivarProh2.isSelected()) {
 
@@ -108,6 +130,10 @@ public class VistaCriteris extends javax.swing.JDialog {
             hora = formatHora.parse(botoProhFi2.getText());
             criteris.proh2Fi = Calendar.getInstance();
             criteris.proh2Fi.setTime(hora);
+            if (criteris.proh2Fi.before(criteris.proh2Ini)) {
+                JOptionPane.showMessageDialog(null, "La hora de fi ha de ser posterios a la hora d'inici");
+                return null;
+            }
         }
         if (botoActivarProh3.isSelected()) {
 
@@ -117,6 +143,10 @@ public class VistaCriteris extends javax.swing.JDialog {
             hora = formatHora.parse(botoProhFi3.getText());
             criteris.proh3Fi = Calendar.getInstance();
             criteris.proh3Fi.setTime(hora);
+            if (criteris.proh3Fi.before(criteris.proh3Ini)) {
+                JOptionPane.showMessageDialog(null, "La hora de fi ha de ser posterios a la hora d'inici");
+                return null;
+            }
         }
         if (botoActivarProh4.isSelected()) {
 
@@ -126,6 +156,10 @@ public class VistaCriteris extends javax.swing.JDialog {
             hora = formatHora.parse(botoProhFi4.getText());
             criteris.proh4Fi = Calendar.getInstance();
             criteris.proh4Fi.setTime(hora);
+            if (criteris.proh4Fi.before(criteris.proh4Ini)) {
+                JOptionPane.showMessageDialog(null, "La hora de fi ha de ser posterios a la hora d'inici");
+                return null;
+            }
         }
 
         criteris.autoGen = botoActivarAutoGen.isSelected();
@@ -165,6 +199,11 @@ public class VistaCriteris extends javax.swing.JDialog {
 
         return criteris;
     }
+    
+     void setDataUltimaPlani(Calendar dataInici) {
+        ultimaPlani = dataInici;
+    }
+
 
     private String[] agafarModel(ComboBoxModel model) {
         int mida = model.getSize();
@@ -174,28 +213,6 @@ public class VistaCriteris extends javax.swing.JDialog {
             nouModel[i] = (String) model.getElementAt(i);
         }
         return nouModel;
-    }
-
-    private String[] elementsNoElegits() {
-
-        String[] aux = new String[4];
-        boolean trobat = false;
-        int j = 0, cont = 0;
-        for (int i = 1; i < 5; i++) {
-            trobat = false;
-            j = 0;
-            while (j < 5 && !trobat) {
-                if (i == op[j]) {
-                    trobat = true;
-                }
-                j++;
-            }
-            if (!trobat) {
-                aux[cont] = vec[i];
-                cont++;
-            }
-        }
-        return aux;
     }
 
     /** This method is called from within the constructor to
@@ -489,11 +506,37 @@ public class VistaCriteris extends javax.swing.JDialog {
             }
         });
 
-        botoDInici.setValue(new Date());
+        Calendar avui = Calendar.getInstance();
+        if(ultimaPlani==null || (ultimaPlani!=null && avui.after(ultimaPlani))){
+            botoDInici.setValue(new Date());
+        }else{
+            botoDInici.setValue(ultimaPlani);
+        }
         botoDInici.setInputVerifier(new Verificador());
 
-        botoDFi.setValue(new Date());
-        botoDFi.setInputVerifier(new Verificador());
+        try{
+            int finde=6;
+            avui = Calendar.getInstance();
+            if(ultimaPlani==null || (ultimaPlani!=null && avui.after(ultimaPlani))){
+                finde = avui.get(Calendar.DAY_OF_WEEK);
+            }else{
+                finde = ultimaPlani.get(Calendar.DAY_OF_WEEK);
+            }
+            if(finde==1){
+                finde=0;
+            }else{
+                finde=(7-finde)+1;
+            }
+
+            int dia = avui.get(Calendar.DAY_OF_MONTH)+finde;
+            int mes = avui.get(Calendar.MONTH);
+            int any = avui.get(Calendar.YEAR);
+            Date d = formatCalendar.parse(""+dia+"/"+mes+"/"+any);
+            botoDFi.setValue(d);
+            botoDFi.setInputVerifier(new Verificador());
+        } catch (ParseException ex) {
+            System.out.println("");
+        }
 
         jLabel33.setFont(new java.awt.Font("Bitstream Vera Sans", 1, 10));
         jLabel33.setText("Inici Període planificació");
@@ -881,7 +924,7 @@ public class VistaCriteris extends javax.swing.JDialog {
 }//GEN-LAST:event_botoCancelarActionPerformed
 
     private void botoPrimerCriteriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botoPrimerCriteriActionPerformed
-criteris.primer = botoPrimerCriteri.getSelectedIndex();
+        criteris.primer = botoPrimerCriteri.getSelectedIndex();
         op[0] = criteris.primer;
 
         switch (criteris.primer) {
