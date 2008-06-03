@@ -70,13 +70,13 @@ public class VistaFacturacio extends javax.swing.JPanel {
     
     public int getIndexFactura(){
         
-        if (lsFacturas.getSelectedRowCount() == 1) {
+       if (lsFacturas.getSelectedRowCount() == 1) {
             return lsFacturas.getSelectedRow();
         }
         else if  (lsFacturas.getRowCount()>0){
-            return 1;
+            return 0; 
         }
-        
+       
         return -1;
     }
     

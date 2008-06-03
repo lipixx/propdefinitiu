@@ -15,20 +15,17 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.event.ListSelectionListener;
 
-
 /**
  *
  * @author rael
  */
 public class kVistaFacturacio {
 
-    
     VistaNovaFactura vnf;
     VistaFacturacio vf;
     ControladorFactura cf;
     //ControladorDomini cd;
     Object[] datos;
-    Object[][] listaFacturas;
 
     /**
      * Constructora de Vista Facturacion
@@ -38,7 +35,6 @@ public class kVistaFacturacio {
 
 
         try {
-            listaFacturas = new Object[1000][2];
             cf = CFactura;
             inicializarVistaExploradorFactura();
             inicializarVistaNuevaFactura();
@@ -50,13 +46,12 @@ public class kVistaFacturacio {
             }
         }
     }
-    
-  
+
     //Retorna la vista principal de la facturacio
     public VistaFacturacio getVistaFact() {
-       return vf;
+        return vf;
     }
-    
+
     /**
      * Inicializa el controlador de la vista de factura
      * 
@@ -83,7 +78,7 @@ public class kVistaFacturacio {
 
         ListSelectionListener lista;
         ActionListener accion;
-        
+
         accion = new ActionListener() {
 
             public void actionPerformed(ActionEvent arg0) {
@@ -94,18 +89,18 @@ public class kVistaFacturacio {
                 }
             }
         };
-        
 
-        
+
+
         lista = (ListSelectionListener) java.beans.EventHandler.create(ListSelectionListener.class, this, "verDesglose");
-        
+
         vf.setAction(lista, accion);
     }
 
-    public void actualitzarVFacturacio() throws Exception{
+    public void actualitzarVFacturacio() throws Exception {
         inicializarListaFacturas();
     }
-    
+
     /**
      * La ventana vistaExploradorFacturas se pone visible según el booleano que
      * se le pasa por parametro.
@@ -113,9 +108,9 @@ public class kVistaFacturacio {
      * @param b
      *          Visibilidad de la ventana
      */
-    public void mostrarExploradorFacturas(boolean b) {
+    public void mostrarExploradorFacturas(boolean b) throws Exception {
         vf.setVisible(b);
-        if (listaFacturas.length != 0) {
+        if (cf.getListaFacturas().length != 0) {
             vf.seleccionarFactura(0);
         }
     }
@@ -129,19 +124,24 @@ public class kVistaFacturacio {
         int i;
         i = vf.getIndexFactura();
 
-        if(i >= 0){
-            vf.setFechaFactura((String) listaFacturas[i][0]);
+        if (i >= 0) {
+            vf.setFechaFactura((String) cf.getListaFacturas()[i][0]);
             vf.setListaDesglose(cf.getListaEmisionsFactura(i));
-            vf.setTotal(String.valueOf(listaFacturas[i][1]));
+            vf.setTotal(String.valueOf(cf.getListaFacturas()[i][1]));
+        } else {
+            vf.setFechaFactura("");
+            vf.setListaDesglose(null);
+            vf.setTotal("");
         }
+
     }
-   
+
     /**
      * Muestra la ventana de creación de una nueva factura
      * 
      * @throws Exception 
      */
-   public void abrirNuevaFactura() throws Exception {
+    public void abrirNuevaFactura() throws Exception {
         inicializarVistaNuevaFactura();
         mostrarNuevaFactura(true);
     }
@@ -161,16 +161,12 @@ public class kVistaFacturacio {
      * @throws Exception 
      */
     public void inicializarListaFacturas() throws Exception {
+
         vf.setListaFacturas(cf.getListaFacturas());
     }
 
     /*
-    
-    
     Vista Nueva Factura 
-    
-    
-
     /** 
      * Inicializa la ventana vistaNovaFactura
      * 
@@ -212,7 +208,7 @@ public class kVistaFacturacio {
         p = vnf.getAutofacturaPreuMax();
         char[] c = new char[p.length()];
         c = p.toCharArray();
-        
+
         for (i = 0; i < p.length(); i++) {
             if (!(Character.isDigit(c[i]))) {
                 b = false;
@@ -231,15 +227,14 @@ public class kVistaFacturacio {
      * AutoFactura Data
      * @throws java.lang.Exception
      */
-
     public void autofacturaPeriode() throws Exception {
         Calendar cali = Calendar.getInstance();
         Calendar calf = Calendar.getInstance();
-        
+
         cali = vnf.getAutofacturaPeriodeInici();
         calf = vnf.getAutofacturaPeriodeFi();
-      
-        
+
+
         vnf.setListaSeleccionados(cf.autofacturaPeriode(cali, calf));
     }
 
@@ -250,22 +245,20 @@ public class kVistaFacturacio {
     public void cobrarFactura() throws Exception {
         int[] LlistaParaFacturar = vnf.getListaParaFacturar();
         int i;
-        
-        if(LlistaParaFacturar.length!=0)
-        {
+
+        if (LlistaParaFacturar.length != 0) {
             cf.clearConceptesFactura();
-        
-            for(i=0;i<LlistaParaFacturar.length;i++){
+
+            for (i = 0; i < LlistaParaFacturar.length; i++) {
                 cf.addConcepteFactura(LlistaParaFacturar[i]);
             }
-        
+
             cf.facturaNova();
             vf.bSync.doClick();
         }
-        
+
         finalizaNuevaFactura(0);
     }
-    
 
     /**
      * Cierra la ventana de NuevaFactura
