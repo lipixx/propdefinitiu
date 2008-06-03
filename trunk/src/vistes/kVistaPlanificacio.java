@@ -157,6 +157,7 @@ public class kVistaPlanificacio {
 
                        if (CPlani.anularEmissio(nomPrograma, dIni, dFi, false) /* true implica que es TEMPORAL */)
                        {
+                           vPlani.setPreu(0);
                            actualitzaVista(false);
                            if (planSelected != -1) vPlani.setSelectPlan(planSelected);
                        }
@@ -427,6 +428,7 @@ public class kVistaPlanificacio {
                        if (CPlani.anularEmissio(nomPrograma, dIni, dFi, true) /* true implica que es TEMPORAL */)
                        {
                            actualitzaVista(true);
+                           vGen.setPreu(0);
                             vGen.setSelectPlan(planSelected);
                        }
                         
