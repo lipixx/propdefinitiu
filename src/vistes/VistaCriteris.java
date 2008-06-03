@@ -46,16 +46,14 @@ public class VistaCriteris extends javax.swing.JDialog {
             return null;
         } else {
             try {
-            criteris.preuMaxim = Float.parseFloat(preu);
-            if (criteris.preuMaxim <= 0) {
-                JOptionPane.showMessageDialog(null, "El format de les dades és incorrecte. Preu màxim > 0");
+                criteris.preuMaxim = Float.parseFloat(preu);
+                if (criteris.preuMaxim <= 0) {
+                    JOptionPane.showMessageDialog(null, "El format de les dades és incorrecte. Preu màxim > 0");
+                    return null;
+                }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "El format de les dades és incorrecte. Ha de ser numèric. " + ex.getMessage());
                 return null;
-            }
-            }
-            catch (Exception ex)
-            {
-              JOptionPane.showMessageDialog(null, "El format de les dades és incorrecte. Ha de ser numèric. " +ex.getMessage());
-              return null;
             }
         }
 
@@ -193,10 +191,27 @@ public class VistaCriteris extends javax.swing.JDialog {
             hora = formatCalendar.parse(botoDInici.getText());
             criteris.dataIni = Calendar.getInstance();
             criteris.dataIni.setTime(hora);
+            Calendar aux = Calendar.getInstance();
+            int dia = aux.get(Calendar.DAY_OF_MONTH);
+            int mes = aux.get(Calendar.MONTH) + 1;
+            int any = aux.get(Calendar.YEAR);
+            Date dat = formatCalendar.parse("" + dia + "/" + mes + "/" + any);
+            Calendar limit = Calendar.getInstance();
+            limit.setTime(dat);
+
+            if (criteris.dataIni.before(limit)) {
+                JOptionPane.showMessageDialog(null, "El periode inicial de la planificacio no pot ser anterior al dia de avui");
+                return null;
+            }
 
             hora = formatCalendar.parse(botoDFi.getText());
             criteris.dataFi = Calendar.getInstance();
             criteris.dataFi.setTime(hora);
+
+            if (criteris.dataIni.after(criteris.dataFi)) {
+                JOptionPane.showMessageDialog(null, "Format de data incorrecte");
+                return null;
+            }
 
         }
 
@@ -204,11 +219,10 @@ public class VistaCriteris extends javax.swing.JDialog {
 
         return criteris;
     }
-    
-     void setDataUltimaPlani(Calendar dataInici) {
+
+    void setDataUltimaPlani(Calendar dataInici) {
         ultimaPlani = dataInici;
     }
-
 
     private String[] agafarModel(ComboBoxModel model) {
         int mida = model.getSize();
@@ -536,7 +550,7 @@ public class VistaCriteris extends javax.swing.JDialog {
             }
 
             int dia = avui.get(Calendar.DAY_OF_MONTH)+finde;
-            int mes = avui.get(Calendar.MONTH);
+            int mes = (avui.get(Calendar.MONTH)+1);
             int any = avui.get(Calendar.YEAR);
             Date d = formatCalendar.parse(""+dia+"/"+mes+"/"+any);
             botoDFi.setValue(d);
@@ -597,7 +611,7 @@ public class VistaCriteris extends javax.swing.JDialog {
                                 .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 96, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 123, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -737,7 +751,7 @@ public class VistaCriteris extends javax.swing.JDialog {
                                 .addComponent(botoProhFi4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(botoActivarProh4)))))
-                .addContainerGap(192, Short.MAX_VALUE))
+                .addContainerGap(201, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -756,7 +770,7 @@ public class VistaCriteris extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel33)
                             .addComponent(jLabel34))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 90, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel30)
