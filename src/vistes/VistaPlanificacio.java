@@ -26,7 +26,14 @@ public class VistaPlanificacio extends javax.swing.JPanel {
 
     String getGraellaSelected() {
         /* Retorna un String que identifica una Emissio */
-        return (String) graella.getValueAt(graella.getSelectedColumn(), graella.getSelectedRow());
+        if (!(graella.getSelectedColumn() == 0 ||  graella.getSelectedColumn() == -1 || graella.getSelectedRow() == -1))
+        return (String) graella.getValueAt(graella.getSelectedRow(), graella.getSelectedColumn());
+        else
+            return null;
+    }
+
+    public int getIndexsSelected() {
+        return llistaPlanificacionsV.getSelectedIndex();
     }
 
     String getPlanSelected() {
@@ -65,12 +72,16 @@ public class VistaPlanificacio extends javax.swing.JPanel {
         }
     }
 
+    void setSelectPlan(int planSelected) {
+        llistaPlanificacionsV.setSelectedIndex(planSelected);
+    }
+
    void setSetmana(String setmana) {
         botoSetmana.setText(setmana);
     }
 
-    void setPreu(String preu) {
-        preuTotalV.setText(preu);
+    void setPreu(double preu) {
+        preuTotalV.setText(""+preu);
     }
 
     /** This method is called from within the constructor to
@@ -102,9 +113,11 @@ public class VistaPlanificacio extends javax.swing.JPanel {
                 "Hora","Dilluns", "Dimarts", "Dimecres", "Dijous","Divendres", "Dissabte", "Diumenge"
             }
         ));
+        graella.setColumnSelectionAllowed(true);
         graella.setInheritsPopupMenu(true);
         graella.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(graella);
+        graella.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
         botoNovaPlanificacio.setFont(new java.awt.Font("Bitstream Vera Sans", 1, 12));
         botoNovaPlanificacio.setText("CREAR NOVA PLANIFICACIO");
@@ -197,7 +210,7 @@ public class VistaPlanificacio extends javax.swing.JPanel {
                 .addGap(20, 20, 20)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 401, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(botoNovaPlanificacio, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(94, 94, 94))

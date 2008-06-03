@@ -46,7 +46,7 @@ public class Cliente implements Serializable, ClasseAmbClau<String>{
         ultFact = Calendar.getInstance();
         listFact = new LinkedList<Factura>();
         listPlan = new LinkedList<Planificacio>();
-      //  testingFactures();
+        testingFactures();
 
     }  
     
@@ -233,5 +233,9 @@ public class Cliente implements Serializable, ClasseAmbClau<String>{
     @Override
     public String getClau() {
         return this.ID;
+    }
+
+    public void delPlanificacio(Planificacio P) {
+        listPlan.remove(P);
     }
 }

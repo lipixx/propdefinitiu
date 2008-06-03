@@ -30,10 +30,11 @@ public class ControladorProgrames {
         RepoFranges = nRepoFranges;
     }
 
-    public RepositoriProgrames<String, domini.Programa> getRepoProgs()
-    {
+
+    public RepositoriProgrames<String, domini.Programa> getRepoProgs() {
         return RepoProg;
     }
+
     /**
      *  Afegeix un programa al repositori de programes en memoria.  
      *  @param  nou Es una tupla amb els parametres del nou programa.
@@ -200,8 +201,8 @@ public class ControladorProgrames {
             p.setNom(nou.nom);
             p.setPreubase(nou.preu);
             p.clearTemes();
-            addTematicaProg(nou.tematiques,p);
-            
+            addTematicaProg(nou.tematiques, p);
+
             String tipus = p.getClass().getName();
             char tipusc = tipus.charAt(tipus.length() - 1);
 
@@ -252,6 +253,17 @@ public class ControladorProgrames {
      */
     public boolean importarLlistaProgrames(String rutaFitxer) throws GestorDiscException {
         return RepoProg.importaProgrames(rutaFitxer);
+    }
+
+    /**
+     *  Importa des de un fitxer, un repositori de temes.  
+     *  @param  rutaFitxer Es un string amb la ruta i nom del fitxer a carregar.
+     *  @pre    El fitxer no esta protegit contra lectura i existeix.
+     *  @post   S'ha creat un nou repositori amb els programes del fitxer.
+     *  @return Cert si el fitxer s'ha importat correctament. Fals altrament.
+     */
+    public boolean importaTemes(String rutaFitxer) {
+        return RepoTemes.importaTemes(rutaFitxer);
     }
 
     /**
@@ -334,36 +346,32 @@ public class ControladorProgrames {
                     /**Dins el Format*/
                     for (int i = 0; i < 3; i++) {
                         /**Dins la categoria*/
-
                         for (int j = 0; j < 11; j++) {
                             /**Dins la llista F-C
                             /**Per totes les llistes de format i i categoria j fer,
-                                per cada programa que hi ha, fins a veure'ls tots (resultatT[i][j].size()):
+                            per cada programa que hi ha, fins a veure'ls tots (resultatT[i][j].size()):
                              */
-                            for (int k = 0; k < resultatT[i][j].size(); k++)
-                            {
+                            for (int k = 0; k < resultatT[i][j].size(); k++) {
                                 /**Obte el programa K de la llista format i, cat j.*/
                                 p = (Programa) resultatT[i][j].get(k);
-                                
+
                                 /**N'extreu els temes*/
                                 arrayTemes = p.getTemes();
-                                
+
                                 /**Per tots els temes d'aquest programa, mirar si n'hi ha cap
                                  * que sigui igual al que ens demanen.
                                  */
-                                for (int o = 0; o < arrayTemes.length; o++) 
-                                {
-                                    if (arrayTemes[o].compareToIgnoreCase(valorFiltre) == 0) 
-                                    {
+                                for (int o = 0; o < arrayTemes.length; o++) {
+                                    if (arrayTemes[o].compareToIgnoreCase(valorFiltre) == 0) {
                                         /**Si hi es l'afegim a l'array de sortida
                                          * i incrementem l'index, que correspon al num
                                          * de programes trobats fins al moment.
                                          */
                                         arraySortida[index] = p.getNom();
                                         index++;
-                                        
+
                                         /*Si l'hem trobat, no fa falta cercar mes, llavors
-                                         per sortir del bucle fem*/
+                                        per sortir del bucle fem*/
                                         o = arrayTemes.length;
                                     }
                                 }
@@ -564,16 +572,16 @@ public class ControladorProgrames {
             taxa = f.getTaxa();
 
 
-            frangesActuals[i][0] = ""+horaInici;
-            frangesActuals[i][1] = ""+minutInici;
-            frangesActuals[i][2] = ""+horaFi;
-            frangesActuals[i][3] = ""+minutFi;
-            frangesActuals[i][4] = ""+taxa;
+            frangesActuals[i][0] = "" + horaInici;
+            frangesActuals[i][1] = "" + minutInici;
+            frangesActuals[i][2] = "" + horaFi;
+            frangesActuals[i][3] = "" + minutFi;
+            frangesActuals[i][4] = "" + taxa;
         }
 
         return frangesActuals;
     }
-    
+
     /**
      *  Aquesta funció substitueix totes les franges del repositori 
      *  agafant l'string de franges i convertint-lo en un array
@@ -609,17 +617,17 @@ public class ControladorProgrames {
             horaFi = Integer.parseInt(franges[i][2]);
             minutFi = Integer.parseInt(franges[i][3]);
             taxa = Float.parseFloat(franges[i][4]);
-            
-             
+
+
             /* Clone del Calendar per tenir
              * franges al mateix temps.
              */
             Calendar horaMinInici = Calendar.getInstance();
             Calendar horaMinFi = (Calendar) horaMinInici.clone();
-            
+
             horaMinInici.set(Calendar.MINUTE, minutInici);
             horaMinInici.set(Calendar.HOUR_OF_DAY, horaInici);
-       
+
             horaMinFi.set(Calendar.MINUTE, minutFi);
             horaMinFi.set(Calendar.HOUR_OF_DAY, horaFi);
 
@@ -652,46 +660,42 @@ public class ControladorProgrames {
      *  @return Cert si la operació ha tingut èxit. Fals altrament.
      */
     public boolean saveGclientsAll() {
-        try 
-        {
+        try {
             return RepoProg.saveAll() && RepoTemes.exportaTemes("RepositoriTemes.db") && RepoFranges.exportaFranges("RepositoriFranges.db");
-      
-        } catch (GestorDiscException ex)
-        {
-            try
-            {
+
+        } catch (GestorDiscException ex) {
+            try {
                 return RepoTemes.exportaTemes("RepositoriTemes.db");
-           
-            } catch (GestorDiscException ex1) 
-            {
-                try 
-                {
+
+            } catch (GestorDiscException ex1) {
+                try {
                     return RepoFranges.exportaFranges("RepositoriFranges.db");
-              
-                } catch (GestorDiscException ex2) 
-                {
+
+                } catch (GestorDiscException ex2) {
                     return false;
                 }
             }
         }
     }
     
-    public void exportaFranges(String nomFitxer)
-    {
+    
+    public boolean exportarTemes(String rutaFTemes) throws GestorDiscException {
+        return RepoTemes.exportaTemes(rutaFTemes);
+    }
+
+    public void exportaFranges(String nomFitxer) {
         try {
             RepoFranges.exportaFranges(nomFitxer);
         } catch (GestorDiscException ex) {
-            System.out.println("Error de fitxer: "+ex.getMessage());
+            System.out.println("Error de fitxer: " + ex.getMessage());
         }
     }
-    
-    public void impFranges(String nomFitxer)
-    {
+
+    public void impFranges(String nomFitxer) {
         RepoFranges.importaFranges(nomFitxer);
     }
-    
-    public void esborraFranges()
-    {
+
+    public void esborraFranges() {
         RepoFranges.esborrarLlista();
     }
 
@@ -714,8 +718,7 @@ public class ControladorProgrames {
      *  @pre    -
      *  @post   S'ha afegit la tematica a la llista.
      */
-    private void addTematicaRepo(String[] tematiques) 
-    {
+    private void addTematicaRepo(String[] tematiques) {
         int nTemes = tematiques.length;
         for (int i = 0; i < nTemes; i++) {
             Tematica T = new Tematica(tematiques[i].toLowerCase());

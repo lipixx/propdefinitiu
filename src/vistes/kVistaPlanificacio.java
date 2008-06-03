@@ -16,8 +16,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -78,9 +76,10 @@ public class kVistaPlanificacio {
         vPlani.setLlistaPlans(llistaPlanificacions);
     }
 
-    public void actualitzaVista() throws ParseException {
+    public void actualitzaVista(boolean temporal) throws ParseException {
         setLlistaPlani();
-        vPlani.setGraella();
+        if (temporal) vGen.setGraella();
+        else vPlani.setGraella();
     }
 
     public void initVistaPlanificacio() {
@@ -139,8 +138,9 @@ public class kVistaPlanificacio {
             public void actionPerformed(ActionEvent e) {
 
                 String nomPrograma = vPlani.getGraellaSelected();
+                int planSelected = vPlani.getIndexsSelected();
                 try {
-                    if (nomPrograma != null || nomPrograma.compareToIgnoreCase("") != 0) {
+                    if (nomPrograma != null && nomPrograma.compareToIgnoreCase("") != 0 && nomPrograma.compareToIgnoreCase("-") != 0) {
 
                         String idPlanificacio = vPlani.getPlanSelected();
                         /* idPLanificacio son 2 calendars dd/mm/yyyy - dd/mm/yyyy */
@@ -155,12 +155,15 @@ public class kVistaPlanificacio {
                         dIni.setTime(dateInici);
                         dFi.setTime(dateFi);
 
-                        CPlani.anularEmissio(nomPrograma, dIni, dFi, false); /* true implica que es TEMPORAL */
-
+                       if (CPlani.anularEmissio(nomPrograma, dIni, dFi, false) /* true implica que es TEMPORAL */)
+                       {
+                           actualitzaVista(false);
+                           if (planSelected != -1) vPlani.setSelectPlan(planSelected);
+                       }
+                        
                     }
                 } catch (ParseException ex) {
                     System.out.println("Error: L 140");
-                    Logger.getLogger(kVistaPlanificacio.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -403,12 +406,14 @@ public class kVistaPlanificacio {
             /* Anular programa */
 
             public void actionPerformed(ActionEvent e) {
-                String nomPrograma = vGen.getGraellaSelected();
-                if (nomPrograma != null) {
-                    try {
+                 String nomPrograma = vGen.getGraellaSelected();
+                int planSelected = vGen.getIndexsSelected();
+                try {
+                    if (nomPrograma != null && nomPrograma.compareToIgnoreCase("") != 0 && nomPrograma.compareToIgnoreCase("-") != 0) {
+
                         String idPlanificacio = vGen.getPlanSelected();
-                        //Transformar idPlanificacio a Calendari....
-                        // idPLanificacio son 2 calendars dd/mm/yyyy - dd/mm/yyyy
+                        /* idPLanificacio son 2 calendars dd/mm/yyyy - dd/mm/yyyy */
+
                         String sIni = idPlanificacio.substring(0, 10);
                         String sFi = idPlanificacio.substring(13, 23);
 
@@ -418,16 +423,17 @@ public class kVistaPlanificacio {
                         Calendar dFi = Calendar.getInstance();
                         dIni.setTime(dateInici);
                         dFi.setTime(dateFi);
-                        CPlani.anularEmissio(nomPrograma, dIni, dFi, true); // true implica que es TEMPORAL
-                        //S'ha de repintar la graella:
-                        vGen.setLlistaPlans(llistaPlanificacions);
 
-                    } catch (ParseException ex) {
-                        System.out.println("Error anulant emissio de PL temporal in kVistaPl 480");
+                       if (CPlani.anularEmissio(nomPrograma, dIni, dFi, true) /* true implica que es TEMPORAL */)
+                       {
+                           actualitzaVista(true);
+                            vGen.setSelectPlan(planSelected);
+                       }
+                        
                     }
-
+                } catch (ParseException ex) {
+                    System.out.println("Error: L 140");
                 }
-
             }
         });
 
@@ -456,8 +462,9 @@ public class kVistaPlanificacio {
                         // cerca sa planificacio de sa llista temporal i fa un client.addPlanificacio(plani);
 
                         vGen.setVisible(false);
-                        actualitzaVista();
-
+                        actualitzaVista(false);
+                        actualitzaVista(true);
+                        
                     } catch (ParseException ex) {
                         System.out.println("Error: L 372");
                     }
@@ -477,8 +484,8 @@ public class kVistaPlanificacio {
         // generarGraella();
         // vPlanGen.pintarGraella(graella);
         // generar graella amb akesta tupla demissions (segons la setmana indicada en globals)
-        if (vGen.getPlanSelected() != null) {
-            initSetmana();
+        String planSelectedID = vGen.getPlanSelected();
+        if ( planSelectedID != null) {
 
             //Aixo vol dir que cercara ses planificacions des client i no ses
             //generades per s'algoritme
@@ -493,13 +500,16 @@ public class kVistaPlanificacio {
             {
                 vGen.pintarGraella(graella);
             }
+             
+             vGen.setPreu(CPlani.getPreuPlan(planSelectedID));
         }
 
     }
 
     private void seleccionatPlanificacio() throws ParseException {
 
-        if (vPlani.getPlanSelected() != null) {
+        String planSelectedID = vPlani.getPlanSelected();
+        if ( planSelectedID != null) {
             initSetmana();
 
             //Aixo vol dir que cercara ses planificacions des client i no ses
@@ -508,13 +518,15 @@ public class kVistaPlanificacio {
 
             //Seteja sa Graella amb ses noves tEmissio[]
 
-
+            
             generarGraella(temporal);
 
             if (graella != null)//Pintar-la
             {
                 vPlani.pintarGraella(graella);
             }
+            
+             vPlani.setPreu(CPlani.getPreuPlan(planSelectedID));
         }
     }
     

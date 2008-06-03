@@ -5,14 +5,8 @@
  */
 package vistes;
 
-import domini.tuplaEmissio;
 import java.awt.event.ActionListener;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -36,16 +30,27 @@ public class VistaGenerada extends javax.swing.JDialog {
     }
 
     String getGraellaSelected() {
-        return (String) graella.getValueAt(graella.getSelectedColumn(), graella.getSelectedRow());
+        /* Retorna un String que identifica una Emissio */
+        if (!(graella.getSelectedColumn() == 0 ||  graella.getSelectedColumn() == -1 || graella.getSelectedRow() == -1))
+        return (String) graella.getValueAt(graella.getSelectedRow(), graella.getSelectedColumn());
+        else
+            return null;
+    }
 
+    public int getIndexsSelected() {
+        return llistaPlanificacionsV.getSelectedIndex();
+    }
+
+    void setSelectPlan(int planSelected) {
+        llistaPlanificacionsV.setSelectedIndex(planSelected);
     }
 
     void setSetmana(String setmana) {
         botoSetmana.setText(setmana);
     }
 
-    void setPreu(String preu) {
-        preuTotalV.setText(preu);
+    void setPreu(double preu) {
+        preuTotalV.setText(""+preu);
     }
 
     /** This method is called from within the constructor to
