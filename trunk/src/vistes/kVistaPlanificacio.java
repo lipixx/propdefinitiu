@@ -97,7 +97,7 @@ public class kVistaPlanificacio {
                 try {
                     seleccionatPlanificacio();
                 } catch (ParseException ex) {
-                    Logger.getLogger(kVistaPlanificacio.class.getName()).log(Level.SEVERE, null, ex);
+                    System.out.println("Err selecting plan "+ex.getMessage());
                 }
             }
         });
@@ -166,62 +166,6 @@ public class kVistaPlanificacio {
         });
 
         vPlani.setActions(actions, selPlan);
-    }
-
-    /*
-     * Filtra una llista de noms de programes, donat un periode, segons si son
-     * de format normal, continu o directe.
-     * 
-     * @pre La llistaNoms implicita no es buida
-     * @post A llistaNoms se li eliminen aquells que no es troben dins el periode
-     */
-    private void filtraPeriode() {
-        int mida = llistaProgrames.length;
-        tuplaPrograma aux;
-        String[] patata = new String[mida];
-
-        if (mida > 0) {
-            int nPatates = 0;
-            for (int i = 0; i < mida; i++) {
-
-                aux = CPG.veureFitxa(llistaProgrames[i].toLowerCase());
-                if (aux != null) {
-                    switch (aux.format) {
-                        case 0: //Normal
-
-                            if (aux.dataCad.after(nousCriteris.dataIni)) {
-                                patata[i] = llistaProgrames[i];
-                                nPatates++;
-                            }
-                            break;
-                        case 1: //Continu
-                            if (aux.dataCad.after(nousCriteris.dataIni)) {
-                                patata[i] = llistaProgrames[i];
-                                nPatates++;
-                            }
-                            break;
-                        case 2: //Directe
-                            if (aux.iniciEmissio.after(nousCriteris.dataIni) && aux.iniciEmissio.before(nousCriteris.dataFi) && aux.dataCad.after(nousCriteris.dataIni)) {
-                                patata[i] = llistaProgrames[i];
-                                nPatates++;
-                            }
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }
-            llistaProgrames = new String[nPatates];
-            for (int k = 0; k < nPatates; k++) {
-                llistaProgrames[k] = patata[k];
-            }
-        }
-    }
-
-    private void generarGraella(boolean temporal) throws ParseException {
-        String inici = "" + iniciSetmana.get(Calendar.DAY_OF_MONTH) + "-" + iniciSetmana.get(Calendar.MONTH) + "-" + iniciSetmana.get(Calendar.YEAR);
-        String fi = "" + fiSetmana.get(Calendar.DAY_OF_MONTH) + "-" + fiSetmana.get(Calendar.MONTH) + "-" + fiSetmana.get(Calendar.YEAR);
-        graella = CPlani.genSet(inici, fi, vPlani.getPlanSelected(), temporal);
     }
 
     private void iniDataClient() {
@@ -299,7 +243,7 @@ public class kVistaPlanificacio {
                     if (programesSeleccionats.size() != 0) {
                         llistaPlanificacions = CPlani.gene(programesSeleccionats, nousCriteris);
 
-                        /**Netejem la pantalla*/
+                        /**Netejem la pantalla per posteriors usos*/
                         vSprog.neteja();
                         actLlistaFiltres(0);
                         actLlistaProgrames("tots", "");
@@ -307,7 +251,7 @@ public class kVistaPlanificacio {
                         vSprog.setLlistaFiltres(llistaFiltres);
                         vSprog.clearFitxa();
                         vSprog.setVisible(false);
-                        /**/
+                        /*Fem visible el resum de la planificacio*/
                         vGen.setLocationRelativeTo(vSprog);
                         vGen.setTitle("Planificacio Generada! - Resum");
                         vGen.setLlistaPlans(llistaPlanificacions);
@@ -573,32 +517,7 @@ public class kVistaPlanificacio {
             }
         }
     }
-
-    private void retrocedirSetmana() {
-
-        iniciSetmana.add(Calendar.DAY_OF_MONTH, -7);
-        fiSetmana.add(Calendar.DAY_OF_MONTH, -7);
-
-        String setmana = "" + iniciSetmana.get(Calendar.DAY_OF_MONTH) + "/" + (iniciSetmana.get(Calendar.MONTH) + 1) + "/" + iniciSetmana.get(Calendar.YEAR) + " a " + fiSetmana.get(Calendar.DAY_OF_MONTH) + "/" + (fiSetmana.get(Calendar.MONTH) + 1) + "/" + fiSetmana.get(Calendar.YEAR);
-        vPlani.setSetmana(setmana);
-    }
-
-    private void avancarSetmana() {
-
-        iniciSetmana.add(Calendar.DAY_OF_MONTH, +7);
-        fiSetmana.add(Calendar.DAY_OF_MONTH, +7);
-
-        String setmana = "" + iniciSetmana.get(Calendar.DAY_OF_MONTH) + "/" + (iniciSetmana.get(Calendar.MONTH) + 1) + "/" + iniciSetmana.get(Calendar.YEAR) + " a " + fiSetmana.get(Calendar.DAY_OF_MONTH) + "/" + (fiSetmana.get(Calendar.MONTH) + 1) + "/" + fiSetmana.get(Calendar.YEAR);
-        vPlani.setSetmana(setmana);
-    }
-
-    /** A Partir d'aqui  part de Controlador de vistes de Programes*/
-    public void setLlistaFiltre() {
-        vSprog.clearFitxa();
-        actLlistaFiltres(vSprog.getFClickedInt());
-        vSprog.setLlistaFiltres(llistaFiltres);
-    }
-
+    
     public void seleccionatPrograma(boolean llistaSeleccio) {
         //Agafem nom del programa seleccionat de la llistaSeleccio o de la llistaProgrames:
         String nomP;
@@ -641,6 +560,87 @@ public class kVistaPlanificacio {
             vSprog.setCuadreFitxa(fitxa);
         }
 
+    }
+
+    private void retrocedirSetmana() {
+
+        iniciSetmana.add(Calendar.DAY_OF_MONTH, -7);
+        fiSetmana.add(Calendar.DAY_OF_MONTH, -7);
+
+        String setmana = "" + iniciSetmana.get(Calendar.DAY_OF_MONTH) + "/" + (iniciSetmana.get(Calendar.MONTH) + 1) + "/" + iniciSetmana.get(Calendar.YEAR) + " a " + fiSetmana.get(Calendar.DAY_OF_MONTH) + "/" + (fiSetmana.get(Calendar.MONTH) + 1) + "/" + fiSetmana.get(Calendar.YEAR);
+        vPlani.setSetmana(setmana);
+    }
+
+    private void avancarSetmana() {
+
+        iniciSetmana.add(Calendar.DAY_OF_MONTH, +7);
+        fiSetmana.add(Calendar.DAY_OF_MONTH, +7);
+
+        String setmana = "" + iniciSetmana.get(Calendar.DAY_OF_MONTH) + "/" + (iniciSetmana.get(Calendar.MONTH) + 1) + "/" + iniciSetmana.get(Calendar.YEAR) + " a " + fiSetmana.get(Calendar.DAY_OF_MONTH) + "/" + (fiSetmana.get(Calendar.MONTH) + 1) + "/" + fiSetmana.get(Calendar.YEAR);
+        vPlani.setSetmana(setmana);
+    }
+
+    /**
+     * Filtra una llista de noms de programes, donat un periode, segons si son
+     * de format normal, continu o directe.
+     * 
+     * @pre La llistaNoms implicita no es buida
+     * @post A llistaNoms se li eliminen aquells que no es troben dins el periode
+     */
+    private void filtraPeriode() {
+        int mida = llistaProgrames.length;
+        tuplaPrograma aux;
+        String[] patata = new String[mida];
+
+        if (mida > 0) {
+            int nPatates = 0;
+            for (int i = 0; i < mida; i++) {
+
+                aux = CPG.veureFitxa(llistaProgrames[i].toLowerCase());
+                if (aux != null) {
+                    switch (aux.format) {
+                        case 0: //Normal
+
+                            if (aux.dataCad.after(nousCriteris.dataIni)) {
+                                patata[i] = llistaProgrames[i];
+                                nPatates++;
+                            }
+                            break;
+                        case 1: //Continu
+                            if (aux.dataCad.after(nousCriteris.dataIni)) {
+                                patata[i] = llistaProgrames[i];
+                                nPatates++;
+                            }
+                            break;
+                        case 2: //Directe
+                            if (aux.iniciEmissio.after(nousCriteris.dataIni) && aux.iniciEmissio.before(nousCriteris.dataFi) && aux.dataCad.after(nousCriteris.dataIni)) {
+                                patata[i] = llistaProgrames[i];
+                                nPatates++;
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+            llistaProgrames = new String[nPatates];
+            for (int k = 0; k < nPatates; k++) {
+                llistaProgrames[k] = patata[k];
+            }
+        }
+    }
+
+    private void generarGraella(boolean temporal) throws ParseException {
+        String inici = "" + iniciSetmana.get(Calendar.DAY_OF_MONTH) + "-" + (iniciSetmana.get(Calendar.MONTH)+1) + "-" + iniciSetmana.get(Calendar.YEAR);
+        String fi = "" + fiSetmana.get(Calendar.DAY_OF_MONTH) + "-" + (fiSetmana.get(Calendar.MONTH)+1) + "-" + fiSetmana.get(Calendar.YEAR);
+        graella = CPlani.genSet(inici, fi, vPlani.getPlanSelected(), temporal);
+    }
+    
+        /** A Partir d'aqui  part de Controlador de vistes de Programes*/
+    public void setLlistaFiltre() {
+        vSprog.clearFitxa();
+        actLlistaFiltres(vSprog.getFClickedInt());
+        vSprog.setLlistaFiltres(llistaFiltres);
     }
 
     public void actualitzaLlProgrames() {

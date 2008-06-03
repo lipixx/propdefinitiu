@@ -46,7 +46,7 @@ public class Cliente implements Serializable, ClasseAmbClau<String>{
         ultFact = Calendar.getInstance();
         listFact = new LinkedList<Factura>();
         listPlan = new LinkedList<Planificacio>();
-        testingFactures();
+      //  testingFactures();
 
     }  
     
@@ -59,7 +59,7 @@ public class Cliente implements Serializable, ClasseAmbClau<String>{
         //Cream Emissio
         Calendar data1 = Calendar.getInstance();
         Calendar data2 = (Calendar) data1.clone();
-        data2.set(Calendar.HOUR,6);
+        data2.add(Calendar.MINUTE,20);
         
         float k = 10;
         AltresC programa = new AltresC("Test-1",data1,"Descripcio",k);
@@ -67,24 +67,24 @@ public class Cliente implements Serializable, ClasseAmbClau<String>{
         Emissio emi = new Emissio(data1, true, false, programa,nouFranja,data1,data2);
         //Fi Crear Emissio
         
-        //Creem una nova planificacio amb 10 programes
-       Planificacio P = new Planificacio(data1,data2);
+        Planificacio P;
+        
        for (int ka=0; ka<3; ka++)
        {
-           P = new Planificacio(data1,data2);
-           data2.set(Calendar.HOUR, data2.get(Calendar.HOUR)+1+ka);
-           P.setDataInici(data2);
-           data2.add(Calendar.HOUR, ka);
-           P.setDataFi(data2);
+           Calendar data3 = (Calendar) data2.clone();
+           data3.add(Calendar.MINUTE, 210);
+           P = new Planificacio(data1,data3);
            
         for (int i=0; i<10; i++)
         {
-            programa = new AltresC("Prog " + i +":" + ka,data1,"Descripcio",k);
-            emi = new  Emissio(data1, true, false, programa,nouFranja,data1,data2);
-            //emi.getPrograma().setNom("Test Emission "+ i);
+            programa = new AltresC("Prog Num: "+ i +"-"+ ka, data1,"Descripcio",k);
+            emi = new  Emissio(data1, false, false, programa,nouFranja,data1,data2);
             emi.setPreu(emi.getPreu()+i);
-            
             P.addEmissioPlanificacio(emi);
+            System.out.println("Hora ini "+data1.getTime()+" de prog "+i);
+            System.out.println("Hora Fi"+data2.getTime()+" de prog "+i);
+            data1.add(Calendar.MINUTE, 10);
+            data2.add(Calendar.MINUTE, 20);
         }
            listPlan.add(P);
        }
