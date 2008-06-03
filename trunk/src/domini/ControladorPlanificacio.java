@@ -36,6 +36,9 @@ public class ControladorPlanificacio {
     private Generador generador;
     private boolean criteris = false;
     private float preuMax;
+    SimpleDateFormat formatCalendar = new SimpleDateFormat("dd-MM-yyyy");
+    SimpleDateFormat formatCalendar2 = new SimpleDateFormat("dd/MM/yyyy");
+    SimpleDateFormat formatHora = new SimpleDateFormat("H:mm");
 
     /**/
     public ControladorPlanificacio(RepositoriFranges nRepoFranges, ControladorProgrames CProgs, RepositoriProgrames<String, Programa> repoProgs) {
@@ -50,10 +53,6 @@ public class ControladorPlanificacio {
     }
 
     public String[][] genSet(String inici, String fin, String plani, boolean temporal) throws ParseException {
-
-        SimpleDateFormat formatCalendar = new SimpleDateFormat("dd-MM-yyyy");
-        SimpleDateFormat formatCalendar2 = new SimpleDateFormat("dd/MM/yyyy");
-        SimpleDateFormat formatHora = new SimpleDateFormat("H:mm");
 
         Date ini = formatCalendar.parse(inici);
         Calendar iniSetmana = Calendar.getInstance();
@@ -141,7 +140,7 @@ public class ControladorPlanificacio {
                 } else {
                     dia--;
                 }
-                
+
                 horaInici = mirantEmissio.getHoraInici().get(Calendar.HOUR_OF_DAY);
                 minutInici = mirantEmissio.getHoraInici().get(Calendar.MINUTE);
                 posIni = (horaInici * 6) + (minutInici / 10);
@@ -295,8 +294,7 @@ public class ControladorPlanificacio {
      * @pre nom no es buit
      * @post S'ha canviat la variable global de cActual
      */
-    public void setClient(Cliente nom) 
-    {
+    public void setClient(Cliente nom) {
         cActual = nom;
         llistaPlanificacions = cActual.getLlistaPlan();
     }
@@ -334,8 +332,9 @@ public class ControladorPlanificacio {
      * o a la del client (false).
      * @pre Existeix la planificacio i l'emissio amb nomPrograma com identificador.
      * @post S'ha esborrat de la Planificacio amb clau (dIni,dFi) l'emissio amb clau (nomPrograma)
+     * @return Retorna un bolea cert si s'ha anulat el programa.
      */
-    public void anularEmissio(String nomPrograma, Calendar dIni, Calendar dFi, boolean temporal) {
+    public boolean anularEmissio(String nomPrograma, Calendar dIni, Calendar dFi, boolean temporal) {
         // idPLanificacio son 2 calendars dd/mm/yyyy - dd/mm/yyyy 
         // true implica que es TEMPORAL
 
@@ -355,13 +354,15 @@ public class ControladorPlanificacio {
                 for (int j = 0; j < P.getLlistaEmissions().size() && !trobat; j++) {
                     LinkedList<ServeiPendent> emissionsTemporal = P.getLlistaEmissions();
                     if (emissionsTemporal.get(j).getIdentificador().equals(nomPrograma)) {
-                        emissionsTemporal.remove(emissionsTemporal.get(j));
+                        //Si no queda cap emissio, eliminar la planificacio de l'usuari
+                        if (P.delEmissioPlanificacio(emissionsTemporal.get(j)) == 0)
+                                llistaPlanisTemporal.remove(P);
                         trobat = true;
                     }
                 }
             }
         }
-
+        return trobat;
     }
 
     public void contractar(Calendar dIni, Calendar dFi) {
@@ -462,9 +463,25 @@ public class ControladorPlanificacio {
         return sortida;
     }
 
+    public double getPreuPlan(String planSelectedID) throws ParseException {
+        
+        Date iniP = formatCalendar2.parse(planSelectedID.substring(0, 10));
+        Calendar iniPlaniAux = Calendar.getInstance();
+        iniPlaniAux.setTime(iniP);
+
+        Date fiP = formatCalendar2.parse(planSelectedID.substring(13, 23));
+        Calendar fiPlaniAux = Calendar.getInstance();
+        fiPlaniAux.setTime(fiP);
+
+        Planificacio P = getPlanificacio(iniPlaniAux,fiPlaniAux);
+        if (P == null) return 0;
+        else return P.getPreu();
+    
+    }
+
     private Planificacio getPlanificacio(Calendar dataIni, Calendar dataFi) {
         for (Planificacio p : llistaPlanificacions) {
-            if (p.getDataInici().equals(dataIni) && p.getDataFi().equals(dataFi)) {
+            if (sonIguals(p.getDataInici(),dataIni) && sonIguals(p.getDataFi(),dataFi)) {
                 return p;
             }
         }

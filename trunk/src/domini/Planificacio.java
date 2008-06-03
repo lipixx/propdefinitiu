@@ -23,12 +23,14 @@ public class Planificacio implements Serializable{
     private int id;
     private Calendar dataInici;
     private Calendar dataFi;
+    private double preu;
     private LinkedList<ServeiPendent> llistaEmissions;
 
     public Planificacio(Calendar novaDataInici, Calendar novaDataFi) {
         this.id=idglobal++;
         this.dataInici = novaDataInici;
         this.dataFi = novaDataFi;
+        preu = 0;
         llistaEmissions = new LinkedList<ServeiPendent>();
     }
  
@@ -36,11 +38,23 @@ public class Planificacio implements Serializable{
          return id;
      }
     
+    public double getPreu()
+    {
+        return preu;
+    }
 
     //Afegida per jo
     public void addEmissioPlanificacio(ServeiPendent servei)
     {
         llistaEmissions.add(servei);
+        preu+=servei.getPreu();
+    }
+    
+    public int delEmissioPlanificacio(ServeiPendent servei)
+    {
+        llistaEmissions.remove(servei);
+        preu -= servei.getPreu();
+        return llistaEmissions.size();
     }
     /**
      *  Consultora de l'atribut dataInici.

@@ -117,12 +117,26 @@ public class kVistes {
                             null,
                             null,
                             "RepositoriProgramesEXPIMP.db");
+
+                    String rutaFTemes = (String) JOptionPane.showInputDialog(
+                            null,
+                            "Introdueix ara la ruta del fitxer de les tematiques associades:\n",
+                            "Importa Repositori de Programes",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null,
+                            null,
+                            "RepositoriTemesEXPIMP.db");
                     if (rutaFitxer != null) {
                         CPG.importarLlistaProgrames(rutaFitxer);
                         kvGProgs.actualitzaVistaGProgrames();
 
                         JOptionPane.showMessageDialog(null, "S'ha importat: " + rutaFitxer + " !");
                     }
+                    if (rutaFTemes != null) {
+                        CPG.importaTemes(rutaFTemes);
+                        kvGProgs.actualitzaVistaGProgrames();
+                    }
+
                 } catch (GestorDiscException ex) {
                     JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
                 }
@@ -146,7 +160,7 @@ public class kVistes {
                 try {
                     String rutaFitxer = (String) JOptionPane.showInputDialog(
                             null,
-                            "Introdueix el la ruta del fitxer:\n",
+                            "Introdueix la ruta del fitxer:\n",
                             "Exporta el Repositori de Programes",
                             JOptionPane.PLAIN_MESSAGE,
                             null,
@@ -154,9 +168,21 @@ public class kVistes {
                             "RepositoriProgramesEXPIMP.db");
 
                     CPG.exportarLlProgrames(rutaFitxer);
-                    JOptionPane.showMessageDialog(null, "S'ha guardat el repositori de programes " +
-                            "al fitxer " + rutaFitxer);
+                    
+                    String rutaFTemes = (String) JOptionPane.showInputDialog(
+                            null,
+                            "Introdueix la ruta del fitxer de temes associats:\n",
+                            "Exporta el Repositori de Programes",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null,
+                            null,
+                            "RepositoriTemesEXPIMP.db");
 
+                    CPG.exportarTemes(rutaFTemes);
+
+                    JOptionPane.showMessageDialog(null, "S'ha guardat el repositori de programes " +
+                            "al fitxer " + rutaFitxer +"\n amb els temes associats al fitxer "+rutaFTemes);
+                    
                 } catch (GestorDiscException ex) {
                     JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
                 }
@@ -271,18 +297,18 @@ public class kVistes {
             }
         });
 
-               // Sincronizacion cliente actual facturacion //
-       accions[11] = (new ActionListener() {
+        // Sincronizacion cliente actual facturacion //
+        accions[11] = (new ActionListener() {
 
             public void actionPerformed(ActionEvent arg0) {
                 try {
                     kvFact.inicializarListaFacturas();
                 } catch (Exception ex) {
-                    System.out.println("Error syncing Fact "+ex.getMessage());
+                    System.out.println("Error syncing Fact " + ex.getMessage());
                 }
             }
         });
-        
+
         /*Seleccio del client actual*/
         ListSelectionListener LSL = new ListSelectionListener() {
 
@@ -302,9 +328,9 @@ public class kVistes {
                             de domini, per tant ara nomes falta actualitzar les vistes que
                             faixin servir el clientActual de CD*/
 
-                           kvFact.actualitzarVFacturacio();
-                           kvPlan.actualitzaVista();
-                           
+                            kvFact.actualitzarVFacturacio();
+                            kvPlan.actualitzaVista(false);
+
                             /*Setejem la fitxa i les fact pendents de la finestra principal*/
                             vPrincipal.setFitxa(informacio[0]);
                             vPrincipal.setFacturesPendents(informacio[1]);
