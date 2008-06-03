@@ -300,9 +300,9 @@ public class ControladorPlanificacio {
     /**S'ha canviat el client actual del domini, per aixo
      * se li avisa n'aquest controlador.
      * 
-     * @param nouClientActual El nou client del que farem les gestions a partir d'ara
-     * @pre nouClientActual no es buit
-     * @post S'ha canviat la variable global de clientActual
+     * @param nom es el nou client del que farem les gestions a partir d'ara
+     * @pre nom no es buit
+     * @post S'ha canviat la variable global de cActual
      */
     public void setClient(Cliente nom) {
         //S'han de "resetejar" ses llistes internes d'aquest controlador
@@ -312,6 +312,7 @@ public class ControladorPlanificacio {
         //de guardar cada vegada.
         cActual = nom;
         llistaPlanificacions = cActual.getLlistaPlan();
+        
     }
 
     public Cliente getClient() {
