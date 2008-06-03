@@ -75,7 +75,7 @@ public class Cliente implements Serializable, ClasseAmbClau<String>{
            data3.add(Calendar.MINUTE, 210);
            P = new Planificacio(data1,data3);
            
-        for (int i=0; i<10; i++)
+        for (int i=0; i<1; i++)
         {
             programa = new AltresC("Prog Num: "+ i +"-"+ ka, data1,"Descripcio",k);
             emi = new  Emissio(data1, false, false, programa,nouFranja,data1,data2);
