@@ -60,64 +60,57 @@ public class ControladorPlanificacio {
         iniSetmana.setTime(ini);
         iniSetmana.set(Calendar.HOUR, 0);
         iniSetmana.set(Calendar.MINUTE, 0);
-        iniSetmana.set(Calendar.SECOND,0);
-        
-        
+        iniSetmana.set(Calendar.SECOND, 0);
+
+
         Date fi = formatCalendar.parse(fin);
         Calendar fiSetmana = Calendar.getInstance();
         fiSetmana.setTime(fi);
         fiSetmana.set(Calendar.HOUR, 23);
-        fiSetmana.set(Calendar.MINUTE,59);
+        fiSetmana.set(Calendar.MINUTE, 59);
         fiSetmana.set(Calendar.SECOND, 59);
-        
+
         Date iniP = formatCalendar2.parse(plani.substring(0, 10));
         Calendar iniPlaniAux = Calendar.getInstance();
         iniPlaniAux.setTime(iniP);
-        
-        
+
+
         //Comprovar que es 23 esta be, que no es surti de rang
         Date fiP = formatCalendar2.parse(plani.substring(13, 23));
         Calendar fiPlaniAux = Calendar.getInstance();
         fiPlaniAux.setTime(fiP);
-        
+
         Calendar iniPlani;
         Calendar fiPlani;
-        
-        LinkedList<Planificacio> llistaP;
-        if (temporal) {
-            llistaP = llistaPlanificacions;
-        } else {
+
+        LinkedList<Planificacio> llistaP = llistaPlanificacions;
+
+        if (!temporal) {
             llistaP = cActual.getLlistaPlan();
         }
-        Planificacio p = null;
+
+        Planificacio P = null;
         boolean trobat = false;
+
         for (int i = 0; i < llistaP.size() && !trobat; i++) {
-            //Aço seteja es mateixos milisegons, hores, minuts...
-            iniPlani = (Calendar) llistaP.get(i).getDataInici().clone();
-            iniPlani.set(Calendar.DATE, iniPlaniAux.get(Calendar.DATE));
-            iniPlani.set(Calendar.MONTH,iniPlaniAux.get(Calendar.MONTH));
-            iniPlani.set(Calendar.YEAR,iniPlaniAux.get(Calendar.YEAR));
-            
-            fiPlani = (Calendar) llistaP.get(i).getDataFi().clone();
-            fiPlani.set(Calendar.DATE, fiPlaniAux.get(Calendar.DATE));
-            fiPlani.set(Calendar.MONTH, fiPlaniAux.get(Calendar.MONTH));
-            fiPlani.set(Calendar.YEAR, fiPlaniAux.get(Calendar.YEAR));
-            
-            if (llistaP.get(i).getDataInici().equals(iniPlani) 
-                    && llistaP.get(i).getDataFi().equals(fiPlani))   
-            {
+            //Obtenim s'identificador de planificacio que estem mirant
+            iniPlani = (Calendar) llistaP.get(i).getDataInici();
+            fiPlani = (Calendar) llistaP.get(i).getDataFi();
+
+
+            if (sonIguals(iniPlaniAux, iniPlani) && sonIguals(fiPlaniAux, fiPlani)) {
                 trobat = true;
-                p = llistaP.get(i);
+                P = llistaP.get(i);
             }
         }
+
         String[][] graella = new String[144][8];
-        for (int o=0; o<144; o++)
-        {
-            for (int l=0; l<8; l++)
-            {
+        for (int o = 0; o < 144; o++) {
+            for (int l = 0; l < 8; l++) {
                 graella[o][l] = "-";
             }
         }
+
         int comptador = 0;
         int dia, horaInici, minutInici, horaFi, minutFi, posIni, posFi;
         boolean diaSeg = false;
@@ -132,31 +125,29 @@ public class ControladorPlanificacio {
 
         //Rellenem sa primera columna amb ses hores:
         while (iniDia.before(fiDia) && comptador < 144) {
-
             graella[comptador][0] = "" + iniDia.get(Calendar.HOUR_OF_DAY) + ":" + iniDia.get(Calendar.MINUTE);
             iniDia.add(Calendar.MINUTE, +10);
             comptador++;
         }
 
-        for (int j = 0; j < p.getLlistaEmissions().size(); j++) {
+        for (int j = 0; j < P.getLlistaEmissions().size(); j++) {
+            Emissio mirantEmissio = (Emissio) P.getLlistaEmissions().get(j);
 
-                Emissio temp = (Emissio) p.getLlistaEmissions().get(j);
-            if (!temp.getDataEmissio().before(iniSetmana) && !(temp.getDataEmissio().after(fiSetmana))
-                        || temp.getDataEmissio().equals(iniSetmana) 
-                        || temp.getDataEmissio().equals(fiSetmana) /* || true*/) {
+            if (mirantEmissio.getDataEmissio().after(iniSetmana) && (mirantEmissio.getDataEmissio().before(fiSetmana)) || mirantEmissio.getDataEmissio().equals(iniSetmana) || mirantEmissio.getDataEmissio().equals(fiSetmana) /* || true*/) {
 
-                dia = temp.getDataEmissio().get(Calendar.DAY_OF_WEEK);
+                dia = mirantEmissio.getDataEmissio().get(Calendar.DAY_OF_WEEK);
                 if (dia == 1) {
                     dia = 7;
                 } else {
-                    dia++;
+                    dia--;
                 }
-                horaInici = temp.getHoraInici().get(Calendar.HOUR_OF_DAY);
-                minutInici = temp.getHoraInici().get(Calendar.MINUTE);
+                
+                horaInici = mirantEmissio.getHoraInici().get(Calendar.HOUR_OF_DAY);
+                minutInici = mirantEmissio.getHoraInici().get(Calendar.MINUTE);
                 posIni = (horaInici * 6) + (minutInici / 10);
 
-                horaFi = temp.getHoraFi().get(Calendar.HOUR);
-                minutFi =temp.getHoraFi().get(Calendar.MINUTE);
+                horaFi = mirantEmissio.getHoraFi().get(Calendar.HOUR);
+                minutFi = mirantEmissio.getHoraFi().get(Calendar.MINUTE);
                 posFi = (horaFi * 6) + (minutFi / 10);
 
                 if (posIni > posFi) {
@@ -165,9 +156,9 @@ public class ControladorPlanificacio {
                     diaSeg = false;
                 }
 
-                while (posIni < posFi || (posIni > posFi && diaSeg) || (diaSeg && posIni > 144)) {
-                    String nom = temp.getPrograma().getNom();
-                    if (diaSeg && posIni > 144) {
+                while (posIni < posFi || ((posIni > posFi) && diaSeg) || (diaSeg && (posIni > 143))) {
+                    String nom = mirantEmissio.getPrograma().getNom();
+                    if (diaSeg && (posIni > 143)) {
                         dia++;
                         diaSeg = false;
                         posIni = 0;
@@ -304,55 +295,68 @@ public class ControladorPlanificacio {
      * @pre nom no es buit
      * @post S'ha canviat la variable global de cActual
      */
-    public void setClient(Cliente nom) {
-        //S'han de "resetejar" ses llistes internes d'aquest controlador
-        //Petava perque no es podia fer casting de Array a Linked. Es podia
-        //fer una new LinkedList(ArrayList), pero tu lo que vols es fer feina
-        //directament amb sa llista de dins es client, aixi no has de preocuparte
-        //de guardar cada vegada.
+    public void setClient(Cliente nom) 
+    {
         cActual = nom;
         llistaPlanificacions = cActual.getLlistaPlan();
-        
     }
 
     public Cliente getClient() {
         return cActual;
     }
 
+    /**
+     * Agafa dos calendaris i comprova si son iguals amb Any, Mes i Dia unicament
+     * @param data1 Data del calendari 1 que volem comparar amb el calendari 2
+     * @param data2 Data del calendari 2 que volem comparar amb el calendari 1
+     * @return Cert si son iguals, fals altrament.
+     */
+    public boolean sonIguals(Calendar data1, Calendar data2) {
+        int any1 = data1.get(Calendar.YEAR);
+        int mes1 = data1.get(Calendar.MONTH);
+        int dia1 = data1.get(Calendar.DATE);
+        int any2 = data2.get(Calendar.YEAR);
+        int mes2 = data2.get(Calendar.MONTH);
+        int dia2 = data2.get(Calendar.DATE);
+
+        return (any1 == any2 && dia1 == dia2 && mes1 == mes2);
+    }
+
+    /**
+     * Agafa l'identificador d'una planificacio t.q. dIni i dFi, i un nomPrograma. Depenent
+     * del boolea temporal cercara la planificacio a la llista temporal de planificacions acabades
+     * de generar, o a la llista de planificacions del client. Quan trobi aquesta planificacio,
+     * cercara l'emissio que te per indentificador el nomPrograma, i l'esborrara d'aquesta Planificacio.
+     * @param nomPrograma Identifica la emissio a esborrar de una planificacio.
+     * @param dIni Identificador dataInici de la Planificacio
+     * @param dFi Identificador dataFi de la Planificacio
+     * @param temporal Indicador de si s'ha de cercar a la llista temporal del generador (true)
+     * o a la del client (false).
+     * @pre Existeix la planificacio i l'emissio amb nomPrograma com identificador.
+     * @post S'ha esborrat de la Planificacio amb clau (dIni,dFi) l'emissio amb clau (nomPrograma)
+     */
     public void anularEmissio(String nomPrograma, Calendar dIni, Calendar dFi, boolean temporal) {
-        //Transformar idPlanificacio a Calendari....
         // idPLanificacio son 2 calendars dd/mm/yyyy - dd/mm/yyyy 
         // true implica que es TEMPORAL
+
         boolean trobat = false;
-        if (temporal == true) {
-            for (int i = 0; i <
-                    llistaPlanificacions.size() && !trobat; i++) {
-                if (llistaPlanificacions.get(i).getDataInici().equals(dIni) && llistaPlanificacions.get(i).getDataFi().equals(dFi)) {
-                    for (int j = 0; j <
-                            llistaPlanificacions.get(i).getLlistaEmissions().size() && !trobat; j++) {
-                        if (((Emissio) llistaPlanificacions.get(i).getLlistaEmissions().get(j)).getPrograma().equals(nomPrograma)) {
-                            llistaPlanificacions.get(i).getLlistaEmissions().remove(llistaPlanificacions.get(i).getLlistaEmissions().get(j));
-                            //  llistaPlanificacions.get(i).getLlistaEmissions().remove(j);
-                            trobat =
-                                    true;
+        LinkedList<Planificacio> llistaPlanisTemporal = llistaPlanificacions;
 
-                        }
+        if (!temporal) {
+            llistaPlanisTemporal = cActual.getLlistaPlan();
+        }
 
-                    }
-                }
-            }
-        } else {
-            for (int i = 0; i <
-                    cActual.getLlistaPlan().size() && !trobat; i++) {
-                if (cActual.getLlistaPlan().get(i).getDataInici().equals(dIni) && cActual.getLlistaPlan().get(i).getDataFi().equals(dFi)) {
-                    for (int j = 0; j <
-                            cActual.getLlistaPlan().get(i).getLlistaEmissions().size() && !trobat; j++) {
-                        if (((Emissio) cActual.getLlistaPlan().get(i).getLlistaEmissions().get(j)).getPrograma().getNom().equals(nomPrograma)) {
-                            cActual.getLlistaPlan().get(i).getLlistaEmissions().remove(cActual.getLlistaPlan().get(i).getLlistaEmissions().get(j));
-                            trobat =
-                                    true;
-                        }
+        for (int i = 0; i < llistaPlanisTemporal.size() && !trobat; i++) {
+            Planificacio P = llistaPlanisTemporal.get(i);
+            Calendar pIni = P.getDataInici();
+            Calendar pFi = P.getDataFi();
 
+            if (sonIguals(dIni, pIni) && sonIguals(dFi, pFi)) {
+                for (int j = 0; j < P.getLlistaEmissions().size() && !trobat; j++) {
+                    LinkedList<ServeiPendent> emissionsTemporal = P.getLlistaEmissions();
+                    if (emissionsTemporal.get(j).getIdentificador().equals(nomPrograma)) {
+                        emissionsTemporal.remove(emissionsTemporal.get(j));
+                        trobat = true;
                     }
                 }
             }
@@ -391,15 +395,15 @@ public class ControladorPlanificacio {
                 llistaPClient.size(); i++) {
 
             if ((((Planificacio) llistaPClient.get(i)).getDataInici()).get(Calendar.MONTH) < 10) {
-                mesIni = "0" + ((((Planificacio) llistaPClient.get(i)).getDataInici()).get(Calendar.MONTH)+1);
+                mesIni = "0" + ((((Planificacio) llistaPClient.get(i)).getDataInici()).get(Calendar.MONTH) + 1);
             } else {
-                mesIni = "" + ((((Planificacio) llistaPClient.get(i)).getDataInici()).get(Calendar.MONTH)+1);
+                mesIni = "" + ((((Planificacio) llistaPClient.get(i)).getDataInici()).get(Calendar.MONTH) + 1);
             }
 
             if ((((Planificacio) llistaPClient.get(i)).getDataFi()).get(Calendar.MONTH) < 10) {
-                mesFi = "0" + ((((Planificacio) llistaPClient.get(i)).getDataFi()).get(Calendar.MONTH)+1);
+                mesFi = "0" + ((((Planificacio) llistaPClient.get(i)).getDataFi()).get(Calendar.MONTH) + 1);
             } else {
-                mesFi = "" + ((((Planificacio) llistaPClient.get(i)).getDataFi()).get(Calendar.MONTH)+1);
+                mesFi = "" + ((((Planificacio) llistaPClient.get(i)).getDataFi()).get(Calendar.MONTH) + 1);
             }
 
             if ((((Planificacio) llistaPClient.get(i)).getDataInici()).get(Calendar.DAY_OF_MONTH) < 10) {
@@ -421,7 +425,6 @@ public class ControladorPlanificacio {
     }
 
     /*Poden ser utils:*/
-    
     /*
      * Donada una dataInici i una dataFi, que seran l'"ID" de la planificacio, i un boolea
      * que ens dira si s'ha de cercar en el client o en la llista generade per el generador,
