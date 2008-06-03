@@ -78,8 +78,7 @@ public class kVistaPlanificacio {
         vPlani.setLlistaPlans(llistaPlanificacions);
     }
 
-    public void actualitzaVista() throws ParseException 
-    {
+    public void actualitzaVista() throws ParseException {
         setLlistaPlani();
         vPlani.setGraella();
     }
@@ -107,9 +106,13 @@ public class kVistaPlanificacio {
             /* Nova planificacio */
 
             public void actionPerformed(ActionEvent e) {
-                vCriteris.setLocationRelativeTo(vPlani);
-                vCriteris.setTitle("Definir criteris planificacio");
-                vCriteris.setVisible(true);
+                if (CPlani.getClient() != null) {
+                    vCriteris.setLocationRelativeTo(vPlani);
+                    vCriteris.setTitle("Definir criteris planificacio");
+                    vCriteris.setVisible(true);
+                } else {
+                    JOptionPane.showMessageDialog(null, "S'ha de seleccioar un client per crear una planificacio nova");
+                }
             }
         });
 
@@ -415,7 +418,7 @@ public class kVistaPlanificacio {
                 try {
                     seleccionatPlanGen();
                 } catch (ParseException ex) {
-                    System.out.println("Error L418 kVistaPlanif: "+ex.getMessage());
+                    System.out.println("Error L418 kVistaPlanif: " + ex.getMessage());
                 }
             }
         });
@@ -423,14 +426,13 @@ public class kVistaPlanificacio {
         actions[0] = (new ActionListener() {
             /* Setmana Anterior */
 
-            public void actionPerformed(ActionEvent e) 
-            {
+            public void actionPerformed(ActionEvent e) {
                 retrocedirSetmana();
                 if (vGen.getPlanSelected() != null) {
                     try {
                         seleccionatPlanGen();
                     } catch (ParseException ex) {
-                       System.out.println("Error L433 kVistaPlanif in retrocedirSetmana..: "+ex.getMessage());
+                        System.out.println("Error L433 kVistaPlanif in retrocedirSetmana..: " + ex.getMessage());
                     }
                 }
 
@@ -446,7 +448,7 @@ public class kVistaPlanificacio {
                     try {
                         seleccionatPlanGen();
                     } catch (ParseException ex) {
-                       System.out.println("Error L450 kVistaPlanif in avansarSetmana..: "+ex.getMessage());
+                        System.out.println("Error L450 kVistaPlanif in avansarSetmana..: " + ex.getMessage());
                     }
                 }
 
@@ -507,11 +509,11 @@ public class kVistaPlanificacio {
                         dFi.setTime(dateFi);
 
                         CPlani.contractar(dIni, dFi);
-                    // cerca sa planificacio de sa llista temporal i fa un client.addPlanificacio(plani);
-                        
+                        // cerca sa planificacio de sa llista temporal i fa un client.addPlanificacio(plani);
+
                         vGen.setVisible(false);
                         actualitzaVista();
-                        
+
                     } catch (ParseException ex) {
                         System.out.println("Error: L 372");
                     }
@@ -531,46 +533,44 @@ public class kVistaPlanificacio {
         // generarGraella();
         // vPlanGen.pintarGraella(graella);
         // generar graella amb akesta tupla demissions (segons la setmana indicada en globals)
-        if (vGen.getPlanSelected()!=null)
-        {
-        initSetmana();
+        if (vGen.getPlanSelected() != null) {
+            initSetmana();
 
-        //Aixo vol dir que cercara ses planificacions des client i no ses
-        //generades per s'algoritme
-        boolean temporal = true;
+            //Aixo vol dir que cercara ses planificacions des client i no ses
+            //generades per s'algoritme
+            boolean temporal = true;
 
-        //Seteja sa Graella amb ses noves tEmissio[]
-       
+            //Seteja sa Graella amb ses noves tEmissio[]
 
-        generarGraella(temporal);
 
-        if (graella != null)//Pintar-la
-        {
-            vGen.pintarGraella(graella);
+            generarGraella(temporal);
+
+            if (graella != null)//Pintar-la
+            {
+                vGen.pintarGraella(graella);
+            }
         }
-        }
-    
+
     }
 
     private void seleccionatPlanificacio() throws ParseException {
-        
-        if (vPlani.getPlanSelected()!=null)
-        {
-        initSetmana();
 
-        //Aixo vol dir que cercara ses planificacions des client i no ses
-        //generades per s'algoritme
-        boolean temporal = false;
+        if (vPlani.getPlanSelected() != null) {
+            initSetmana();
 
-        //Seteja sa Graella amb ses noves tEmissio[]
-       
+            //Aixo vol dir que cercara ses planificacions des client i no ses
+            //generades per s'algoritme
+            boolean temporal = false;
 
-        generarGraella(temporal);
+            //Seteja sa Graella amb ses noves tEmissio[]
 
-        if (graella != null)//Pintar-la
-        {
-            vPlani.pintarGraella(graella);
-        }
+
+            generarGraella(temporal);
+
+            if (graella != null)//Pintar-la
+            {
+                vPlani.pintarGraella(graella);
+            }
         }
     }
 
