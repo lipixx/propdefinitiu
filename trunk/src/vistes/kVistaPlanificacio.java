@@ -104,12 +104,13 @@ public class kVistaPlanificacio {
             /* Nova planificacio */
 
             public void actionPerformed(ActionEvent e) {
-                if (CPlani.getClient() != null) {
+                if (CPlani.getClient() != null && CPG.getNProgs()!=0 && CPG.getNFranges()!=0) {
                     vCriteris.setLocationRelativeTo(vPlani);
                     vCriteris.setTitle("Definir criteris planificacio");
                     vCriteris.setVisible(true);
                 } else {
-                    JOptionPane.showMessageDialog(null, "S'ha de seleccioar un client per crear una planificacio nova");
+                    JOptionPane.showMessageDialog(null, "Comprova que: \n - Has seleccionat un client"+
+                            "\n - Hi ha algun programa al repositori \n - Ha alguna franja definida");
                 }
             }
         });
@@ -330,43 +331,64 @@ public class kVistaPlanificacio {
 
         ActionListener actions = (new ActionListener() {
 
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    nousCriteris = vCriteris.getCriteris();
-                    if (nousCriteris != null && nousCriteris.autoGen == false) {
-
-                        vSprog.setLocationRelativeTo(vCriteris);
-                        vSprog.setTitle("Seleccionar programes");
-                        initVistaSelectProg();
-                        if (llistaProgrames.length == 0) {
-                            JOptionPane.showMessageDialog(null, "Atenció, no hi ha cap programa en el període especificat." +
-                                    "\n Llista Buida.");
-                        } else {
-                            vCriteris.setVisible(false);
-                            vSprog.setVisible(true);
-                        }
-                    } else if (nousCriteris.autoGen == true) {
-                        String setmana = "" + iniciSetmana.get(Calendar.DAY_OF_MONTH) + "/" + (iniciSetmana.get(Calendar.MONTH) + 1) + "/" + iniciSetmana.get(Calendar.YEAR) + " a " + fiSetmana.get(Calendar.DAY_OF_MONTH) + "/" + (fiSetmana.get(Calendar.MONTH) + 1) + "/" + fiSetmana.get(Calendar.YEAR);
-                        vGen.setSetmana(setmana);
-                        vGen.setLocationRelativeTo(vSprog);
-                        vGen.setTitle("Planificacio Generada! - Resum");
-
-                        llistaPlanificacions = CPlani.getLlistaPlanificacions(true);
-                        vGen.setLlistaPlans(llistaPlanificacions);
-                        vGen.setVisible(true);
-                        vCriteris.setVisible(false);
-                    }
-
-                } catch (ParseException ex) {
-                    System.out.println("Finestra de: Format incorrecte");
-                    JOptionPane.showMessageDialog(null, "Format incorrecte");
-                //Logger.getLogger(kVistaPlanificacio.class.getName()).log(Level.SEVERE, null, ex);
-                }
+            //Boto d'acceptar criteris
+            public void actionPerformed(ActionEvent arg0) {
+                clicatAcceptCriteris();
             }
         });
 
-
         vCriteris.setActions(actions);
+    }
+
+    /**
+     * Aquesta funcio realitza l'accio que es portara a terme quan s'hagi clicat
+     * el boto "D'acord" a la finestra de definicio de criteris. Si s'ha seleccionat
+     * com a criteri l'autogeneracio, es generaran planificacions i es pasara 
+     * a la pantalla de veure les planificacions generades.
+     * Altrament es pasara a la pantalla de seleccio de programes.
+     */
+    private void clicatAcceptCriteris() {
+        try {
+            nousCriteris = vCriteris.getCriteris();
+            if (nousCriteris != null && nousCriteris.autoGen == false) {
+
+                vSprog.setLocationRelativeTo(vCriteris);
+                vSprog.setTitle("Seleccionar programes");
+                initVistaSelectProg();
+                if (llistaProgrames.length == 0) {
+                    JOptionPane.showMessageDialog(null, "Atenció, no hi ha cap programa en el període especificat." +
+                            "\n Llista Buida.");
+                } else {
+                    vCriteris.setVisible(false);
+                    vSprog.setVisible(true);
+                }
+            } else if (nousCriteris.autoGen == true) {
+                String setmana = "" + iniciSetmana.get(Calendar.DAY_OF_MONTH) + "/" + (iniciSetmana.get(Calendar.MONTH) + 1) +
+                        "/" + iniciSetmana.get(Calendar.YEAR) + " a " + fiSetmana.get(Calendar.DAY_OF_MONTH) +
+                        "/" + (fiSetmana.get(Calendar.MONTH) + 1) + "/" + fiSetmana.get(Calendar.YEAR);
+                vGen.setSetmana(setmana);
+                vGen.setLocationRelativeTo(vSprog);
+                vGen.setTitle("Planificacio Generada! - Resum");
+
+                //Si s'ha definit "AutoGeneracio" hi ha que fer la generacio a partir
+                // de tots els programes possibles.
+                String temp[] = CPG.getllistaFiltrada("tots", "");
+                programesSeleccionats = new Vector<String>();
+                for (int i = 0; i < temp.length; i++) {
+                    programesSeleccionats.add(temp[i]);
+                }
+                //
+                llistaPlanificacions = CPlani.gene(programesSeleccionats, nousCriteris);
+                vGen.setLlistaPlans(llistaPlanificacions);
+                vCriteris.setVisible(false);
+                vGen.setVisible(true);
+
+            }
+
+        } catch (ParseException ex) {
+            JOptionPane.showMessageDialog(null, "Format incorrecte");
+        }
+
     }
 
     private void initVistaGenerat() {

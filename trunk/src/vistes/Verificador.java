@@ -1,6 +1,12 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * La classe Verificador ens servira per assignar a un JFormattedTextField, un verificador
+ * de dades. Aquest verificador s'encarrega de mirar si el que s'ha introduit a la caixa
+ * de texte es correcte, avisant si no ho es.
+ * 
+ * @author  Felip Moll 41743858P
+ * @version 1.0, 6 Juny 2008 
+ * 
+ * Versio Final
  */
 package vistes;
 
@@ -10,24 +16,22 @@ import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author lipi
- */
+
 public class Verificador extends InputVerifier {
 
     public boolean verify(JComponent input) 
     {
+        /**Comprovem si l'input es de tipus JFormattedTextField*/
         if (input instanceof JFormattedTextField) 
         {
+            //Assignem un formatejador
             JFormattedTextField ftf = (JFormattedTextField) input;
-            JFormattedTextField.AbstractFormatter formatter =
-                    ftf.getFormatter();
+            JFormattedTextField.AbstractFormatter formatter = ftf.getFormatter();
             if (formatter != null) {
+                //Agafem el text de la caixa, i comprovem
                 String texte = ftf.getText();
                 try {
                     formatter.stringToValue(texte);
-                  //JOptionPane.showMessageDialog(null,"Format de la data correcte.");
                     return true;
                 } catch (ParseException pe) {
                     JOptionPane.showMessageDialog(null,"Format de la data incorrecte!");

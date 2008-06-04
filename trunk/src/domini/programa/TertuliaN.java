@@ -3,7 +3,7 @@
  * de programa que son de categoria Tertulia i format Normal.
  * 
  * @author  Felip Moll 41743858P
- * @version 2.0, 30 Abril 2008 
+ * @version 1.0, 7 Juny 2008 
  * 
  *
  */

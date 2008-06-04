@@ -20,9 +20,9 @@
  * son correctes.
  *
  * @author  Felip Moll
- * @version 0.1, 30 Maig 2008 
+ * @version 1.0, 6 Juny 2008 
  * 
- * Versió #2a Entrega#
+ *  Versio final
  */
 package dades;
 

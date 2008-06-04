@@ -1,7 +1,10 @@
-/*
- * AfegirPrograma.java
- *
- * Created on 26 / maig / 2008, 22:55
+/**
+ * La classe vAfegirPrograma presenta la finestra del formulari que servira
+ * tant per Afegir un nou programa com per Modificar-lo.
+ * 
+ * @author  Felip Moll 41743858P
+ * @version 1.0, 6 Juny 2008 
+ * 
  */
 package vistes;
 
@@ -18,24 +21,188 @@ import javax.swing.JOptionPane;
 import javax.swing.text.DateFormatter;
 import javax.swing.text.NumberFormatter;
 
-/**
- *
- * @author  lipi
- */
 public class vAfegirPrograma extends javax.swing.JDialog {
 
     tuplaPrograma nouPrograma;
 
-    /** Creates new form AfegirPrograma */
     public vAfegirPrograma(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
 
+    /**Inicialitzadores i setejadores*/
     public void setActions(ActionListener actionListener) {
         dacord.addActionListener(actionListener);
     }
 
+    public void setDadesMod(tuplaPrograma dadesP) {
+        if (dadesP != null) {
+            nom.setText(dadesP.nom);
+            nom.setEditable(false);
+            llistaCategories.setEnabled(false);
+            llistaFormats.setEnabled(false);
+
+            descripcio.setText(dadesP.descripcio);
+            preu.setValue(dadesP.preu);
+
+            int dia = dadesP.dataCad.get(Calendar.DAY_OF_MONTH);
+            int mes = dadesP.dataCad.get(Calendar.MONTH);
+            int any = dadesP.dataCad.get(Calendar.YEAR);
+            dataC.setText(dia + "/" + mes + "/" + any);
+
+            if (dadesP.format == 2 || dadesP.format == 0) {
+                duracio.setValue(dadesP.duracio);
+            }
+
+            if (dadesP.format == 2) {
+                dia = dadesP.iniciEmissio.get(Calendar.DAY_OF_MONTH);
+                mes = dadesP.iniciEmissio.get(Calendar.MONTH);
+                any = dadesP.iniciEmissio.get(Calendar.YEAR);
+                int horax = dadesP.iniciEmissio.get(Calendar.HOUR_OF_DAY);
+                int minuts = dadesP.iniciEmissio.get(Calendar.MINUTE);
+
+                dIniEmissio.setText(dia + "/" + mes + "/" + any);
+                hora.setText(horax + ":" + minuts);
+            }
+
+            llistaFormats.setSelectedIndex(dadesP.format);
+
+            switch (dadesP.format) {
+                //Normal
+                case 0:
+                    switch (dadesP.categoria) {
+                        case 0:
+                            //Altres
+                            llistaCategories.setSelectedIndex(0);
+                            break;
+                        case 1:
+                            //Adults
+                            llistaCategories.setSelectedIndex(1);
+                            break;
+                        case 2:
+                            //Concurs
+                            llistaCategories.setSelectedIndex(2);
+                            break;
+                        case 3:
+                            //Documental
+                            llistaCategories.setSelectedIndex(3);
+                            break;
+                        case 4:
+                            //Esport
+                            llistaCategories.setSelectedIndex(4);
+                            break;
+                        case 5:
+                            //Infantil
+                            llistaCategories.setSelectedIndex(5);
+                            break;
+                        case 6:
+                            //Musica
+                            llistaCategories.setSelectedIndex(6);
+                            break;
+                        case 8:
+                            //Pelicula
+                            llistaCategories.setSelectedIndex(7);
+                            break;
+                        case 9:
+                            //Serie
+                            llistaCategories.setSelectedIndex(8);
+                            break;
+                        case 10:
+                            //Tertulia
+                            llistaCategories.setSelectedIndex(9);
+                            break;
+                    }
+                    break;
+                //Continu
+                case 1:
+                    switch (dadesP.categoria) {
+                        case 0:
+                            //Altres
+                            llistaCategories.setSelectedIndex(0);
+                            break;
+                        case 2:
+                            //Concurs
+                            llistaCategories.setSelectedIndex(1);
+                            break;
+                        case 4:
+                            //Esports
+                            llistaCategories.setSelectedIndex(2);
+                            break;
+
+                        case 6:
+                            //Musica
+                            llistaCategories.setSelectedIndex(3);
+                            break;
+                        case 7:
+                            //Noticies
+                            llistaCategories.setSelectedIndex(4);
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+
+                //Directe
+                case 2:
+                    switch (dadesP.categoria) {
+                        case 0:
+                            //Altres
+                            llistaCategories.setSelectedIndex(0);
+                            break;
+                        case 2:
+                            //Concurs
+                            llistaCategories.setSelectedIndex(1);
+                            break;
+                        case 4:
+                            //Esport
+                            llistaCategories.setSelectedIndex(2);
+                            break;
+                        case 7:
+                            //Noticies
+                            llistaCategories.setSelectedIndex(3);
+                            break;
+                        case 10:
+                            //Tertulia
+                            llistaCategories.setSelectedIndex(4);
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+            String tematiquesOld = new String();
+            for (int i = 0; i < dadesP.tematiques.length; i++) {
+                tematiquesOld = tematiquesOld + dadesP.tematiques[i] + " ";
+            }
+
+            tematiques.setText(tematiquesOld);
+
+        }
+    }
+
+    private void clearComponents() {
+        nom.setText("");
+        descripcio.setText("");
+        preu.setText("0.0");
+        duracio.setValue(0);
+        dataC.setValue(new Date());
+        dIniEmissio.setValue(new Date());
+        hora.setValue(new Date());
+        llistaCategories.setSelectedIndex(0);
+        llistaFormats.setSelectedIndex(0);
+        tematiques.setText("");
+    }
+
+    /**Consultores*/
+    /**
+     * Agafa totes les dades dels camps del formulari, comprovant-ne el format
+     * a cadascuna i les coloca dins una tuplaPrograma.
+     * @return Una tuplaPrograma que conte les dades introduides a la finestra, en format
+     * correcte.
+     */
     public tuplaPrograma getTupla() {
         try {
             SimpleDateFormat formatCalendar = new SimpleDateFormat("dd/MM/yyyy");
@@ -49,7 +216,7 @@ public class vAfegirPrograma extends javax.swing.JDialog {
             }
             String aux3 = "";
             String aux = preu.getText().replace('.', ' ');
-            for (int x=0; x < aux.length(); x++) {
+            for (int x = 0; x < aux.length(); x++) {
                 if (aux.charAt(x) != ' ') {
                     aux3 += aux.charAt(x);
                 }
@@ -81,13 +248,18 @@ public class vAfegirPrograma extends javax.swing.JDialog {
                     JOptionPane.showMessageDialog(null, "La data de caducitat era anterior a la data d'inici d'emissio.");
                     return null;
                 }
-                
+
                 //Duracio de 10 en 10 minuts
                 int duraAux = ((Integer) duracio.getValue()).intValue();
-                if (duraAux <=0) duraAux=10;
-                
-            	if ((duraAux%10) >= 5) nouPrograma.duracio = ((duraAux/10)+1)*10;
-                else nouPrograma.duracio = (duraAux/10)*10;
+                if (duraAux <= 0) {
+                    duraAux = 10;
+                }
+
+                if ((duraAux % 10) >= 5) {
+                    nouPrograma.duracio = ((duraAux / 10) + 1) * 10;
+                } else {
+                    nouPrograma.duracio = (duraAux / 10) * 10;
+                }
 
                 /*Categories per format Directe*/
                 switch (llistaCategories.getSelectedIndex()) {
@@ -118,10 +290,15 @@ public class vAfegirPrograma extends javax.swing.JDialog {
             if (llistaFormats.getSelectedIndex() == 0) {
                 /** De 10 en 10 minuts*/
                 int duraAux = ((Integer) duracio.getValue()).intValue();
-                if (duraAux <=0) duraAux=10; //Minim 10 minuts 
-            	if ((duraAux%10) >= 5) nouPrograma.duracio = ((duraAux/10)+1)*10; 
-                else nouPrograma.duracio = (duraAux/10)*10;
-                 
+                if (duraAux <= 0) {
+                    duraAux = 10;
+                } //Minim 10 minuts 
+                if ((duraAux % 10) >= 5) {
+                    nouPrograma.duracio = ((duraAux / 10) + 1) * 10;
+                } else {
+                    nouPrograma.duracio = (duraAux / 10) * 10;
+                }
+
                 switch (llistaCategories.getSelectedIndex()) {
                     case 0:
                         //Altres
@@ -201,13 +378,13 @@ public class vAfegirPrograma extends javax.swing.JDialog {
 
             /*Tematiques*/
             StringTokenizer temaSueltu = new StringTokenizer(tematiques.getText());
-            nouPrograma.tematiques = new String[temaSueltu.countTokens()+1];
+            nouPrograma.tematiques = new String[temaSueltu.countTokens() + 1];
             int i = 0;
-            while (temaSueltu.hasMoreTokens() && i < nouPrograma.tematiques.length-1) {
+            while (temaSueltu.hasMoreTokens() && i < nouPrograma.tematiques.length - 1) {
                 nouPrograma.tematiques[i] = temaSueltu.nextToken();
                 i++;
             }
-            nouPrograma.tematiques[nouPrograma.tematiques.length-1] = "General";
+            nouPrograma.tematiques[nouPrograma.tematiques.length - 1] = "General";
             clearComponents();
             return nouPrograma;
 
@@ -217,168 +394,6 @@ public class vAfegirPrograma extends javax.swing.JDialog {
             return null;
         }
     }
-
-    public void setDadesMod(tuplaPrograma dadesP) 
-    {
-        if (dadesP != null){
-        nom.setText(dadesP.nom);
-        nom.setEditable(false);
-        llistaCategories.setEnabled(false);
-        llistaFormats.setEnabled(false);
-        
-        descripcio.setText(dadesP.descripcio);
-        preu.setValue(dadesP.preu);  
-        
-        int dia = dadesP.dataCad.get(Calendar.DAY_OF_MONTH);
-        int mes = dadesP.dataCad.get(Calendar.MONTH);
-        int any = dadesP.dataCad.get(Calendar.YEAR);
-        dataC.setText(dia+"/"+mes+"/"+any);
-        
-        if (dadesP.format == 2 || dadesP.format == 0)
-                    duracio.setValue(dadesP.duracio);
-        
-        if (dadesP.format == 2)
-        {
-        dia = dadesP.iniciEmissio.get(Calendar.DAY_OF_MONTH);
-        mes = dadesP.iniciEmissio.get(Calendar.MONTH);
-        any = dadesP.iniciEmissio.get(Calendar.YEAR);
-        int horax = dadesP.iniciEmissio.get(Calendar.HOUR_OF_DAY);
-        int minuts = dadesP.iniciEmissio.get(Calendar.MINUTE);
-        
-        dIniEmissio.setText(dia+"/"+mes+"/"+any);
-        hora.setText(horax+":"+minuts);
-        }
-        
-        llistaFormats.setSelectedIndex(dadesP.format);
-        
-        switch (dadesP.format)
-        {
-                //Normal
-            case 0:
-                switch (dadesP.categoria) {
-                    case 0:
-                        //Altres
-                        llistaCategories.setSelectedIndex(0);
-                        break;
-                    case 1:
-                        //Adults
-                        llistaCategories.setSelectedIndex(1);
-                        break;
-                    case 2:
-                        //Concurs
-                        llistaCategories.setSelectedIndex(2);
-                        break;
-                    case 3:
-                        //Documental
-                        llistaCategories.setSelectedIndex(3);
-                        break;
-                    case 4:
-                        //Esport
-                        llistaCategories.setSelectedIndex(4);
-                        break;
-                    case 5:
-                        //Infantil
-                        llistaCategories.setSelectedIndex(5);
-                        break;
-                    case 6:
-                        //Musica
-                        llistaCategories.setSelectedIndex(6);
-                        break;
-                    case 8:
-                        //Pelicula
-                        llistaCategories.setSelectedIndex(7);
-                        break;
-                    case 9:
-                        //Serie
-                        llistaCategories.setSelectedIndex(8);
-                        break;
-                    case 10:
-                        //Tertulia
-                        llistaCategories.setSelectedIndex(9);
-                        break;
-                }
-                break;
-                //Continu
-            case 1:
-                switch (dadesP.categoria) {
-                    case 0:
-                        //Altres
-                        llistaCategories.setSelectedIndex(0);
-                        break;
-                    case 2:
-                        //Concurs
-                        llistaCategories.setSelectedIndex(1);
-                        break;
-                    case 4:
-                        //Esports
-                        llistaCategories.setSelectedIndex(2);
-                        break;
-
-                    case 6:
-                        //Musica
-                        llistaCategories.setSelectedIndex(3);
-                        break;
-                    case 7:
-                        //Noticies
-                        llistaCategories.setSelectedIndex(4);
-                        break;
-                    default:
-                        break;
-                    }
-                break;
-                
-                //Directe
-            case 2:
-                switch (dadesP.categoria)
-                {
-                    case 0:
-                        //Altres
-                        llistaCategories.setSelectedIndex(0);
-                        break;
-                    case 2:
-                        //Concurs
-                        llistaCategories.setSelectedIndex(1);
-                        break;
-                    case 4:
-                        //Esport
-                        llistaCategories.setSelectedIndex(2);
-                        break;
-                    case 7:
-                        //Noticies
-                        llistaCategories.setSelectedIndex(3);
-                        break;
-                    case 10:
-                        //Tertulia
-                        llistaCategories.setSelectedIndex(4);
-                    break;
-                    default: break;
-                }
-                break;        
-            default: break;
-        }
-        
-        String tematiquesOld = new String();
-        for (int i=0; i<dadesP.tematiques.length; i++)
-            tematiquesOld = tematiquesOld + dadesP.tematiques[i] +" ";
-        
-        tematiques.setText(tematiquesOld);
-        
-    }
-    }
-
-    private void clearComponents() {
-        nom.setText("");
-        descripcio.setText("");
-        preu.setText("0.0");
-        duracio.setValue(0);
-        dataC.setValue(new Date());
-        dIniEmissio.setValue(new Date());
-        hora.setValue(new Date());
-        llistaCategories.setSelectedIndex(0);
-        llistaFormats.setSelectedIndex(0);
-        tematiques.setText("");
-    }
-
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

@@ -1,6 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * La classe kVistes controla la Vista Principal, i per tant es l'encarregada
+ * d'avisar a les altres vistes quan s'ha seleccionat un nou client al menu
+ * principal.
+ * 
+ * @author  Felip Moll 41743858P
+ * @version 1.0, 6 Juny 2008 
+ * 
  */
 package vistes;
 
@@ -18,10 +23,7 @@ import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-/**
- *
- * @author lipi
- */
+
 public class kVistes {
 
     /** Tindra:
@@ -35,12 +37,11 @@ public class kVistes {
     private ControladorVistasCliente kvCliente;
     private kVistaGProgrames kvGProgs;
     private kVistaFranges kvFranges;
-    //Falten
     private ControladorPlanificacio CPlani;
     private ControladorFactura CFactura;
     private kVistaPlanificacio kvPlan;
     private kVistaFacturacio kvFact;
-    //Fi Falten
+    
     /**Les dues pestanyes que te incloses*/
     private VistaPrincipal vPrincipal;
     /**Necessari per generar la llista de clients*/
@@ -263,7 +264,7 @@ public class kVistes {
             }
         });
 
-        /*Act llista clients MenuPrincipal:*/
+        /**Boto: Act llista clients MenuPrincipal:*/
         accions[9] = (new ActionListener() {
 
             public void actionPerformed(ActionEvent arg0) {
@@ -297,7 +298,7 @@ public class kVistes {
             }
         });
 
-        // Sincronizacion cliente actual facturacion //
+        /** Sincronizacion cliente actual facturacion */
         accions[11] = (new ActionListener() {
 
             public void actionPerformed(ActionEvent arg0) {

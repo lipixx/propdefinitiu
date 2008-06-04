@@ -1,18 +1,16 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * La classe kVistaFranges es el controlador de la vista de franges. S'encarrega
+ * de interactuar amb la capa de domini i la vista.
+ * 
+ * @author  Felip Moll 41743858P
+ * @version 1.0, 6 Juny 2008 
+ * 
  */
-
 package vistes;
 
 import domini.ControladorProgrames;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-/**
- *
- * @author lipi
- */
 
 
 public class kVistaFranges {
@@ -26,17 +24,20 @@ public class kVistaFranges {
         initVFranges();
     }
 
+    
     public VistaFranges getVistaFranges()
     {
         return vFranges;
     }
 
+    /**Reset de la finestra*/
     public void resetFranges()
     {
          String franges[][] = cProgs.getFranges();
          vFranges.setLlistaFranges(franges);
     }
 
+    /**Inicialitzacio de la finestra*/
     private void initVFranges() 
     {
          vFranges = new VistaFranges();

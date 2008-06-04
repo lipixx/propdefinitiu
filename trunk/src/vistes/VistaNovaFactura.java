@@ -1,6 +1,5 @@
 /*
  * vistaNovaFactura.java
- *
  * @author Rael Garcia Arnés    47808932M
  */
 package vistes;
@@ -195,7 +194,7 @@ public class VistaNovaFactura extends javax.swing.JFrame {
         tbAutofacturaPreu.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         tbAutofacturaPreu.setText("0"); // NOI18N
 
-        bAutofacturaPreu.setFont(new java.awt.Font("Lucida Grande 13", 0, 12));
+        bAutofacturaPreu.setFont(new java.awt.Font("Lucida Grande 13", 0, 12)); // NOI18N
         bAutofacturaPreu.setText("AutoFactura"); // NOI18N
 
         bAutofacturaPeriode.setFont(new java.awt.Font("Lucida Grande 13", 0, 12));
@@ -331,7 +330,7 @@ public class VistaNovaFactura extends javax.swing.JFrame {
                             .addComponent(etTotal)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(tbTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 111, Short.MAX_VALUE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 115, Short.MAX_VALUE)
                             .addComponent(bFacturar))
                         .addGroup(layout.createSequentialGroup()
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -370,11 +369,11 @@ public class VistaNovaFactura extends javax.swing.JFrame {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(etTitolSeleccionManual)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 351, Short.MAX_VALUE))
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(bNetejarFactura)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE)))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 436, Short.MAX_VALUE)))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(bAfegirSeleccio)

@@ -1,11 +1,11 @@
 /**
  * La classe ControladorDominiProgrames representa el Controlador de la capa
- * de domini, exclusivament per els programes.
+ * de domini, exclusivament per els programes, tematiques i franges horaries.
  * 
  * @author  Felip Moll
- * @version 0.1, 30 Maig 2008 
+ * @version 1.0 6 Juny 2008 
  * 
- * Versió preliminar.
+ * Versió final.
  */
 package domini;
 
@@ -29,7 +29,6 @@ public class ControladorProgrames {
         RepoTemes = new RepositoriTematiques();
         RepoFranges = nRepoFranges;
     }
-
 
     public RepositoriProgrames<String, domini.Programa> getRepoProgs() {
         return RepoProg;
@@ -161,7 +160,8 @@ public class ControladorProgrames {
      * @param temes String amb els noms dels temes que volem afegir al programa
      * @param p Programa al que volem afegir-hi els temes
      * @pre Tots els temes estan al repositori
-     * @post S'han afegit aquests temes a la llista de temes del programa
+     * @post S'han afegit aquests temes a la llista de temes del programa, i s'han
+     * creat nous temes si no existien
      */
     private void addTematicaProg(String temes[], Programa p) {
         int nTemes = temes.length;
@@ -169,6 +169,12 @@ public class ControladorProgrames {
             Tematica t = RepoTemes.obteElement(temes[i].toLowerCase());
             if (t != null) {
                 p.addTematica(t);
+                t.addCandidat();
+            } else {
+                t = new Tematica("" + temes[i]);
+                p.addTematica(t);
+                RepoTemes.afegirElement(t);
+                t.addCandidat();
             }
         }
     }
@@ -177,11 +183,24 @@ public class ControladorProgrames {
      *  Elimina un programa del repositori de programes en memoria.  
      *  @param  nomPrograma Parametres del programa a eliminar.
      *  @pre    -
-     *  @post   S'ha eliminat el programa amb parametres "nomPrograma" al repositori.
+     *  @post   S'ha eliminat el programa amb parametres "nomPrograma" al repositori i les
+     * tematiques que han quedat sense cap programa.
      *  @return Cert si el programa s'ha eliminat correctament. Fals altrament.
      */
     public boolean eliminaPrograma(String nomPrograma) {
+        String temes[] = RepoProg.getPrograma(nomPrograma).getTemes();
         RepoProg.eliminarPrograma(nomPrograma);
+
+        for (int i = 0; i < temes.length; i++) {
+            Tematica ti = RepoTemes.obteElement(temes[i]);
+            if (ti != null) {
+                ti.delCandidat();
+            }
+            if (ti != null && ti.getCandidats() == 0) {
+                RepoTemes.esborraElement(ti);
+            }
+        }
+
         return true;
     }
 
@@ -189,7 +208,8 @@ public class ControladorProgrames {
      *  Modifica un programa concret canviant-li els atributs.
      *  @param  nou Es una tupla amb els parametres del nou programa.
      *  @pre    El programa existeix.
-     *  @post   S'ha modificat el programa amb els nous atributs.
+     *  @post   S'ha modificat el programa amb els nous atributs, i s'han afegit
+     *  les tematiques que no existien al repositori de tematiques.
      *  @return Cert si la operació ha tingut èxit. Fals altrament.
      */
     public boolean modificarPrograma(tuplaPrograma nou) {
@@ -677,12 +697,23 @@ public class ControladorProgrames {
             }
         }
     }
-    
-    
+
+    /**
+     * Exporta tots els Temes que hi ha en memoria a un fitxer.
+     * @pre -
+     * @post Els Temes s'han guardat al disc
+     * @param nomFitxer Ruta del fitxer a exportar.
+     */
     public boolean exportarTemes(String rutaFTemes) throws GestorDiscException {
         return RepoTemes.exportaTemes(rutaFTemes);
     }
 
+    /**
+     * Exporta les franges d'un fitxer concret.
+     * @pre -
+     * @post Les franges s'han guardat a disc
+     * @param nomFitxer Ruta del fitxer a exportar.
+     */
     public void exportaFranges(String nomFitxer) {
         try {
             RepoFranges.exportaFranges(nomFitxer);
@@ -691,10 +722,21 @@ public class ControladorProgrames {
         }
     }
 
+    /**
+     * Importa les franges d'un fitxer concret.
+     * @pre nomFitxer existeix i es valid
+     * @post S'han carregat les franges a memoria
+     * @param nomFitxer Ruta del fitxer a importar.
+     */
     public void impFranges(String nomFitxer) {
         RepoFranges.importaFranges(nomFitxer);
     }
 
+    /**
+     *  Esborra totes les franges del repositori en memoria.
+     *  @pre -
+     *  @post S'ha buidat el repositori de franges
+     */
     public void esborraFranges() {
         RepoFranges.esborrarLlista();
     }
@@ -745,6 +787,22 @@ public class ControladorProgrames {
             llista.add(p);
         }
         return llista;
+    }
+
+    /**
+     * 
+     * @return El nombre de franges que hi ha al repositori
+     */
+    public int getNFranges() {
+        return RepoFranges.mida();
+    }
+
+    /**
+     * 
+     * @return El nombre de programes que hi ha al repositori
+     */
+    public int getNProgs() {
+        return RepoProg.getListSize();
     }
     /** Not Supported Yet.
      *  Cerca de la  llista de programes del repositori, aquells que compleixen els filtres
