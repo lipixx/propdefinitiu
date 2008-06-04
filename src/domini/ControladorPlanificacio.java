@@ -193,7 +193,7 @@ public class ControladorPlanificacio {
                         hies = false;
                         for (int i = 0; i < llistaProgrames.size() && !hies; i++) {
                             /* Cercam si ja hi ha el programa dins llistaProgames */
-                            if (llistaProgrames.get(i).getNom().equals("hool")) {
+                            if (llistaProgrames.get(i).getNom().compareToIgnoreCase(programa[j]) == 0) {
                                 hies = true;
                             }
                         }
@@ -280,8 +280,10 @@ public class ControladorPlanificacio {
 
         /* Pasar cada planificacio al seu identificador ( data ini + data fi) */
         String[] planificacions = new String[llistaPlanificacions.size()];
+
         for (int i = 0; i < llistaPlanificacions.size(); i++) {
-            planificacions[i] = "" + llistaPlanificacions.get(i).getDataInici().get(Calendar.DAY_OF_MONTH) + "/" + (llistaPlanificacions.get(i).getDataInici().get(Calendar.MONTH) + 1) + "/" + llistaPlanificacions.get(i).getDataInici().get(Calendar.YEAR) + " - " + llistaPlanificacions.get(i).getDataFi().get(Calendar.DAY_OF_MONTH) + "/" + (llistaPlanificacions.get(i).getDataFi().get(Calendar.MONTH) + 1) + "/" + llistaPlanificacions.get(i).getDataFi().get(Calendar.YEAR);
+            Calendar aux = (Calendar) llistaPlanificacions.get(i).getDataInici().clone();
+            planificacions[i] = "" + aux.get(Calendar.DAY_OF_MONTH) + "/" + (aux.get(Calendar.MONTH) + 1) + "/" + aux.get(Calendar.YEAR) + " - " + aux.get(Calendar.DAY_OF_MONTH) + "/" + (aux.get(Calendar.MONTH) + 1) + "/" + aux.get(Calendar.YEAR);
         }
 
         return planificacions;
@@ -413,29 +415,29 @@ public class ControladorPlanificacio {
         String mesFi = "";
         for (int i = 0; i <
                 llistaPClient.size(); i++) {
-
-            if ((((Planificacio) llistaPClient.get(i)).getDataInici()).get(Calendar.MONTH) < 10) {
-                mesIni = "0" + ((((Planificacio) llistaPClient.get(i)).getDataInici()).get(Calendar.MONTH) + 1);
+            Calendar p = (Calendar) ((Planificacio) llistaPClient.get(i)).getDataInici().clone();
+            if (p.get(Calendar.MONTH) < 10)  {
+                mesIni = "0" + (p.get(Calendar.MONTH) + 1);
             } else {
-                mesIni = "" + ((((Planificacio) llistaPClient.get(i)).getDataInici()).get(Calendar.MONTH) + 1);
+                mesIni = "" + (p.get(Calendar.MONTH) + 1);
             }
 
-            if ((((Planificacio) llistaPClient.get(i)).getDataFi()).get(Calendar.MONTH) < 10) {
-                mesFi = "0" + ((((Planificacio) llistaPClient.get(i)).getDataFi()).get(Calendar.MONTH) + 1);
+            if (p.get(Calendar.MONTH) < 10) {
+                mesFi = "0" + (p.get(Calendar.MONTH) + 1);
             } else {
-                mesFi = "" + ((((Planificacio) llistaPClient.get(i)).getDataFi()).get(Calendar.MONTH) + 1);
+                mesFi = "" + (p.get(Calendar.MONTH) + 1);
             }
 
-            if ((((Planificacio) llistaPClient.get(i)).getDataInici()).get(Calendar.DAY_OF_MONTH) < 10) {
-                diaIni = "0" + (((Planificacio) llistaPClient.get(i)).getDataInici()).get(Calendar.DAY_OF_MONTH);
+            if (p.get(Calendar.DAY_OF_MONTH) < 10) {
+                diaIni = "0" + (p.get(Calendar.DAY_OF_MONTH));
             } else {
-                diaIni = "" + (((Planificacio) llistaPClient.get(i)).getDataInici()).get(Calendar.DAY_OF_MONTH);
+                diaIni = "" + (p.get(Calendar.DAY_OF_MONTH));
             }
 
-            if ((((Planificacio) llistaPClient.get(i)).getDataFi()).get(Calendar.DAY_OF_MONTH) < 10) {
-                diaFi = "0" + (((Planificacio) llistaPClient.get(i)).getDataFi()).get(Calendar.DAY_OF_MONTH);
+            if (p.get(Calendar.DAY_OF_MONTH) < 10) {
+                diaFi = "0" + (p.get(Calendar.DAY_OF_MONTH));
             } else {
-                diaFi = "" + (((Planificacio) llistaPClient.get(i)).getDataFi()).get(Calendar.DAY_OF_MONTH);
+                diaFi = "" + (p.get(Calendar.DAY_OF_MONTH));
             }
 
             llista[i] = "" + diaIni + "/" + mesIni + "/" + (((Planificacio) llistaPClient.get(i)).getDataInici()).get(Calendar.YEAR) + " - " + diaFi + "/" + mesFi + "/" + (((Planificacio) llistaPClient.get(i)).getDataFi()).get(Calendar.YEAR);
