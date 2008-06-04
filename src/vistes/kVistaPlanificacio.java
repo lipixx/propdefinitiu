@@ -16,6 +16,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -104,12 +106,12 @@ public class kVistaPlanificacio {
             /* Nova planificacio */
 
             public void actionPerformed(ActionEvent e) {
-                if (CPlani.getClient() != null && CPG.getNProgs()!=0 && CPG.getNFranges()!=0) {
+                if (CPlani.getClient() != null && CPG.getNProgs() != 0 && CPG.getNFranges() != 0) {
                     vCriteris.setLocationRelativeTo(vPlani);
                     vCriteris.setTitle("Definir criteris planificacio");
                     vCriteris.setVisible(true);
                 } else {
-                    JOptionPane.showMessageDialog(null, "Comprova que: \n - Has seleccionat un client"+
+                    JOptionPane.showMessageDialog(null, "Comprova que: \n - Has seleccionat un client" +
                             "\n - Hi ha algun programa al repositori \n - Ha alguna franja definida");
                 }
             }
@@ -333,7 +335,11 @@ public class kVistaPlanificacio {
 
             //Boto d'acceptar criteris
             public void actionPerformed(ActionEvent arg0) {
-                clicatAcceptCriteris();
+                try {
+                    clicatAcceptCriteris();
+                } catch (ParseException ex) {
+                    Logger.getLogger(kVistaPlanificacio.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
 
@@ -347,48 +353,53 @@ public class kVistaPlanificacio {
      * a la pantalla de veure les planificacions generades.
      * Altrament es pasara a la pantalla de seleccio de programes.
      */
-    private void clicatAcceptCriteris() {
-        try {
-            nousCriteris = vCriteris.getCriteris();
-            if (nousCriteris != null && nousCriteris.autoGen == false) {
+    private void clicatAcceptCriteris() throws ParseException {
 
-                vSprog.setLocationRelativeTo(vCriteris);
-                vSprog.setTitle("Seleccionar programes");
-                initVistaSelectProg();
-                if (llistaProgrames.length == 0) {
-                    JOptionPane.showMessageDialog(null, "Atenció, no hi ha cap programa en el període especificat." +
-                            "\n Llista Buida.");
-                } else {
+        nousCriteris = vCriteris.getCriteris();
+        if (nousCriteris != null) {
+            try {
+
+                if (nousCriteris.autoGen == false) {
+
+                    vSprog.setLocationRelativeTo(vCriteris);
+                    vSprog.setTitle("Seleccionar programes");
+                    initVistaSelectProg();
+                    if (llistaProgrames.length == 0) {
+                        JOptionPane.showMessageDialog(null, "Atenció, no hi ha cap programa en el període especificat." +
+                                "\n Llista Buida.");
+                    } else {
+                        vCriteris.setVisible(false);
+                        vSprog.setVisible(true);
+                    }
+
+                } else if (nousCriteris.autoGen == true) {
+                    String setmana = "" + iniciSetmana.get(Calendar.DAY_OF_MONTH) + "/" + (iniciSetmana.get(Calendar.MONTH) + 1) +
+                            "/" + iniciSetmana.get(Calendar.YEAR) + " a " + fiSetmana.get(Calendar.DAY_OF_MONTH) +
+                            "/" + (fiSetmana.get(Calendar.MONTH) + 1) + "/" + fiSetmana.get(Calendar.YEAR);
+                    vGen.setSetmana(setmana);
+                    vGen.setLocationRelativeTo(vSprog);
+                    vGen.setTitle("Planificacio Generada! - Resum");
+
+                    //Si s'ha definit "AutoGeneracio" hi ha que fer la generacio a partir
+                    // de tots els programes possibles.
+                    String temp[] = CPG.getllistaFiltrada("tots", "");
+                    programesSeleccionats = new Vector<String>();
+                    for (int i = 0; i < temp.length; i++) {
+                        programesSeleccionats.add(temp[i]);
+                    }
+                    //
+                    llistaPlanificacions = CPlani.gene(programesSeleccionats, nousCriteris);
+                    vGen.setLlistaPlans(llistaPlanificacions);
                     vCriteris.setVisible(false);
-                    vSprog.setVisible(true);
-                }
-            } else if (nousCriteris.autoGen == true) {
-                String setmana = "" + iniciSetmana.get(Calendar.DAY_OF_MONTH) + "/" + (iniciSetmana.get(Calendar.MONTH) + 1) +
-                        "/" + iniciSetmana.get(Calendar.YEAR) + " a " + fiSetmana.get(Calendar.DAY_OF_MONTH) +
-                        "/" + (fiSetmana.get(Calendar.MONTH) + 1) + "/" + fiSetmana.get(Calendar.YEAR);
-                vGen.setSetmana(setmana);
-                vGen.setLocationRelativeTo(vSprog);
-                vGen.setTitle("Planificacio Generada! - Resum");
+                    vGen.setVisible(true);
 
-                //Si s'ha definit "AutoGeneracio" hi ha que fer la generacio a partir
-                // de tots els programes possibles.
-                String temp[] = CPG.getllistaFiltrada("tots", "");
-                programesSeleccionats = new Vector<String>();
-                for (int i = 0; i < temp.length; i++) {
-                    programesSeleccionats.add(temp[i]);
                 }
-                //
-                llistaPlanificacions = CPlani.gene(programesSeleccionats, nousCriteris);
-                vGen.setLlistaPlans(llistaPlanificacions);
-                vCriteris.setVisible(false);
-                vGen.setVisible(true);
 
+            } catch (ParseException ex) {
+                JOptionPane.showMessageDialog(null, "Format incorrecte");
             }
 
-        } catch (ParseException ex) {
-            JOptionPane.showMessageDialog(null, "Format incorrecte");
         }
-
     }
 
     private void initVistaGenerat() {

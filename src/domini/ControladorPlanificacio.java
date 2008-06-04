@@ -175,7 +175,7 @@ public class ControladorPlanificacio {
         if (nousCriteris.autoGen) {
 
             Vector<String> programesDefinitius = new Vector<String>();
-            boolean[] filtres = {nousCriteris.adults, nousCriteris.concurs, nousCriteris.documental, nousCriteris.esport, nousCriteris.infantil, nousCriteris.musica, nousCriteris.noticies, nousCriteris.pelicula, nousCriteris.series, nousCriteris.tertulies};
+            boolean[] filtres = nousCriteris.filtres;
             boolean hies = false;
 
             for (int k = 0; k < 10; k++) {
@@ -250,12 +250,7 @@ public class ControladorPlanificacio {
             llistaFrangesProhibides.add(franja);
         }
 
-        prioritats[(nousCriteris.primer) - 1] = 1;
-        prioritats[(nousCriteris.segon) - 1] = 2;
-        prioritats[(nousCriteris.tercer) - 1] = 3;
-        prioritats[(nousCriteris.quart) - 1] = 4;
-        prioritats[(nousCriteris.cinque) - 1] = 5;
-
+        prioritats = nousCriteris.prioritats;
 
         LinkedList<FranjaHoraria> frangesH = RepoFranges.listaObject();
         llistaPlanificacions = generador.generar(llistaProgrames, nousCriteris.preuMaxim, prioritats, llistaFrangesPreferides, llistaFrangesProhibides, nousCriteris.dataIni, nousCriteris.dataFi, nousCriteris.nombrePlanis, frangesH);
