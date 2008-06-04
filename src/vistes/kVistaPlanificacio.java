@@ -69,16 +69,14 @@ public class kVistaPlanificacio {
         return vPlani;
     }
 
-    public void setLlistaPlani() {
-        llistaPlanificacions = CPlani.getLlistaPlanificacions();
-        vPlani.setLlistaPlans(llistaPlanificacions);
-    }
-
-    public void actualitzaVista(boolean temporal) throws ParseException {
-        setLlistaPlani();
+    public void actualitzaVista(boolean temporal) throws ParseException 
+    {
+        llistaPlanificacions = CPlani.getLlistaPlanificacions(temporal);
         if (temporal) {
+            vGen.setLlistaPlans(llistaPlanificacions);
             vGen.setGraella();
         } else {
+            vPlani.setLlistaPlans(llistaPlanificacions);
             vPlani.setGraella();
         }
         iniDataClient();
@@ -650,8 +648,11 @@ public class kVistaPlanificacio {
     private void generarGraella(boolean temporal) throws ParseException {
         String inici = "" + iniciSetmana.get(Calendar.DAY_OF_MONTH) + "-" + (iniciSetmana.get(Calendar.MONTH) + 1) + "-" + iniciSetmana.get(Calendar.YEAR);
         String fi = "" + fiSetmana.get(Calendar.DAY_OF_MONTH) + "-" + (fiSetmana.get(Calendar.MONTH) + 1) + "-" + fiSetmana.get(Calendar.YEAR);
-        if (temporal) graella = CPlani.genSet(inici, fi, vGen.getPlanSelected(), temporal);
-        else graella = CPlani.genSet(inici, fi, vPlani.getPlanSelected(), temporal);
+        if (temporal) {
+            graella = CPlani.genSet(inici, fi, vGen.getPlanSelected(), temporal);
+        } else {
+            graella = CPlani.genSet(inici, fi, vPlani.getPlanSelected(), temporal);
+        }
     }
 
     /** A Partir d'aqui  part de Controlador de vistes de Programes*/
