@@ -14,9 +14,10 @@ import java.io.Serializable;
 public class Tematica implements ClasseAmbClau<String>, Serializable {
 
     private String nomTema;
-
+    private int nCandidats;
     public Tematica(String nouNom) {
         nomTema = new String(nouNom.toLowerCase());
+        nCandidats = 0;
     }
 
     /**
@@ -43,5 +44,19 @@ public class Tematica implements ClasseAmbClau<String>, Serializable {
 
     public void setCopia(ClasseAmbClau objecteACopiar) {
         objecteACopiar = new Tematica(nomTema);
+    }
+    
+    public void addCandidat()
+    {
+        nCandidats++;
+    }
+    public void delCandidat()
+    {
+        nCandidats--;
+        if (nCandidats <0) nCandidats = 0;
+    }
+
+    public int getCandidats() {
+        return nCandidats;
     }
 }

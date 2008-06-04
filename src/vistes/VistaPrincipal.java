@@ -1,32 +1,28 @@
-/*
- * NewJFrame.java
- *
- * Created on 22 / maig / 2008, 10:34
+/**
+ * La classe VistaPrincipal ens proporciona la pantalla de la vista principal, 
+ * i es la que conte el selector de client i les altres pestanyes en les que
+ * es troben les altres vistes.
+ * 
+ * @author  Felip Moll 41743858P
+ * @version 1.0, 6 Juny 2008 
+ * 
  */
-
 package vistes;
 
 import java.awt.event.ActionListener;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author  lipi
- */
 public class VistaPrincipal extends javax.swing.JFrame {
-      
+
     VistaGProgrames vGProgs;
     VistaFranges vFranges;
     VistaPlanificacio vPlan;
     VistaFacturacio vFact;
-    
     private String[] cabecerasTabla = {"DNI", "Nom", "Cognoms"};
-    
-    /** Creates new form NewJFrame */
-    public VistaPrincipal(VistaGProgrames nVistesGP, VistaFranges nVistaFranges, VistaPlanificacio nVistaPlan, VistaFacturacio nVistaFact) 
-    {
-        /**Totes les pestanyes que hi haura*/
+
+    public VistaPrincipal(VistaGProgrames nVistesGP, VistaFranges nVistaFranges, VistaPlanificacio nVistaPlan, VistaFacturacio nVistaFact) {
+        /**Totes les pestanyes que hi haura a la vista principal*/
         vGProgs = nVistesGP;
         vFranges = nVistaFranges;
         vPlan = nVistaPlan;
@@ -34,12 +30,24 @@ public class VistaPrincipal extends javax.swing.JFrame {
         try {
             initComponents();
         } catch (Exception ex) {
-            System.out.println("Err al carregar bbdd");
+            System.out.println("DEBUG: Err al carregar bbdd: " + ex.getMessage());
         }
     }
-    
-    public void setActions(ActionListener actions[], ListSelectionListener LSL)
-    {
+
+    /**Inicialitzadores i setejadores dels camps*/
+    public void setFitxa(String fitxa) {
+        dadesClSeleccionat.setText(fitxa);
+    }
+
+    public void setFacturesPendents(String factPendents) {
+        dadesFacturaPendent.setText(factPendents);
+    }
+
+    void setLlistaClients(Object[][] novaLlista) {
+        ((DefaultTableModel) (llistaClients.getModel())).setDataVector(novaLlista, cabecerasTabla);
+    }
+
+    public void setActions(ActionListener actions[], ListSelectionListener LSL) {
         saveAll.addActionListener(actions[0]);
         importaProgs.addActionListener(actions[1]);
         esborraRepoProgs.addActionListener(actions[2]);
@@ -55,30 +63,15 @@ public class VistaPrincipal extends javax.swing.JFrame {
         llistaClients.getSelectionModel().addListSelectionListener(LSL);
     }
 
-    public String getSelectedID() 
-    {
-       if (llistaClients.getSelectedRowCount() == 1) {
+    /**Consultora del client seleccionat*/
+    public String getSelectedID() {
+        if (llistaClients.getSelectedRowCount() == 1) {
             return (String) llistaClients.getModel().getValueAt(llistaClients.getSelectedRow(), 0);
         } else {
             return null;
         }
     }
 
-    public void setFitxa(String fitxa) 
-    {
-        dadesClSeleccionat.setText(fitxa);
-    }
-    
-    public void setFacturesPendents(String factPendents)
-    {
-        dadesFacturaPendent.setText(factPendents);
-    }
-
-    void setLlistaClients(Object[][] novaLlista) 
-    {
-        ((DefaultTableModel) (llistaClients.getModel())).setDataVector(novaLlista,cabecerasTabla);    
-    }
-        
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -113,7 +106,6 @@ public class VistaPrincipal extends javax.swing.JFrame {
         expFranges = new javax.swing.JMenuItem();
         impFranges = new javax.swing.JMenuItem();
         esborraFrangesDisc = new javax.swing.JMenuItem();
-        jMenu5 = new javax.swing.JMenu();
         menuSortir = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem7 = new javax.swing.JMenuItem();
@@ -124,7 +116,6 @@ public class VistaPrincipal extends javax.swing.JFrame {
 
         gClients.setText("Gestionar Clients");
 
-        llistaClients.setAutoCreateRowSorter(true);
         llistaClients.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
@@ -274,10 +265,6 @@ public class VistaPrincipal extends javax.swing.JFrame {
 
         jMenu1.add(jMenu4);
 
-        jMenu5.setText("Planificació");
-        jMenu5.setEnabled(false);
-        jMenu1.add(jMenu5);
-
         menuSortir.setText("Sortir");
         jMenu1.add(menuSortir);
 
@@ -322,8 +309,6 @@ public class VistaPrincipal extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonActLlista;
     private javax.swing.JButton buttonGuardarSortir;
@@ -344,7 +329,6 @@ public class VistaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
-    private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
@@ -358,5 +342,4 @@ public class VistaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuSortir;
     private javax.swing.JMenuItem saveAll;
     // End of variables declaration//GEN-END:variables
-    
 }

@@ -1,128 +1,117 @@
-/*
- * VistaFranges2.java
- *
- * Created on 29 / maig / 2008, 18:55
+/**
+ * La classe VistaFranges representa la pantalla en la que l'usuari visualitza
+ * i escolleix noves franges horaries.
+ * 
+ * @author  Felip Moll 41743858P
+ * @version 1.0, 6 Juny 2008 
+ * 
  */
-
 package vistes;
+
 import java.awt.event.ActionListener;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author  lipi
- */
-public class VistaFranges extends javax.swing.JPanel
-{
+public class VistaFranges extends javax.swing.JPanel {
+
     private String[][] llistaFranges;
     private String[] headFranges = {"HInici", "MInici", "HFi", "MFi", "Taxa"};
     private int numFranges = 0;
-    
-    /** Creates new form vistaFranges */
-    public VistaFranges() 
-    {
+
+    public VistaFranges() {
         initComponents();
         clearLlistaFranges();
     }
 
-
-    public void setLlistaFranges() 
-    {
+    public void setLlistaFranges() {
         ((DefaultTableModel) (lsFranges.getModel())).setDataVector(llistaFranges, headFranges);
     }
 
-    public void setSpinners()
-    {
-        spFranjaInici.setValue(0);
-        spMinIni.setValue(0);
-        spFranjaFi.setValue(23);
-        spMinFi.setValue(59);
-        
-        spFranjaInici.setEnabled(false);
-        spMinIni.setEnabled(false);
-    }
-    
-    public void clearLlistaFranges()
-    {
-         llistaFranges = new String[24][4];
-        
-        lsFranges.setModel(new javax.swing.table.DefaultTableModel
-                (llistaFranges,headFranges));
-        numFranges = 0;
-        setSpinners();
-    }
-    
-    public void setLlistaFranges(String[][] inDatos)
-    {
+    public void setLlistaFranges(String[][] inDatos) {
         llistaFranges = inDatos;
         ((DefaultTableModel) (lsFranges.getModel())).setDataVector(llistaFranges, headFranges);
     }
 
-    public String[][] getListaFranges()
-    {
+    public void setSpinners() {
+        spFranjaInici.setValue(0);
+        spMinIni.setValue(0);
+        spFranjaFi.setValue(23);
+        spMinFi.setValue(59);
+
+        spFranjaInici.setEnabled(false);
+        spMinIni.setEnabled(false);
+    }
+
+    public void clearLlistaFranges() {
+        llistaFranges = new String[24][4];
+
+        lsFranges.setModel(new javax.swing.table.DefaultTableModel(llistaFranges, headFranges));
+        numFranges = 0;
+        setSpinners();
+    }
+
+    /**
+     * Aquesta funcio agafa les dades introduides i les passa en forma d'string
+     * @return Un string[A][B], t.q: A = Num de franges introduides, B = 5
+     * i [A][0] = Hora inici
+     *   [A][1] = Minut inici
+     *   [A][2] = Hora Fi
+     *   [A][3] = Minut fi
+     *   [A][4] = Taxa a aplicar a la franja
+     */
+    public String[][] getListaFranges() {
         String resultat[][];
         int nfranges = 0;
-        while (nfranges<24 && nfranges < llistaFranges.length && llistaFranges[nfranges][0] != null)
-        {
+        while (nfranges < 24 && nfranges < llistaFranges.length && llistaFranges[nfranges][0] != null) {
             nfranges++;
         }
-        if (nfranges != 0)
-        {
-        //Mirem que la ultima franja arribi a les 23:59, sino li feim arribar
-        int hLastF = Integer.parseInt(llistaFranges[nfranges-1][2]);
-        int mLastF = Integer.parseInt(llistaFranges[nfranges-1][3]);
-        
-        if (hLastF == 23)
-        {
-            if (mLastF != 59)
-            {
-            llistaFranges[nfranges][0] = "23";
-            llistaFranges[nfranges][1] = ""+(mLastF+1);
-            llistaFranges[nfranges][2] = "23";
-            llistaFranges[nfranges][3] = "59";
-            llistaFranges[nfranges][4] = "0";
-            nfranges++;
+        if (nfranges != 0) {
+            //Mirem que la ultima franja arribi a les 23:59, sino li feim arribar
+            int hLastF = Integer.parseInt(llistaFranges[nfranges - 1][2]);
+            int mLastF = Integer.parseInt(llistaFranges[nfranges - 1][3]);
+
+            if (hLastF == 23) {
+                if (mLastF != 59) {
+                    llistaFranges[nfranges][0] = "23";
+                    llistaFranges[nfranges][1] = "" + (mLastF + 1);
+                    llistaFranges[nfranges][2] = "23";
+                    llistaFranges[nfranges][3] = "59";
+                    llistaFranges[nfranges][4] = "0";
+                    nfranges++;
+                }
+            } else {
+                if (mLastF == 59) {
+                    hLastF++;
+                    mLastF = 0;
+                } else {
+                    mLastF++;
+                }
+
+                llistaFranges[nfranges][0] = "" + hLastF;
+                llistaFranges[nfranges][1] = "" + mLastF;
+                llistaFranges[nfranges][2] = "23";
+                llistaFranges[nfranges][3] = "59";
+                llistaFranges[nfranges][4] = "0";
+                nfranges++;
             }
-        }
-        else
-        {
-            if (mLastF == 59)
-            {
-                hLastF++;
-                mLastF=0;
+
+
+            resultat = new String[nfranges][5];
+
+            for (int i = 0; i < nfranges; i++) {
+                resultat[i][0] = llistaFranges[i][0];
+                resultat[i][1] = llistaFranges[i][1];
+                resultat[i][2] = llistaFranges[i][2];
+                resultat[i][3] = llistaFranges[i][3];
+                resultat[i][4] = llistaFranges[i][4];
             }
-            else
-                mLastF++;
-            
-            llistaFranges[nfranges][0] = ""+hLastF;
-            llistaFranges[nfranges][1] = ""+mLastF;
-            llistaFranges[nfranges][2] = "23";
-            llistaFranges[nfranges][3] = "59";
-            llistaFranges[nfranges][4] = "0";
-            nfranges++;
-        }
-    
-        
-        resultat = new String[nfranges][5];
-        
-        for (int i = 0; i<nfranges; i++)
-        {
-            resultat[i][0] = llistaFranges[i][0];
-            resultat[i][1] = llistaFranges[i][1];
-            resultat[i][2] = llistaFranges[i][2];
-            resultat[i][3] = llistaFranges[i][3];
-            resultat[i][4] = llistaFranges[i][4];
-        }
-        numFranges = nfranges;
-        setLlistaFranges(resultat);
-        return resultat;
+            numFranges = nfranges;
+            setLlistaFranges(resultat);
+            return resultat;
         }
         return null;
     }
-    
 
-    void setActions(ActionListener actionListener) 
-    {
+    void setActions(ActionListener actionListener) {
         bGuarda.addActionListener(actionListener);
     }
 
@@ -305,90 +294,91 @@ public class VistaFranges extends javax.swing.JPanel
                 .addGap(32, 32, 32))
         );
     }// </editor-fold>//GEN-END:initComponents
-
     private void bAddFranjaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAddFranjaActionPerformed
-       
+
         //Nombre de franges que tenim actualment al vector de franges
-       // numFranges = llistaFranges.length;
-        if (numFranges == 0)
+        // numFranges = llistaFranges.length;
+        if (numFranges == 0) {
             llistaFranges = new String[24][5];
-        
+        }
+
         boolean correcte = true;
         //Hores que ens acaben d'arribar
         int hInici = (Integer) (spFranjaInici.getValue());
         int minInici = (Integer) (spMinIni.getValue());
         int hFi = (Integer) (spFranjaFi.getValue());
-        int minFi = (Integer)(spMinFi.getValue());
-        
+        int minFi = (Integer) (spMinFi.getValue());
+
         //Taxa que ens acaba d'arribar i taxa de la ultima franja
-        String taxa = ""+spTaxa.getValue();
+        String taxa = "" + spTaxa.getValue();
         String lastTaxa;
-        
-        if(numFranges > 0)
-        lastTaxa = llistaFranges[numFranges-1][4];
-        else lastTaxa = "0";
-        
-        
-        
-        //Mirem la coherencia individual d'aquesta franja
-        if (hInici == hFi)
-        {
-            if (minInici >= minFi) correcte = false;
+
+        if (numFranges > 0) {
+            lastTaxa = llistaFranges[numFranges - 1][4];
+        } else {
+            lastTaxa = "0";
         }
-        else if (hInici > hFi) correcte = false;
-        
+
+
+
+        //Mirem la coherencia individual d'aquesta franja
+        if (hInici == hFi) {
+            if (minInici >= minFi) {
+                correcte = false;
+            }
+        } else if (hInici > hFi) {
+            correcte = false;
+        }
+
         //Si es correcte mirem la coherencia amb la ultima franja
         //Si es que n'hi ha
-        if (correcte)
-        {
-            if (numFranges != 0)
-            {
-                int hLastF = Integer.parseInt(llistaFranges[numFranges-1][2]);
-                int mLastF = Integer.parseInt(llistaFranges[numFranges-1][3]);
-                if (hInici == hLastF)
-                {
-                    if (minInici <= mLastF) correcte = false;
+        if (correcte) {
+            if (numFranges != 0) {
+                int hLastF = Integer.parseInt(llistaFranges[numFranges - 1][2]);
+                int mLastF = Integer.parseInt(llistaFranges[numFranges - 1][3]);
+                if (hInici == hLastF) {
+                    if (minInici <= mLastF) {
+                        correcte = false;
+                    }
+                } else if (hInici < hLastF) {
+                    correcte = false;
                 }
-                else if (hInici < hLastF) correcte = false;
             }
         }
-        
-        
+
+
         //Sabem que es coherent amb l'ultima franja, per tant nomes cal mirar
         //si s'ha de afegir a la franja o s'ha de crear una de nova
-        if (correcte)
-        {
-            if (taxa.equals(lastTaxa) && numFranges!=0)
-            {
-                llistaFranges[numFranges-1][2] = String.valueOf(hFi);
-                llistaFranges[numFranges-1][3] = String.valueOf(minFi);
+        if (correcte) {
+            if (taxa.equals(lastTaxa) && numFranges != 0) {
+                llistaFranges[numFranges - 1][2] = String.valueOf(hFi);
+                llistaFranges[numFranges - 1][3] = String.valueOf(minFi);
                 //Envia la llista a les vistes!
                 setLlistaFranges(llistaFranges);
-            }
-            else{
+            } else {
                 //Afegim nova franja a la matriu
-            llistaFranges[numFranges][0] = String.valueOf(hInici);
-            llistaFranges[numFranges][1] = String.valueOf(minInici);
-            llistaFranges[numFranges][2] = String.valueOf(hFi);
-            llistaFranges[numFranges][3] = String.valueOf(minFi);
-            llistaFranges[numFranges][4] = String.valueOf(taxa);
-            numFranges++;
-            setLlistaFranges(llistaFranges);
+                llistaFranges[numFranges][0] = String.valueOf(hInici);
+                llistaFranges[numFranges][1] = String.valueOf(minInici);
+                llistaFranges[numFranges][2] = String.valueOf(hFi);
+                llistaFranges[numFranges][3] = String.valueOf(minFi);
+                llistaFranges[numFranges][4] = String.valueOf(taxa);
+                numFranges++;
+                setLlistaFranges(llistaFranges);
             }
-            
+
             //Set Spinners
-            if (minFi == 59)
-            {
-                minFi=0;
-                if (hFi == 23) hFi = 0;
-                else hFi++;
+            if (minFi == 59) {
+                minFi = 0;
+                if (hFi == 23) {
+                    hFi = 0;
+                } else {
+                    hFi++;
+                }
                 spFranjaInici.setValue(hFi);
-                spMinIni.setValue(minFi);     
-            }
-            else
-            {
-            spFranjaInici.setValue(hFi);
-            spMinIni.setValue(minFi+1); 
+                spMinIni.setValue(minFi);
+            } else {
+                spFranjaInici.setValue(hFi);
+                spMinIni.setValue(minFi + 1);
             }
         }
 }//GEN-LAST:event_bAddFranjaActionPerformed
@@ -401,8 +391,6 @@ public class VistaFranges extends javax.swing.JPanel
         spMinFi.setValue(59);
         spTaxa.setValue(0);
     }//GEN-LAST:event_jButton1ActionPerformed
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bAddFranja;
     private javax.swing.JButton bGuarda;
@@ -421,5 +409,4 @@ public class VistaFranges extends javax.swing.JPanel
     private javax.swing.JSpinner spMinIni;
     private javax.swing.JSpinner spTaxa;
     // End of variables declaration//GEN-END:variables
-    
 }

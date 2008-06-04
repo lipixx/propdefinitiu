@@ -178,11 +178,11 @@ public class ControladorPlanificacio {
             boolean[] filtres = {nousCriteris.adults, nousCriteris.concurs, nousCriteris.documental, nousCriteris.esport, nousCriteris.infantil, nousCriteris.musica, nousCriteris.noticies, nousCriteris.pelicula, nousCriteris.series, nousCriteris.tertulies};
             boolean hies = false;
 
-            for (int k = 1; k <= 10; k++) {
+            for (int k = 0; k < 10; k++) {
 
                 if (filtres[k]) {
 
-                    String[] programa = CProgrames.getllistaFiltrada("" + k, null);
+                    String[] programa = CProgrames.getllistaFiltrada("categoria", ""+(k+1));
 
                     for (int j = 0; j < programa.length; j++) {
                         hies = false;

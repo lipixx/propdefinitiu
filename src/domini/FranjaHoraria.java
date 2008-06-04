@@ -4,11 +4,11 @@
  * 
  * Una Franja Horaria s'identifica per la seva horaInici i horaFi, també té l'atribut taxa.
  * 
- * @author  Josep Marti 41743212Y
  * @author  Felip Moll 41743858P
- * @version 2.0, 30 Abril 2008 
+ * @author  Josep Marti 41743212Y
+ * @version 1.0, 6 Juny 2008 
  * 
- *
+ * Versio Final
  */
 package domini;
 
@@ -103,6 +103,7 @@ public class FranjaHoraria implements ClasseAmbClau<Float>, Serializable {
         }
     }
 
+    /** Implementacio dels metodes abstractes de ClasseAmbClau*/
     public Float getClau() {
         return taxa;
     }

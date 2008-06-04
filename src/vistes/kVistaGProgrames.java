@@ -1,3 +1,11 @@
+/**
+ * La classe kVistaGProgrames ens proporciona el controlador per les vistes
+ * d'afegir programa, modificar programa i de gestio de programes.
+ * 
+ * @author  Felip Moll 41743858P
+ * @version 1.0, 6 Juny 2008 
+ * 
+ */
 package vistes;
 
 import dades.GestorDiscException;
@@ -16,7 +24,7 @@ public class kVistaGProgrames {
 
     private ControladorProgrames CPG;
     private VistaGProgrames vGProgs;
-    private vAfegirPrograma vADDP, vMODP;
+    private vAfegirPrograma vADDP,  vMODP;
     private tuplaPrograma dadesPrograma;
     private String[] llistaProgrames;
     private String[] llistaFiltres;
@@ -43,9 +51,8 @@ public class kVistaGProgrames {
     public VistaGProgrames getVista() {
         return vGProgs;
     }
-    
-        public void actualitzaVistaGProgrames()
-    {
+
+    public void actualitzaVistaGProgrames() {
         actLlistaFiltres(0);
         actLlistaProgrames("tots", "");
         vGProgs.setLlistaProgrames(llistaProgrames);
@@ -115,7 +122,7 @@ public class kVistaGProgrames {
 
     }
 
-    
+    /**Inicialitza una nova vista del gestor de programes*/
     private void initVistaGProgrames() {
         /**Nova vista i nous escoltadors d'events*/
         vGProgs = new VistaGProgrames();
@@ -210,10 +217,11 @@ public class kVistaGProgrames {
                 seleccionatPrograma();
             }
         });
-        
+
         vGProgs.setListeners(accions, selFiltre, selPrograma);
     }
 
+    /**Inicialitza una nova vista de la finestra d'afegir programa*/
     private void initVistaADDP() {
         vADDP.setActions(new ActionListener() {
 
@@ -223,6 +231,7 @@ public class kVistaGProgrames {
         });
     }
 
+    /**Inicialitza una nova vista de la finestra de modificar programa*/
     private void initVistaMODP() {
         vMODP.setActions(new ActionListener() {
 
@@ -232,7 +241,14 @@ public class kVistaGProgrames {
         });
     }
 
-    /** Funcions dels action listeners i list listeners*/
+    /**Funcions dels action listeners i list listeners*/
+    /**
+     * Funcio que s'activa quan pitjem el boto d'eliminar programa. Li dona l'ordre
+     * al controlador de programes que l'elimini.
+     * @pre El nom del programa esta inicialitzat, havent-lo seleccionat a la llista
+     * de la vista.
+     * @post S'ha eliminat el programa amb el nom que hi ha seleccionat a la vista.
+     */
     private void eliminarPrograma() {
         String nomP = vGProgs.getProgramaSelected();
         if (nomP != null || !nomP.equals("")) {
@@ -245,6 +261,13 @@ public class kVistaGProgrames {
         vGProgs.clearFitxa();
     }
 
+    /**
+     * Funcio que s'activa quan pitjem el boto de modificar programa. Li dona l'ordre
+     * a la finestra de modificar programa perque apareixi.
+     * @pre El nom del programa esta inicialitzat, havent-lo seleccionat a la llista
+     * de la vista.
+     * @post Ha sortit la nova finestra.
+     */
     private void modificarPrograma() {
         String nomP = vGProgs.getProgramaSelected();
         tuplaPrograma dadesP = CPG.veureFitxa(nomP.toLowerCase());
@@ -258,7 +281,12 @@ public class kVistaGProgrames {
         }
     }
 
-
+    /**
+     * Funcio que s'activa quan pitjem el boto d'acceptacio de que hem acabat
+     * de definir un nou programa.
+     * @pre El nom del programa esta inicialitzat, aixi com les seves dades.
+     * @post S'ha afegit el programa amb les dades passades des de les vistes.
+     */
     private void addProgramaDeForm() {
         tuplaPrograma nou = vADDP.getTupla();
 
@@ -272,6 +300,12 @@ public class kVistaGProgrames {
         vADDP.setVisible(false);
     }
 
+    /**
+     * Funcio que s'activa quan pitjem el boto d'acceptacio de que hem acabat
+     * de modificar un programa.
+     * @pre El nom del programa esta inicialitzat, aixi com les seves dades.
+     * @post S'ha modificat el programa amb les dades passades des de les vistes.
+     */
     private void modProgramaDeForm() {
         tuplaPrograma mod = vMODP.getTupla();
 
@@ -287,12 +321,24 @@ public class kVistaGProgrames {
         vGProgs.clearFitxa();
     }
 
+    /**Aquesta funcio s'activa quan pitjem els botons de filtres a la vista
+     * de seleccio de programes.
+     * @pre -
+     * @post S'han esborrat les dades de la fitxa del programa de la vista i s'ha
+     * actualitzat la llista de filtres amb els nous filtres corresponents al boto pitjat.
+     */
     private void setLlistaFiltre() {
         vGProgs.clearFitxa();
         actLlistaFiltres(vGProgs.getFClickedInt());
         vGProgs.setLlistaFiltres(llistaFiltres);
     }
 
+    /**Aquesta funcio s'activa quan pitjem sobre un filtre a la llista de filtres.
+     * @pre -
+     * @post S'ha actualitzat la llista de programes, posant-hi els que corresponen a
+     * la llista filtrada per el tipus de filtre pitjat als botons, i per el valor
+     * seleccionat a la llista de filtres.
+     */
     private void actualitzaLlProgrames() {
         //System.out.println("Actualitz ll progs!!");
         //Boto pitjat
@@ -323,6 +369,11 @@ public class kVistaGProgrames {
         vGProgs.setLlistaProgrames(llistaProgrames);
     }
 
+    /** Aquesta funcio es crida quan es selecciona un programa de la llista de programes
+     *  i serveix per actualitzar la fitxa.
+     *  @pre El programa seleccionat existeix al repositori de programes
+     *  @post S'ha setejat la fitxa de la vista
+     */
     private void seleccionatPrograma() {
         //Agafem nom del programa seleccionat
         String nomP = vGProgs.getProgramaSelected();
@@ -332,7 +383,7 @@ public class kVistaGProgrames {
         ////// FALTA INICIEMISSIO i DATA CADUCITATTTTTTTTT
         tuplaPrograma dadesP = CPG.veureFitxa(nomP.toLowerCase());
         if (dadesP != null) {
-            String fitxa = "Nom: " + dadesP.nom + "\nPreu: " + dadesP.preu + "\nFormat: " + dadesP.format + "\nCategoria: " + dadesP.categoria + "\nDescripcio: " + dadesP.descripcio + "\nData Caducitat: " + dadesP.dataCad.get(Calendar.DATE) + "/" + (dadesP.dataCad.get(Calendar.MONTH)+1) +
+            String fitxa = "Nom: " + dadesP.nom + "\nPreu: " + dadesP.preu + "\nFormat: " + dadesP.format + "\nCategoria: " + dadesP.categoria + "\nDescripcio: " + dadesP.descripcio + "\nData Caducitat: " + dadesP.dataCad.get(Calendar.DATE) + "/" + (dadesP.dataCad.get(Calendar.MONTH) + 1) +
                     "/" + dadesP.dataCad.get(Calendar.YEAR);
 
             if (dadesP.format == 2 || dadesP.format == 0) {
@@ -340,7 +391,7 @@ public class kVistaGProgrames {
             }
 
             if (dadesP.format == 2) {
-                fitxa = fitxa + "\nData Inici Emissio:" + dadesP.iniciEmissio.get(Calendar.DATE) + "/" + (dadesP.iniciEmissio.get(Calendar.MONTH)+1) +
+                fitxa = fitxa + "\nData Inici Emissio:" + dadesP.iniciEmissio.get(Calendar.DATE) + "/" + (dadesP.iniciEmissio.get(Calendar.MONTH) + 1) +
                         "/" + dadesP.iniciEmissio.get(Calendar.YEAR) + " a les " + dadesP.iniciEmissio.get(Calendar.HOUR_OF_DAY) + ":" + dadesP.iniciEmissio.get(Calendar.MINUTE);
             }
 
@@ -359,16 +410,22 @@ public class kVistaGProgrames {
         }
     }
 
+    /** Boto de "Afegir Programa", fa sortir la finestra*/
     private void afegirPrograma() throws ParseException {
-        // vADDP = new AfegirPrograma(new javax.swing.JFrame(), true);
-        // initVistaADDP();
         vADDP.setLocationRelativeTo(vGProgs);
         vADDP.setTitle("Afegir nou Programa");
         vADDP.setVisible(true);
     }
 
-    private void guardarTot() throws GestorDiscException {
-        System.out.println("All saved!!!");
+    /** Boto de "Guardar tot", guarda a disc totes les dades que fan referencia
+     * al gestor de programes.
+     * @pre -
+     * @post S'ha guardat a disc amb els noms RepositoriTemes.db, RepositoriFranges.db
+     * RepositoriProgrames.db, les corresponents bases de dades.
+     * @throws dades.GestorDiscException
+     */
+    private void guardarTot() throws GestorDiscException 
+    {
         CPG.saveGclientsAll();
     }
 }

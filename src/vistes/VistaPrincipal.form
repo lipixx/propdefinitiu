@@ -63,12 +63,6 @@
                 </MenuItem>
               </SubComponents>
             </Menu>
-            <Menu class="javax.swing.JMenu" name="jMenu5">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Planificaci&#xf3;"/>
-                <Property name="enabled" type="boolean" value="false"/>
-              </Properties>
-            </Menu>
             <MenuItem class="javax.swing.JMenuItem" name="menuSortir">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Sortir"/>
@@ -241,7 +235,6 @@
               <SubComponents>
                 <Component class="javax.swing.JTable" name="llistaClients">
                   <Properties>
-                    <Property name="autoCreateRowSorter" type="boolean" value="true"/>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                       <Table columnCount="3" rowCount="21">
                         <Column editable="false" title="DNI" type="java.lang.Object"/>

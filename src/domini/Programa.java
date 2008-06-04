@@ -6,7 +6,7 @@
  * un preu i una llista de tematiques.
  * 
  * @author  Felip Moll 41743858P
- * @version 2.0, 30 Abril 2008 
+ * @version 1.0, 6 Juny 2008 - Definitiva
  * 
  *
  */
@@ -88,32 +88,16 @@ public class Programa implements ClasseAmbClau<String>, Serializable {
      *  @pre    La llista de temes no es buida.
      *  @post   S'ha eliminat la tematica a la llista de tematiques
      */
-    public void removeTematica(Tematica T) {
-
-        int sizeList = llistaTematica.size();
-        String nomTema = T.getTema();
-        int i = 0;
-        boolean trobat = false;
-
-        if (sizeList > 0) {
-            while (i < sizeList && !trobat) {
-                if (nomTema.equalsIgnoreCase(llistaTematica.get(i).getTema())) {
-                    trobat = true;
-                } else {
-                    i++;
-                }
-            }
-
-            if (trobat) {
-                llistaTematica.remove(i);
-            }
-        }
+    public void removeTematica(Tematica T) 
+    {
+        llistaTematica.remove(T);
     }
 
     /**  Elimina una tematica de la llista de temes del programa.
      *  @param  nomTema Nom de la tematica a eliminar de la llista
      *  @pre    La llista de temes no es buida.
-     *  @post   S'ha eliminat la tematica a la llista de tematiques
+     *  @post   S'ha eliminat la tematica amb nom = nomTema de la llista de tematiques
+     * del programa.
      */
     public void removeTematica(String nomTema) {
         int sizeList = llistaTematica.size();
@@ -153,7 +137,7 @@ public class Programa implements ClasseAmbClau<String>, Serializable {
      *  @see    java.util.Calendar
      */
     public void setDataCaducitat(Calendar novaCaducitat) {
-        dataCaducitat = novaCaducitat;
+        dataCaducitat = (Calendar) novaCaducitat.clone();
     }
 
     /**
@@ -163,7 +147,7 @@ public class Programa implements ClasseAmbClau<String>, Serializable {
      *  @post   S'ha canviat la descripcio del programa.
      */
     public void setDescripcio(String novaDescr) {
-        descripcio = novaDescr;
+        descripcio = new String(novaDescr);
     }
 
     /**
@@ -192,7 +176,6 @@ public class Programa implements ClasseAmbClau<String>, Serializable {
         
         if (sizeList > 0) {
             String[] temes = new String[sizeList];
-             /*Aqui hauria de ser sizeList.. pero peta*/
             for (int i = 0; i < sizeList; i++) {
                 temes[i] = new String("" + llistaTematica.get(i).getTema());
             }
@@ -201,11 +184,21 @@ public class Programa implements ClasseAmbClau<String>, Serializable {
         return null;
     }
 
+    /**
+     * Esborra la llista de temes d'un programa
+     * @pre -
+     * @post S'han esborrat totes les tematiques d'aquest programa
+     */
     public void clearTemes()
     {
+        for ( Tematica t : llistaTematica)
+        {
+            t.delCandidat();
+        }
         llistaTematica.clear();
     }
     
+    /**Metodes implementats de ClasseAmbClau.java*/
     public String getClau() {
         return nom.toLowerCase();
     }

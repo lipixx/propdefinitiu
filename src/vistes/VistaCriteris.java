@@ -1,7 +1,13 @@
-/*
- * VistaCriteris.java
- *
- * Created on 29 de mayo de 2008, 16:51
+/**
+ * La classe VistaCriteris correspon a la pantalla en le que es seleccionen els
+ * criteris per generar una nova planificacio. Aquesta classe reunira tots aquests
+ * criteris i els retornara en forma de tuplaCriteris.
+ * 
+ * @author  Felip Moll 41743858P
+ * @author  Josep Marti 41743212Y
+ * @version 1.0, 6 Juny 2008 
+ * 
+ * Versio Final
  */
 package vistes;
 
@@ -16,10 +22,7 @@ import javax.swing.ComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.text.DateFormatter;
 
-/**
- *
- * @author  Josep Marti
- */
+
 public class VistaCriteris extends javax.swing.JDialog {
 
     private tuplaCriteris criteris;

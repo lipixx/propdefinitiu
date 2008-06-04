@@ -2,6 +2,7 @@
  * vistaFacturacion.java
  *
  * @author Rael Garcia Arnés    47808932M
+ * @author Felip Moll Marques   41743858P
  */
 
 package vistes;
