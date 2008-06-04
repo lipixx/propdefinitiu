@@ -6,15 +6,14 @@ package vistes;
 
 import domini.ControladorPlanificacio;
 import domini.ControladorProgrames;
+import domini.Convertir;
 import domini.tuplaCriteris;
 import domini.tuplaEmissio;
 import domini.tuplaPrograma;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,13 +38,14 @@ public class kVistaPlanificacio {
     tuplaCriteris nousCriteris;
     tuplaEmissio tEmissio[];
     private Calendar iniciSetmana,  fiSetmana;
-    SimpleDateFormat formatCalendar;
     private Vector<String> programesSeleccionats;
     private String[] llistaProgrames;
     private String[] llistaFiltres;
+    Convertir Conv;
 
     public kVistaPlanificacio(ControladorProgrames controladorProg, ControladorPlanificacio controladorPlani) throws ParseException {
 
+        Conv = new Convertir();
         CPlani = controladorPlani;
         CPG = controladorProg;
 
@@ -53,7 +53,6 @@ public class kVistaPlanificacio {
         llistaPlanificacions = null;
         programesSeleccionats = null;
         graella = null;
-        formatCalendar = new SimpleDateFormat("dd/MM/yyyy");
 
         vCriteris = new VistaCriteris(new javax.swing.JFrame(), true);
         vSprog = new VistaSelectProgrames(new javax.swing.JFrame(), true);
@@ -147,17 +146,9 @@ public class kVistaPlanificacio {
                         String idPlanificacio = vPlani.getPlanSelected();
                         /* idPLanificacio son 2 calendars dd/mm/yyyy - dd/mm/yyyy */
 
-                        String sIni = idPlanificacio.substring(0, 10);
-                        String sFi = idPlanificacio.substring(13, 23);
+                       Calendar[] idPlani = Conv.idPlanificacio(idPlanificacio);
 
-                        Date dateInici = formatCalendar.parse(sIni);
-                        Date dateFi = formatCalendar.parse(sFi);
-                        Calendar dIni = Calendar.getInstance();
-                        Calendar dFi = Calendar.getInstance();
-                        dIni.setTime(dateInici);
-                        dFi.setTime(dateFi);
-
-                        if (CPlani.anularEmissio(nomPrograma, dIni, dFi, false) /* true implica que es TEMPORAL */) {
+                        if (CPlani.anularEmissio(nomPrograma, idPlani[0], idPlani[1], false) /* true implica que es TEMPORAL */) {
                             vPlani.setPreu(0);
                             actualitzaVista(false);
                             if (planSelected != -1) {
@@ -262,8 +253,7 @@ public class kVistaPlanificacio {
 
                         /*Fem visible el resum de la planificacio*/
 
-                        String setmana = "" + iniciSetmana.get(Calendar.DAY_OF_MONTH) + "/" + (iniciSetmana.get(Calendar.MONTH) + 1) + "/" + iniciSetmana.get(Calendar.YEAR) + " a " + fiSetmana.get(Calendar.DAY_OF_MONTH) + "/" + (fiSetmana.get(Calendar.MONTH) + 1) + "/" + fiSetmana.get(Calendar.YEAR);
-                        vGen.setSetmana(setmana);
+                        vGen.setSetmana(Conv.setmana(iniciSetmana, fiSetmana));
                         vGen.setLocationRelativeTo(vSprog);
                         vGen.setTitle("Planificacio Generada! - Resum");
 
@@ -324,7 +314,7 @@ public class kVistaPlanificacio {
         iniciSetmana.add(Calendar.DAY_OF_MONTH, -restar);
         fiSetmana.add(Calendar.DAY_OF_MONTH, +sumar);
 
-        String setmana = "" + iniciSetmana.get(Calendar.DAY_OF_MONTH) + "/" + (iniciSetmana.get(Calendar.MONTH) + 1) + "/" + iniciSetmana.get(Calendar.YEAR) + " a " + fiSetmana.get(Calendar.DAY_OF_MONTH) + "/" + (fiSetmana.get(Calendar.MONTH) + 1) + "/" + fiSetmana.get(Calendar.YEAR);
+        String setmana = Conv.setmana(iniciSetmana, fiSetmana);
         vPlani.setSetmana(setmana);
 
     }
@@ -373,9 +363,7 @@ public class kVistaPlanificacio {
                     }
 
                 } else if (nousCriteris.autoGen == true) {
-                    String setmana = "" + iniciSetmana.get(Calendar.DAY_OF_MONTH) + "/" + (iniciSetmana.get(Calendar.MONTH) + 1) +
-                            "/" + iniciSetmana.get(Calendar.YEAR) + " a " + fiSetmana.get(Calendar.DAY_OF_MONTH) +
-                            "/" + (fiSetmana.get(Calendar.MONTH) + 1) + "/" + fiSetmana.get(Calendar.YEAR);
+                    String setmana = Conv.setmana(iniciSetmana, fiSetmana);
                     vGen.setSetmana(setmana);
                     vGen.setLocationRelativeTo(vSprog);
                     vGen.setTitle("Planificacio Generada! - Resum");
@@ -464,18 +452,9 @@ public class kVistaPlanificacio {
 
                         String idPlanificacio = vGen.getPlanSelected();
                         /* idPLanificacio son 2 calendars dd/mm/yyyy - dd/mm/yyyy */
+                        Calendar[] idPlani = Conv.idPlanificacio(idPlanificacio);
 
-                        String sIni = idPlanificacio.substring(0, 10);
-                        String sFi = idPlanificacio.substring(13, 23);
-
-                        Date dateInici = formatCalendar.parse(sIni);
-                        Date dateFi = formatCalendar.parse(sFi);
-                        Calendar dIni = Calendar.getInstance();
-                        Calendar dFi = Calendar.getInstance();
-                        dIni.setTime(dateInici);
-                        dFi.setTime(dateFi);
-
-                        if (CPlani.anularEmissio(nomPrograma, dIni, dFi, true) /* true implica que es TEMPORAL */) {
+                        if (CPlani.anularEmissio(nomPrograma, idPlani[0], idPlani[1], true) /* true implica que es TEMPORAL */) {
                             actualitzaVista(true);
                             vGen.setPreu(0);
                             vGen.setSelectPlan(planSelected);
@@ -497,19 +476,8 @@ public class kVistaPlanificacio {
 
                 if (idPlanificacio != null) {
                     try {
-                        // idPLanificacio son 2 calendars dd/mm/yyyy - dd/mm/yyyy
-                        // idPLanificacio son 2 calendars dd/mm/yyyy - dd/mm/yyyy
-                        String sIni = idPlanificacio.substring(0, 10);
-                        String sFi = idPlanificacio.substring(13, 23);
-
-                        Date dateInici = formatCalendar.parse(sIni);
-                        Date dateFi = formatCalendar.parse(sFi);
-                        Calendar dIni = Calendar.getInstance();
-                        Calendar dFi = Calendar.getInstance();
-                        dIni.setTime(dateInici);
-                        dFi.setTime(dateFi);
-
-                        CPlani.contractar(dIni, dFi);
+                        Calendar[] idPlanif = Conv.idPlanificacio(idPlanificacio);
+                        CPlani.contractar(idPlanif[0], idPlanif[1]);
                         // cerca sa planificacio de sa llista temporal i fa un client.addPlanificacio(plani);
 
                         vGen.setVisible(false);
@@ -625,12 +593,12 @@ public class kVistaPlanificacio {
 
     }
 
-    private void retrocedirSetmana(boolean generada) {
+    private void retrocedirSetmana(boolean generada) 
+    {
+        Conv.sumaDies(iniciSetmana, -7);
+        Conv.sumaDies(fiSetmana, -7);
 
-        iniciSetmana.add(Calendar.DAY_OF_MONTH, -7);
-        fiSetmana.add(Calendar.DAY_OF_MONTH, -7);
-
-        String setmana = "" + iniciSetmana.get(Calendar.DAY_OF_MONTH) + "/" + (iniciSetmana.get(Calendar.MONTH) + 1) + "/" + iniciSetmana.get(Calendar.YEAR) + " a " + fiSetmana.get(Calendar.DAY_OF_MONTH) + "/" + (fiSetmana.get(Calendar.MONTH) + 1) + "/" + fiSetmana.get(Calendar.YEAR);
+        String setmana = Conv.setmana(iniciSetmana, fiSetmana);
         if (!generada) {
             vPlani.setSetmana(setmana);
         } else {
@@ -639,10 +607,9 @@ public class kVistaPlanificacio {
     }
 
     private void avancarSetmana(boolean generada) {
-
-        iniciSetmana.add(Calendar.DAY_OF_MONTH, +7);
-        fiSetmana.add(Calendar.DAY_OF_MONTH, +7);
-        String setmana = "" + iniciSetmana.get(Calendar.DAY_OF_MONTH) + "/" + (iniciSetmana.get(Calendar.MONTH) + 1) + "/" + iniciSetmana.get(Calendar.YEAR) + " a " + fiSetmana.get(Calendar.DAY_OF_MONTH) + "/" + (fiSetmana.get(Calendar.MONTH) + 1) + "/" + fiSetmana.get(Calendar.YEAR);
+        Conv.sumaDies(iniciSetmana, +7);
+        Conv.sumaDies(fiSetmana, +7);
+        String setmana = Conv.setmana(iniciSetmana, fiSetmana);
 
         if (!generada) {
             vPlani.setSetmana(setmana);
@@ -702,8 +669,10 @@ public class kVistaPlanificacio {
     }
 
     private void generarGraella(boolean temporal) throws ParseException {
-        String inici = "" + iniciSetmana.get(Calendar.DAY_OF_MONTH) + "-" + (iniciSetmana.get(Calendar.MONTH) + 1) + "-" + iniciSetmana.get(Calendar.YEAR);
-        String fi = "" + fiSetmana.get(Calendar.DAY_OF_MONTH) + "-" + (fiSetmana.get(Calendar.MONTH) + 1) + "-" + fiSetmana.get(Calendar.YEAR);
+        //  String inici = "" + iniciSetmana.get(Calendar.DAY_OF_MONTH) + "-" + (iniciSetmana.get(Calendar.MONTH) + 1) + "-" + iniciSetmana.get(Calendar.YEAR);
+        //  String fi = "" + fiSetmana.get(Calendar.DAY_OF_MONTH) + "-" + (fiSetmana.get(Calendar.MONTH) + 1) + "-" + fiSetmana.get(Calendar.YEAR);
+        String inici = Conv.dateToStr(iniciSetmana);
+        String fi = Conv.dateToStr(fiSetmana);
         if (temporal) {
             graella = CPlani.genSet(inici, fi, vGen.getPlanSelected(), temporal);
         } else {
