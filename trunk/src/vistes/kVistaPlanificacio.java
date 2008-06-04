@@ -78,8 +78,11 @@ public class kVistaPlanificacio {
 
     public void actualitzaVista(boolean temporal) throws ParseException {
         setLlistaPlani();
-        if (temporal) vGen.setGraella();
-        else vPlani.setGraella();
+        if (temporal) {
+            vGen.setGraella();
+        } else {
+            vPlani.setGraella();
+        }
     }
 
     public void initVistaPlanificacio() {
@@ -96,7 +99,7 @@ public class kVistaPlanificacio {
                 try {
                     seleccionatPlanificacio();
                 } catch (ParseException ex) {
-                    System.out.println("Err selecting plan "+ex.getMessage());
+                    System.out.println("Err selecting plan " + ex.getMessage());
                 }
             }
         });
@@ -155,13 +158,14 @@ public class kVistaPlanificacio {
                         dIni.setTime(dateInici);
                         dFi.setTime(dateFi);
 
-                       if (CPlani.anularEmissio(nomPrograma, dIni, dFi, false) /* true implica que es TEMPORAL */)
-                       {
-                           vPlani.setPreu(0);
-                           actualitzaVista(false);
-                           if (planSelected != -1) vPlani.setSelectPlan(planSelected);
-                       }
-                        
+                        if (CPlani.anularEmissio(nomPrograma, dIni, dFi, false) /* true implica que es TEMPORAL */) {
+                            vPlani.setPreu(0);
+                            actualitzaVista(false);
+                            if (planSelected != -1) {
+                                vPlani.setSelectPlan(planSelected);
+                            }
+                        }
+
                     }
                 } catch (ParseException ex) {
                     System.out.println("Error: L 140");
@@ -173,15 +177,16 @@ public class kVistaPlanificacio {
     }
 
     private void iniDataClient() {
-        if (CPlani.getClient() != null && CPlani.getClient().getLlistaPlan().size() > 0) {
-            vCriteris.setDataUltimaPlani(CPlani.getClient().getLlistaPlan().get((CPlani.getClient().getLlistaPlan().size() - 1)).getDataInici());
+        if (CPlani.getNumPlanisClient() > 0) {
+            String data = CPlani.getDataClient((CPlani.getNumPlanisClient() - 1));
+            vCriteris.setDataUltimaPlani(data);
         } else {
             vCriteris.setDataUltimaPlani(null);
         }
     }
 
     private void initGraella() throws ParseException {
-        if (CPlani.getClient() != null) {
+        if (CPlani.getNumPlanisClient() > 0) {
             generarGraella(false);
             vPlani.pintarGraella(graella);
         }
@@ -407,7 +412,7 @@ public class kVistaPlanificacio {
             /* Anular programa */
 
             public void actionPerformed(ActionEvent e) {
-                 String nomPrograma = vGen.getGraellaSelected();
+                String nomPrograma = vGen.getGraellaSelected();
                 int planSelected = vGen.getIndexsSelected();
                 try {
                     if (nomPrograma != null && nomPrograma.compareToIgnoreCase("") != 0 && nomPrograma.compareToIgnoreCase("-") != 0) {
@@ -425,13 +430,12 @@ public class kVistaPlanificacio {
                         dIni.setTime(dateInici);
                         dFi.setTime(dateFi);
 
-                       if (CPlani.anularEmissio(nomPrograma, dIni, dFi, true) /* true implica que es TEMPORAL */)
-                       {
-                           actualitzaVista(true);
-                           vGen.setPreu(0);
+                        if (CPlani.anularEmissio(nomPrograma, dIni, dFi, true) /* true implica que es TEMPORAL */) {
+                            actualitzaVista(true);
+                            vGen.setPreu(0);
                             vGen.setSelectPlan(planSelected);
-                       }
-                        
+                        }
+
                     }
                 } catch (ParseException ex) {
                     System.out.println("Error: L 140");
@@ -466,7 +470,7 @@ public class kVistaPlanificacio {
                         vGen.setVisible(false);
                         actualitzaVista(false);
                         actualitzaVista(true);
-                        
+
                     } catch (ParseException ex) {
                         System.out.println("Error: L 372");
                     }
@@ -487,7 +491,7 @@ public class kVistaPlanificacio {
         // vPlanGen.pintarGraella(graella);
         // generar graella amb akesta tupla demissions (segons la setmana indicada en globals)
         String planSelectedID = vGen.getPlanSelected();
-        if ( planSelectedID != null) {
+        if (planSelectedID != null) {
 
             //Aixo vol dir que cercara ses planificacions des client i no ses
             //generades per s'algoritme
@@ -502,8 +506,8 @@ public class kVistaPlanificacio {
             {
                 vGen.pintarGraella(graella);
             }
-             
-             vGen.setPreu(CPlani.getPreuPlan(planSelectedID));
+
+            vGen.setPreu(CPlani.getPreuPlan(planSelectedID));
         }
 
     }
@@ -511,7 +515,7 @@ public class kVistaPlanificacio {
     private void seleccionatPlanificacio() throws ParseException {
 
         String planSelectedID = vPlani.getPlanSelected();
-        if ( planSelectedID != null) {
+        if (planSelectedID != null) {
             initSetmana();
 
             //Aixo vol dir que cercara ses planificacions des client i no ses
@@ -520,18 +524,18 @@ public class kVistaPlanificacio {
 
             //Seteja sa Graella amb ses noves tEmissio[]
 
-            
+
             generarGraella(temporal);
 
             if (graella != null)//Pintar-la
             {
                 vPlani.pintarGraella(graella);
             }
-            
-             vPlani.setPreu(CPlani.getPreuPlan(planSelectedID));
+
+            vPlani.setPreu(CPlani.getPreuPlan(planSelectedID));
         }
     }
-    
+
     public void seleccionatPrograma(boolean llistaSeleccio) {
         //Agafem nom del programa seleccionat de la llistaSeleccio o de la llistaProgrames:
         String nomP;
@@ -645,12 +649,12 @@ public class kVistaPlanificacio {
     }
 
     private void generarGraella(boolean temporal) throws ParseException {
-        String inici = "" + iniciSetmana.get(Calendar.DAY_OF_MONTH) + "-" + (iniciSetmana.get(Calendar.MONTH)+1) + "-" + iniciSetmana.get(Calendar.YEAR);
-        String fi = "" + fiSetmana.get(Calendar.DAY_OF_MONTH) + "-" + (fiSetmana.get(Calendar.MONTH)+1) + "-" + fiSetmana.get(Calendar.YEAR);
+        String inici = "" + iniciSetmana.get(Calendar.DAY_OF_MONTH) + "-" + (iniciSetmana.get(Calendar.MONTH) + 1) + "-" + iniciSetmana.get(Calendar.YEAR);
+        String fi = "" + fiSetmana.get(Calendar.DAY_OF_MONTH) + "-" + (fiSetmana.get(Calendar.MONTH) + 1) + "-" + fiSetmana.get(Calendar.YEAR);
         graella = CPlani.genSet(inici, fi, vPlani.getPlanSelected(), temporal);
     }
-    
-        /** A Partir d'aqui  part de Controlador de vistes de Programes*/
+
+    /** A Partir d'aqui  part de Controlador de vistes de Programes*/
     public void setLlistaFiltre() {
         vSprog.clearFitxa();
         actLlistaFiltres(vSprog.getFClickedInt());

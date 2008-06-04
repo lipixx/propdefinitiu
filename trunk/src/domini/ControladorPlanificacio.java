@@ -287,6 +287,20 @@ public class ControladorPlanificacio {
         return planificacions;
     }
 
+    public String getDataClient(int i) {
+
+        Calendar aux = cActual.getLlistaPlan().get(i).getDataInici();
+        return "" + aux.get(Calendar.DAY_OF_MONTH) + "/" + aux.get(Calendar.MONTH) + "/" + aux.get(Calendar.YEAR);
+    }
+
+    public int getNumPlanisClient() {
+        if (cActual == null) {
+            return 0;
+        } else {
+            return cActual.getLlistaPlan().size();
+        }
+    }
+
     /**S'ha canviat el client actual del domini, per aixo
      * se li avisa n'aquest controlador.
      * 
@@ -355,8 +369,9 @@ public class ControladorPlanificacio {
                     LinkedList<ServeiPendent> emissionsTemporal = P.getLlistaEmissions();
                     if (emissionsTemporal.get(j).getIdentificador().equals(nomPrograma)) {
                         //Si no queda cap emissio, eliminar la planificacio de l'usuari
-                        if (P.delEmissioPlanificacio(emissionsTemporal.get(j)) == 0)
-                                llistaPlanisTemporal.remove(P);
+                        if (P.delEmissioPlanificacio(emissionsTemporal.get(j)) == 0) {
+                            llistaPlanisTemporal.remove(P);
+                        }
                         trobat = true;
                     }
                 }
@@ -464,7 +479,7 @@ public class ControladorPlanificacio {
     }
 
     public double getPreuPlan(String planSelectedID) throws ParseException {
-        
+
         Date iniP = formatCalendar2.parse(planSelectedID.substring(0, 10));
         Calendar iniPlaniAux = Calendar.getInstance();
         iniPlaniAux.setTime(iniP);
@@ -473,15 +488,18 @@ public class ControladorPlanificacio {
         Calendar fiPlaniAux = Calendar.getInstance();
         fiPlaniAux.setTime(fiP);
 
-        Planificacio P = getPlanificacio(iniPlaniAux,fiPlaniAux);
-        if (P == null) return 0;
-        else return P.getPreu();
-    
+        Planificacio P = getPlanificacio(iniPlaniAux, fiPlaniAux);
+        if (P == null) {
+            return 0;
+        } else {
+            return P.getPreu();
+        }
+
     }
 
     private Planificacio getPlanificacio(Calendar dataIni, Calendar dataFi) {
         for (Planificacio p : llistaPlanificacions) {
-            if (sonIguals(p.getDataInici(),dataIni) && sonIguals(p.getDataFi(),dataFi)) {
+            if (sonIguals(p.getDataInici(), dataIni) && sonIguals(p.getDataFi(), dataFi)) {
                 return p;
             }
         }
