@@ -58,14 +58,16 @@ public class VistaCriteris extends javax.swing.JDialog {
      *  a la caixa corresponent iniPeriodePlani. Tambe es seteja 7 dies mes tart fiPeriodePlani.
      * @param dataIni Data de inici de la ultima planificacio
      */
-    public void setDataUltimaPlani(String dataIniUp) {
-        if (!dataIniUp.equalsIgnoreCase("")) {
+    public void setDataUltimaPlani(String dataIniUp) 
+    {
+        if (!dataIniUp.equalsIgnoreCase("")) 
             iniPeriodePlani = Conv.strToCalendar(dataIniUp);
+        else iniPeriodePlani = Calendar.getInstance();
+        
             fiPeriodePlani = (Calendar) iniPeriodePlani.clone();
             Conv.sumaDies(fiPeriodePlani, 7);
             botoDInici.setText(Conv.dateToStr(iniPeriodePlani));
             botoDFi.setText(Conv.dateToStr(fiPeriodePlani));
-        }
     }
 
     private void setDates() //DEPRECATED
