@@ -61,8 +61,6 @@ public class kVistaPlanificacio {
         initSetmana();
         initGraella();
         initVistaCriteris();
-        iniDataClient();
-        //   initVistaSelectProg();
         initVistaGenerat();
 
     }
@@ -83,6 +81,7 @@ public class kVistaPlanificacio {
         } else {
             vPlani.setGraella();
         }
+        iniDataClient();
     }
 
     public void initVistaPlanificacio() {
@@ -176,12 +175,12 @@ public class kVistaPlanificacio {
         vPlani.setActions(actions, selPlan);
     }
 
-    private void iniDataClient() {
+    public void iniDataClient() {
         if (CPlani.getNumPlanisClient() > 0) {
             String data = CPlani.getDataClient((CPlani.getNumPlanisClient() - 1));
             vCriteris.setDataUltimaPlani(data);
         } else {
-            vCriteris.setDataUltimaPlani(null);
+            vCriteris.setDataUltimaPlani("");
         }
     }
 
