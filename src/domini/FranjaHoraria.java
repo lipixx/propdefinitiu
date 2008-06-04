@@ -46,7 +46,7 @@ public class FranjaHoraria implements ClasseAmbClau<Float>, Serializable {
      *  @return L'hora d'inici d'aquesta franja.
      */
     public Calendar getHoraInici() {
-        return horaInici;
+        return (Calendar) horaInici.clone();
     }
 
     /**
@@ -54,7 +54,7 @@ public class FranjaHoraria implements ClasseAmbClau<Float>, Serializable {
      *  @return L'hora de fi d'aquesta franja.
      */
     public Calendar getHoraFi() {
-        return horaFi;
+        return (Calendar) horaFi.clone();
     }
 
     /**
