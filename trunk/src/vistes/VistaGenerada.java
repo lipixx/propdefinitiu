@@ -10,7 +10,7 @@ import javax.swing.event.ListSelectionListener;
 
 /**
  *
- * @author  superman
+ * @author  Josep Marti
  */
 public class VistaGenerada extends javax.swing.JDialog {
 

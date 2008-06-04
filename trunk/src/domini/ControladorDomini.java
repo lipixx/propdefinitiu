@@ -33,7 +33,7 @@ public class ControladorDomini
             ControlClient = new ControladorCliente();
             
             //Falten
-            ControlPlan = new ControladorPlanificacio(RepoFranges,ControlProg,ControlProg.getRepoProgs());
+            ControlPlan = new ControladorPlanificacio(RepoFranges,ControlProg);
             ControlFactures = new ControladorFactura();
             //*Fi falten
             

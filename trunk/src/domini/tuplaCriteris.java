@@ -17,7 +17,6 @@ public class tuplaCriteris {
     public int tercer;
     public int quart;
     public int cinque;
-    public int separades;
     public int nombrePlanis;
     public float preuMaxim;
     public Calendar dataIni;
@@ -56,7 +55,6 @@ public class tuplaCriteris {
         tercer = 3; /*  */
         quart = 4; /* Preu */
         cinque = 5; /* Preu */
-        separades = 1;
         preuMaxim = 0;
 
         autoGen = false;

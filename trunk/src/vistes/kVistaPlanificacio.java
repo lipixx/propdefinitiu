@@ -69,8 +69,7 @@ public class kVistaPlanificacio {
         return vPlani;
     }
 
-    public void actualitzaVista(boolean temporal) throws ParseException 
-    {
+    public void actualitzaVista(boolean temporal) throws ParseException {
         llistaPlanificacions = CPlani.getLlistaPlanificacions(temporal);
         if (temporal) {
             vGen.setLlistaPlans(llistaPlanificacions);
@@ -120,7 +119,7 @@ public class kVistaPlanificacio {
             /* Setmana Anterior */
 
             public void actionPerformed(ActionEvent e) {
-                retrocedirSetmana();
+                retrocedirSetmana(false);
             }
         });
 
@@ -128,7 +127,7 @@ public class kVistaPlanificacio {
             /* Setmana Seguent */
 
             public void actionPerformed(ActionEvent e) {
-                avancarSetmana();
+                avancarSetmana(false);
             }
         });
 
@@ -257,10 +256,14 @@ public class kVistaPlanificacio {
                         vSprog.setLlistaFiltres(llistaFiltres);
                         vSprog.clearFitxa();
                         vSprog.setVisible(false);
+
                         /*Fem visible el resum de la planificacio*/
+
+                        String setmana = "" + iniciSetmana.get(Calendar.DAY_OF_MONTH) + "/" + (iniciSetmana.get(Calendar.MONTH) + 1) + "/" + iniciSetmana.get(Calendar.YEAR) + " a " + fiSetmana.get(Calendar.DAY_OF_MONTH) + "/" + (fiSetmana.get(Calendar.MONTH) + 1) + "/" + fiSetmana.get(Calendar.YEAR);
+                        vGen.setSetmana(setmana);
                         vGen.setLocationRelativeTo(vSprog);
                         vGen.setTitle("Planificacio Generada! - Resum");
-                        
+
                         llistaPlanificacions = CPlani.getLlistaPlanificacions(true);
                         vGen.setLlistaPlans(llistaPlanificacions);
                         vGen.setVisible(true);
@@ -317,9 +320,9 @@ public class kVistaPlanificacio {
 
         iniciSetmana.add(Calendar.DAY_OF_MONTH, -restar);
         fiSetmana.add(Calendar.DAY_OF_MONTH, +sumar);
+
         String setmana = "" + iniciSetmana.get(Calendar.DAY_OF_MONTH) + "/" + (iniciSetmana.get(Calendar.MONTH) + 1) + "/" + iniciSetmana.get(Calendar.YEAR) + " a " + fiSetmana.get(Calendar.DAY_OF_MONTH) + "/" + (fiSetmana.get(Calendar.MONTH) + 1) + "/" + fiSetmana.get(Calendar.YEAR);
         vPlani.setSetmana(setmana);
-
 
     }
 
@@ -330,7 +333,7 @@ public class kVistaPlanificacio {
             public void actionPerformed(ActionEvent e) {
                 try {
                     nousCriteris = vCriteris.getCriteris();
-                    if (nousCriteris != null) {
+                    if (nousCriteris != null && nousCriteris.autoGen == false) {
 
                         vSprog.setLocationRelativeTo(vCriteris);
                         vSprog.setTitle("Seleccionar programes");
@@ -342,6 +345,16 @@ public class kVistaPlanificacio {
                             vCriteris.setVisible(false);
                             vSprog.setVisible(true);
                         }
+                    } else if (nousCriteris.autoGen == true) {
+                        String setmana = "" + iniciSetmana.get(Calendar.DAY_OF_MONTH) + "/" + (iniciSetmana.get(Calendar.MONTH) + 1) + "/" + iniciSetmana.get(Calendar.YEAR) + " a " + fiSetmana.get(Calendar.DAY_OF_MONTH) + "/" + (fiSetmana.get(Calendar.MONTH) + 1) + "/" + fiSetmana.get(Calendar.YEAR);
+                        vGen.setSetmana(setmana);
+                        vGen.setLocationRelativeTo(vSprog);
+                        vGen.setTitle("Planificacio Generada! - Resum");
+
+                        llistaPlanificacions = CPlani.getLlistaPlanificacions(true);
+                        vGen.setLlistaPlans(llistaPlanificacions);
+                        vGen.setVisible(true);
+                        vCriteris.setVisible(false);
                     }
 
                 } catch (ParseException ex) {
@@ -379,7 +392,7 @@ public class kVistaPlanificacio {
             /* Setmana Anterior */
 
             public void actionPerformed(ActionEvent e) {
-                retrocedirSetmana();
+                retrocedirSetmana(true);
                 if (vGen.getPlanSelected() != null) {
                     try {
                         seleccionatPlanGen();
@@ -395,7 +408,7 @@ public class kVistaPlanificacio {
             /* Setmana Seguent */
 
             public void actionPerformed(ActionEvent e) {
-                avancarSetmana();
+                avancarSetmana(true);
                 if (vGen.getPlanSelected() != null) {
                     try {
                         seleccionatPlanGen();
@@ -579,22 +592,30 @@ public class kVistaPlanificacio {
 
     }
 
-    private void retrocedirSetmana() {
+    private void retrocedirSetmana(boolean generada) {
 
         iniciSetmana.add(Calendar.DAY_OF_MONTH, -7);
         fiSetmana.add(Calendar.DAY_OF_MONTH, -7);
 
         String setmana = "" + iniciSetmana.get(Calendar.DAY_OF_MONTH) + "/" + (iniciSetmana.get(Calendar.MONTH) + 1) + "/" + iniciSetmana.get(Calendar.YEAR) + " a " + fiSetmana.get(Calendar.DAY_OF_MONTH) + "/" + (fiSetmana.get(Calendar.MONTH) + 1) + "/" + fiSetmana.get(Calendar.YEAR);
-        vPlani.setSetmana(setmana);
+        if (!generada) {
+            vPlani.setSetmana(setmana);
+        } else {
+            vGen.setSetmana(setmana);
+        }
     }
 
-    private void avancarSetmana() {
+    private void avancarSetmana(boolean generada) {
 
         iniciSetmana.add(Calendar.DAY_OF_MONTH, +7);
         fiSetmana.add(Calendar.DAY_OF_MONTH, +7);
-
         String setmana = "" + iniciSetmana.get(Calendar.DAY_OF_MONTH) + "/" + (iniciSetmana.get(Calendar.MONTH) + 1) + "/" + iniciSetmana.get(Calendar.YEAR) + " a " + fiSetmana.get(Calendar.DAY_OF_MONTH) + "/" + (fiSetmana.get(Calendar.MONTH) + 1) + "/" + fiSetmana.get(Calendar.YEAR);
-        vPlani.setSetmana(setmana);
+
+        if (!generada) {
+            vPlani.setSetmana(setmana);
+        } else {
+            vGen.setSetmana(setmana);
+        }
     }
 
     /**

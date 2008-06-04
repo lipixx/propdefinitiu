@@ -10,7 +10,6 @@
 package domini;
 
 import dades.RepositoriFranges;
-import dades.RepositoriProgrames;
 import domini.programa.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -24,27 +23,19 @@ public class ControladorPlanificacio {
     private RepositoriFranges RepoFranges;
     private Cliente cActual;
     private ControladorProgrames CProgrames;
-    private RepositoriProgrames RepoProgs;
-    /**/
     private LinkedList<Programa> llistaProgrames;
     private LinkedList<Planificacio> llistaPlanificacions;
     private LinkedList<FranjaHoraria> llistaFrangesPreferides;
     private LinkedList<FranjaHoraria> llistaFrangesProhibides;
-    private LinkedList<FranjaHoraria> llistaFranges;
-    private LinkedList<Programa> llistaProgs;
     private int[] prioritats = new int[5];
     private Generador generador;
-    private boolean criteris = false;
-    private float preuMax;
     SimpleDateFormat formatCalendar = new SimpleDateFormat("dd-MM-yyyy");
     SimpleDateFormat formatCalendar2 = new SimpleDateFormat("dd/MM/yyyy");
     SimpleDateFormat formatHora = new SimpleDateFormat("H:mm");
 
-    /**/
-    public ControladorPlanificacio(RepositoriFranges nRepoFranges, ControladorProgrames CProgs, RepositoriProgrames<String, Programa> repoProgs) {
+    public ControladorPlanificacio(RepositoriFranges nRepoFranges, ControladorProgrames CProgs) {
         CProgrames = CProgs;
         RepoFranges = nRepoFranges;
-        RepoProgs = repoProgs;
         generador = new Generador();
         llistaFrangesPreferides = new LinkedList<FranjaHoraria>();
         llistaFrangesProhibides = new LinkedList<FranjaHoraria>();
@@ -54,6 +45,7 @@ public class ControladorPlanificacio {
 
     public String[][] genSet(String inici, String fin, String plani, boolean temporal) throws ParseException {
 
+        /* Definim els limits de la setmana a generar */
         Date ini = formatCalendar.parse(inici);
         Calendar iniSetmana = Calendar.getInstance();
         iniSetmana.setTime(ini);
@@ -74,7 +66,6 @@ public class ControladorPlanificacio {
         iniPlaniAux.setTime(iniP);
 
 
-        //Comprovar que es 23 esta be, que no es surti de rang
         Date fiP = formatCalendar2.parse(plani.substring(13, 23));
         Calendar fiPlaniAux = Calendar.getInstance();
         fiPlaniAux.setTime(fiP);
@@ -92,7 +83,8 @@ public class ControladorPlanificacio {
         boolean trobat = false;
 
         for (int i = 0; i < llistaP.size() && !trobat; i++) {
-            //Obtenim s'identificador de planificacio que estem mirant
+            /* Obtenim s'identificador de planificacio que estem mirant */
+
             iniPlani = (Calendar) llistaP.get(i).getDataInici();
             fiPlani = (Calendar) llistaP.get(i).getDataFi();
 
@@ -104,9 +96,9 @@ public class ControladorPlanificacio {
         }
 
         String[][] graella = new String[144][8];
-        for (int o = 0; o < 144; o++) {
+        for (int hmm = 0; hmm < 144; hmm++) {
             for (int l = 0; l < 8; l++) {
-                graella[o][l] = "-";
+                graella[hmm][l] = "-";
             }
         }
 
@@ -122,51 +114,54 @@ public class ControladorPlanificacio {
         Calendar fiDia = Calendar.getInstance();
         fiDia.setTime(fiP);
 
-        //Rellenem sa primera columna amb ses hores:
+        /* Rellenem sa primera columna amb ses hores: */
         while (iniDia.before(fiDia) && comptador < 144) {
             graella[comptador][0] = "" + iniDia.get(Calendar.HOUR_OF_DAY) + ":" + iniDia.get(Calendar.MINUTE);
             iniDia.add(Calendar.MINUTE, +10);
             comptador++;
         }
+        if (P != null) {
+            for (int j = 0; j < P.getLlistaEmissions().size(); j++) {
+                ServeiPendent mirantEmissio = (ServeiPendent) P.getLlistaEmissions().get(j);
 
-        for (int j = 0; j < P.getLlistaEmissions().size(); j++) {
-            Emissio mirantEmissio = (Emissio) P.getLlistaEmissions().get(j);
+                if (!mirantEmissio.getDataReal().before(iniSetmana) && (!mirantEmissio.getDataReal().after(fiSetmana))) {
 
-            if (mirantEmissio.getDataEmissio().after(iniSetmana) && (mirantEmissio.getDataEmissio().before(fiSetmana)) || mirantEmissio.getDataEmissio().equals(iniSetmana) || mirantEmissio.getDataEmissio().equals(fiSetmana) /* || true*/) {
-
-                dia = mirantEmissio.getDataEmissio().get(Calendar.DAY_OF_WEEK);
-                if (dia == 1) {
-                    dia = 7;
-                } else {
-                    dia--;
-                }
-
-                horaInici = mirantEmissio.getHoraInici().get(Calendar.HOUR_OF_DAY);
-                minutInici = mirantEmissio.getHoraInici().get(Calendar.MINUTE);
-                posIni = (horaInici * 6) + (minutInici / 10);
-
-                horaFi = mirantEmissio.getHoraFi().get(Calendar.HOUR);
-                minutFi = mirantEmissio.getHoraFi().get(Calendar.MINUTE);
-                posFi = (horaFi * 6) + (minutFi / 10);
-
-                if (posIni > posFi) {
-                    diaSeg = true;
-                } else {
-                    diaSeg = false;
-                }
-
-                while (posIni < posFi || ((posIni > posFi) && diaSeg) || (diaSeg && (posIni > 143))) {
-                    String nom = mirantEmissio.getPrograma().getNom();
-                    if (diaSeg && (posIni > 143)) {
-                        dia++;
-                        diaSeg = false;
-                        posIni = 0;
+                    dia = mirantEmissio.getDataReal().get(Calendar.DAY_OF_WEEK);
+                    if (dia == 1) {
+                        /* Si es diumenge, la pintam a sa columna nombre 8, es a dir, posicio 7 */
+                        dia = 7;
+                    } else {
+                        dia--;
                     }
-                    graella[posIni][dia] = nom;
-                    posIni ++;
-                }
-            }
 
+                    horaInici = ((Emissio) mirantEmissio).getHoraInici().get(Calendar.HOUR_OF_DAY);
+                    minutInici = ((Emissio) mirantEmissio).getHoraInici().get(Calendar.MINUTE);
+                    posIni = (horaInici * 6) + (minutInici / 10);
+
+                    horaFi = ((Emissio) mirantEmissio).getHoraFi().get(Calendar.HOUR);
+                    minutFi = ((Emissio) mirantEmissio).getHoraFi().get(Calendar.MINUTE);
+                    posFi = (horaFi * 6) + (minutFi / 10);
+
+                    if (posIni > posFi) {
+                        diaSeg = true;
+                    } else {
+                        diaSeg = false;
+                    }
+
+                    String nom = mirantEmissio.getIdentificador();
+                    while (posIni < posFi || ((posIni > posFi) && diaSeg) || (diaSeg && (posIni > 143))) {
+
+                        if (diaSeg && (posIni > 143)) {
+                            dia++;
+                            diaSeg = false;
+                            posIni = 0;
+                        }
+                        graella[posIni][dia] = nom;
+                        posIni++;
+                    }
+                }
+
+            }
         }
 
         return graella;
@@ -255,27 +250,15 @@ public class ControladorPlanificacio {
             llistaFrangesProhibides.add(franja);
         }
 
-        prioritats[nousCriteris.primer - 1] = 1;
-        prioritats[nousCriteris.segon - 1] = 2;
-        prioritats[nousCriteris.tercer - 1] = 3;
-        prioritats[nousCriteris.quart - 1] = 4;
-        prioritats[nousCriteris.cinque - 1] = 5;
+        prioritats[(nousCriteris.primer) - 1] = 1;
+        prioritats[(nousCriteris.segon) - 1] = 2;
+        prioritats[(nousCriteris.tercer) - 1] = 3;
+        prioritats[(nousCriteris.quart) - 1] = 4;
+        prioritats[(nousCriteris.cinque) - 1] = 5;
 
-        /* DETECCIO */
-        System.out.println("llistaprogrames = " + llistaProgrames.size());
-        System.out.println("nousCriteris.preuMax =" + nousCriteris.preuMaxim);
-        System.out.println("prioritats" + prioritats.length);
-        System.out.println("llistaFrangesPreferides = " + llistaFrangesPreferides.size());
-        System.out.println("llistaFrangesProhibides =" + llistaFrangesProhibides.size());
-        System.out.println("data ini =" + nousCriteris.dataIni.get(Calendar.DAY_OF_MONTH));
-        System.out.println("DATA FI = " + nousCriteris.dataFi.get(Calendar.DAY_OF_MONTH));
-        System.out.println("NOMBRE PLANI =" + nousCriteris.nombrePlanis);
-        System.out.println(" REPRO =" + RepoFranges.listaObject().size());
-        System.out.println("SEPARADES = " + nousCriteris.separades);
-        /**/
 
         LinkedList<FranjaHoraria> frangesH = RepoFranges.listaObject();
-        llistaPlanificacions = generador.generar(llistaProgrames, nousCriteris.preuMaxim, prioritats, llistaFrangesPreferides, llistaFrangesProhibides, nousCriteris.dataIni, nousCriteris.dataFi, nousCriteris.nombrePlanis, frangesH, nousCriteris.separades);
+        llistaPlanificacions = generador.generar(llistaProgrames, nousCriteris.preuMaxim, prioritats, llistaFrangesPreferides, llistaFrangesProhibides, nousCriteris.dataIni, nousCriteris.dataFi, nousCriteris.nombrePlanis, frangesH);
 
 
         /* Pasar cada planificacio al seu identificador ( data ini + data fi) */
@@ -416,7 +399,7 @@ public class ControladorPlanificacio {
         for (int i = 0; i <
                 llistaPClient.size(); i++) {
             Calendar p = (Calendar) ((Planificacio) llistaPClient.get(i)).getDataInici().clone();
-            if (p.get(Calendar.MONTH) < 10)  {
+            if (p.get(Calendar.MONTH) < 10) {
                 mesIni = "0" + (p.get(Calendar.MONTH) + 1);
             } else {
                 mesIni = "" + (p.get(Calendar.MONTH) + 1);
