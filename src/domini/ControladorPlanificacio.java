@@ -163,7 +163,7 @@ public class ControladorPlanificacio {
                         posIni = 0;
                     }
                     graella[posIni][dia] = nom;
-                    posIni += 10;
+                    posIni ++;
                 }
             }
 

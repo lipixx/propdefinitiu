@@ -260,6 +260,8 @@ public class kVistaPlanificacio {
                         /*Fem visible el resum de la planificacio*/
                         vGen.setLocationRelativeTo(vSprog);
                         vGen.setTitle("Planificacio Generada! - Resum");
+                        
+                        llistaPlanificacions = CPlani.getLlistaPlanificacions(true);
                         vGen.setLlistaPlans(llistaPlanificacions);
                         vGen.setVisible(true);
                     } else {
