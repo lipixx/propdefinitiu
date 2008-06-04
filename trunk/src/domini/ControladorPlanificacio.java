@@ -290,7 +290,7 @@ public class ControladorPlanificacio {
     public String getDataClient(int i) {
 
         Calendar aux = cActual.getLlistaPlan().get(i).getDataInici();
-        return "" + aux.get(Calendar.DAY_OF_MONTH) + "/" + aux.get(Calendar.MONTH) + "/" + aux.get(Calendar.YEAR);
+        return "" + aux.get(Calendar.DAY_OF_MONTH) + "/" + (aux.get(Calendar.MONTH)+1) + "/" + aux.get(Calendar.YEAR);
     }
 
     public int getNumPlanisClient() {

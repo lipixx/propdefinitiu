@@ -327,7 +327,7 @@ public class kVistes {
                             /*Ja tenim setejat el nou client a CD i als respectius controladors
                             de domini, per tant ara nomes falta actualitzar les vistes que
                             faixin servir el clientActual de CD*/
-
+                            
                             kvFact.actualitzarVFacturacio();
                             kvPlan.actualitzaVista(false);
 
