@@ -217,7 +217,7 @@ public class VistaCriteris extends javax.swing.JDialog {
 
 
         criteris.nombrePlanis = (Integer) botoNombrePlanis.getValue();
-
+     //   reordenaCriteris();
         return criteris;
     }
 
@@ -234,12 +234,72 @@ public class VistaCriteris extends javax.swing.JDialog {
         }
     }
 
-   private void setDates() 
-   {
-        botoDInici.setText(""+ultimaPlani.get(Calendar.DATE)+"/"+(ultimaPlani.get(Calendar.MONTH)+1)+"/"+ultimaPlani.get(Calendar.YEAR));
-        botoDFi.setText(""+(ultimaPlani.get(Calendar.DATE)+7)+"/"+(ultimaPlani.get(Calendar.MONTH)+1)+"/"+ultimaPlani.get(Calendar.YEAR)); 
-   }
-        
+    private void reordenaCriteris() {
+        setCriteris();
+        int[] crits = new int[5];
+        crits[0] = criteris.primer;
+        crits[1] = criteris.segon;
+        crits[2] = criteris.tercer;
+        crits[3] = criteris.quart;
+        crits[4] = criteris.cinque;
+        int[] ocupats = {0, 0, 0, 0, 0, 0};
+        //Rellenem els ocupats
+        for (int i = 0; i < 5; i++) {
+            ocupats[crits[i] - 1]++;
+        }
+        //Mirar per cada crit, quin es 0, i si ho es, posar-li un lliure de ocupats[]
+        for (int i = 0; i < 5; i++)
+        {
+            if (crits[i] == 6 || ocupats[crits[i]-1] > 1) 
+            {
+                int pastanaga = lliure(ocupats);
+                crits[i] = pastanaga;
+                ocupats[pastanaga]+=1;
+            }
+        }
+    }
+
+    private int lliure(int vector[]) {
+        for (int i = 0; i < 5; i++) {
+            if (vector[i] == 0) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private void setCriteris() {
+        criteris.primer = getIndexCriteri((String) botoPrimerCriteri.getSelectedItem());
+        criteris.segon = getIndexCriteri((String) botoSegonCriteri.getSelectedItem());
+        criteris.tercer = getIndexCriteri((String) botoTercerCriteri.getSelectedItem());
+        criteris.quart = getIndexCriteri((String) botoQuartCriteri.getSelectedItem());
+        criteris.cinque = getIndexCriteri((String) botoCinqueCriteri.getSelectedItem());
+    }
+
+    private int getIndexCriteri(String criteri) {
+        if (criteri.equalsIgnoreCase("Preu")) {
+            return 1;
+        }
+        if (criteri.equalsIgnoreCase("Franja Preferida")) {
+            return 2;
+        }
+        if (criteri.equalsIgnoreCase("Franja Prohibida")) {
+            return 3;
+        }
+        if (criteri.equalsIgnoreCase("Programes Seleccionats")) {
+            return 4;
+        }
+        if (criteri.equalsIgnoreCase("Periode Planificacio")) {
+            return 5;
+        }
+        return 6;
+    }
+
+    private void setDates() {
+        botoDInici.setText("" + ultimaPlani.get(Calendar.DATE) + "/" + (ultimaPlani.get(Calendar.MONTH) + 1) + "/" + ultimaPlani.get(Calendar.YEAR));
+        botoDFi.setText("" + (ultimaPlani.get(Calendar.DATE) + 7) + "/" + (ultimaPlani.get(Calendar.MONTH) + 1) + "/" + ultimaPlani.get(Calendar.YEAR));
+    }
+
     private String[] agafarModel(ComboBoxModel model) {
         int mida = model.getSize();
         String nouModel[] = new String[mida];
@@ -1048,7 +1108,7 @@ public class VistaCriteris extends javax.swing.JDialog {
                 botoQuartCriteri.setModel(new javax.swing.DefaultComboBoxModel(new String[]{valorsCombo[0], valorsCombo[1], valorsCombo[3]}));
                 break;
             case 3:
-                botoQuartCriteri.setModel(new javax.swing.DefaultComboBoxModel(new String[]{valorsCombo[0], valorsCombo[2], valorsCombo[4]}));
+                botoQuartCriteri.setModel(new javax.swing.DefaultComboBoxModel(new String[]{valorsCombo[0], valorsCombo[2], valorsCombo[1]}));
                 break;
         }
         botoQuartCriteri.setSelectedIndex(0);
@@ -1189,6 +1249,4 @@ public class VistaCriteris extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     // End of variables declaration//GEN-END:variables
-
-
 }

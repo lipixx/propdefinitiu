@@ -42,7 +42,7 @@ public class Emissio extends ServeiPendent implements Serializable{
      *  @return La data d'emissio del programa.
      */
     public Calendar getDataEmissio() {
-        return dataEmissio;
+        return (Calendar) dataEmissio.clone();
     }
 
     /**
@@ -50,7 +50,7 @@ public class Emissio extends ServeiPendent implements Serializable{
      *  @return L'hora d'inici d'emissio del programa.
      */
     public Calendar getHoraInici() {
-        return horaInici;
+        return (Calendar) horaInici.clone();
     }
 
     /**
@@ -58,7 +58,7 @@ public class Emissio extends ServeiPendent implements Serializable{
      *  @return L'hora de fi d'emissio del programa.
      */
     public Calendar getHoraFi() {
-        return horaFi;
+        return (Calendar) horaFi.clone();
     }
 
     /**
@@ -114,7 +114,7 @@ public class Emissio extends ServeiPendent implements Serializable{
      *  @post   S'ha modificat l'atribut amb el nou valor.
      */
     public void setDataEmissio(Calendar novaDataEmissio) {
-        dataEmissio = novaDataEmissio;
+        dataEmissio = (Calendar) novaDataEmissio.clone();
     }
 
     /**
@@ -123,7 +123,7 @@ public class Emissio extends ServeiPendent implements Serializable{
      *  @post   S'ha modificat l'atribut amb el nou valor.
      */
     public void setHoraInici(Calendar novaHoraInici) {
-        horaInici = novaHoraInici;
+        horaInici = (Calendar) novaHoraInici.clone();
     }
 
     /**
@@ -132,7 +132,7 @@ public class Emissio extends ServeiPendent implements Serializable{
      *  @post   S'ha modificat l'atribut amb el nou valor.
      */
     public void setHoraFi(Calendar novaHoraFi) {
-        horaFi = novaHoraFi;
+        horaFi = (Calendar) novaHoraFi.clone();
     }
 
     /**
