@@ -46,7 +46,7 @@ public class Cliente implements Serializable, ClasseAmbClau<String>{
         ultFact = Calendar.getInstance();
         listFact = new LinkedList<Factura>();
         listPlan = new LinkedList<Planificacio>();
-        testingFactures();
+      //  testingFactures();
 
     }  
     
