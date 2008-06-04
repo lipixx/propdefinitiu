@@ -51,11 +51,11 @@ public class tuplaCriteris {
     public boolean autoGen;
 
     public tuplaCriteris() {
-        primer = 1;
-        segon = 2;
-        tercer = 3;
-        quart = 4;
-        cinque = 5;
+        primer = 1; /* Preu */
+        segon = 2; /* Preferida */
+        tercer = 3; /*  */
+        quart = 4; /* Preu */
+        cinque = 5; /* Preu */
         separades = 1;
         preuMaxim = 0;
 
