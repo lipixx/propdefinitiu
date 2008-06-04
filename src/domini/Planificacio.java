@@ -61,7 +61,7 @@ public class Planificacio implements Serializable{
      *  @return La data d'emissio del programa.
      */
     public Calendar getDataInici() {
-        return dataInici;
+        return (Calendar) dataInici.clone();
     }
 
     /**
@@ -69,7 +69,7 @@ public class Planificacio implements Serializable{
      *  @return La data d'emissio del programa.
      */
     public Calendar getDataFi() {
-        return dataFi;
+        return (Calendar) dataFi.clone();
     }
 
     /**
@@ -90,7 +90,7 @@ public class Planificacio implements Serializable{
      *  @post   S'ha modificat l'atribut amb el nou valor.
      */
     public void setDataInici(Calendar novaDataInici) {
-        dataInici = novaDataInici;
+        dataInici = (Calendar) novaDataInici.clone();
     }
 
      /**
@@ -99,7 +99,7 @@ public class Planificacio implements Serializable{
      *  @post   S'ha modificat l'atribut amb el nou valor.
      */
     public void setDataFi(Calendar novaDataFi) {
-        dataFi = novaDataFi;
+        dataFi = (Calendar) novaDataFi.clone();
     }
 
 }
