@@ -29,14 +29,16 @@ public class ControladorPlanificacio {
     private LinkedList<FranjaHoraria> llistaFrangesProhibides;
     private int[] prioritats = new int[5];
     private Generador generador;
+    private Convertir Conv;
     SimpleDateFormat formatCalendar = new SimpleDateFormat("dd-MM-yyyy");
-    SimpleDateFormat formatCalendar2 = new SimpleDateFormat("dd/MM/yyyy");
-    SimpleDateFormat formatHora = new SimpleDateFormat("H:mm");
+    SimpleDateFormat formatCalendari = new SimpleDateFormat("dd/MM/yyyy");
+    SimpleDateFormat formatHora = new SimpleDateFormat("HH:mm");
 
     public ControladorPlanificacio(RepositoriFranges nRepoFranges, ControladorProgrames CProgs) {
         CProgrames = CProgs;
         RepoFranges = nRepoFranges;
         generador = new Generador();
+        Conv = new Convertir();
         llistaFrangesPreferides = new LinkedList<FranjaHoraria>();
         llistaFrangesProhibides = new LinkedList<FranjaHoraria>();
         llistaPlanificacions = new LinkedList<Planificacio>();
@@ -46,33 +48,21 @@ public class ControladorPlanificacio {
     public String[][] genSet(String inici, String fin, String plani, boolean temporal) throws ParseException {
 
         /* Definim els limits de la setmana a generar */
-        Date ini = formatCalendar.parse(inici);
-        Calendar iniSetmana = Calendar.getInstance();
-        iniSetmana.setTime(ini);
+        Calendar iniSetmana = Conv.strToCalendar(inici);
+        Calendar fiSetmana = Conv.strToCalendar(fin);
         iniSetmana.set(Calendar.HOUR, 0);
         iniSetmana.set(Calendar.MINUTE, 0);
         iniSetmana.set(Calendar.SECOND, 0);
-
-
-        Date fi = formatCalendar.parse(fin);
-        Calendar fiSetmana = Calendar.getInstance();
-        fiSetmana.setTime(fi);
         fiSetmana.set(Calendar.HOUR, 23);
         fiSetmana.set(Calendar.MINUTE, 59);
         fiSetmana.set(Calendar.SECOND, 59);
 
-        Date iniP = formatCalendar2.parse(plani.substring(0, 10));
-        Calendar iniPlaniAux = Calendar.getInstance();
-        iniPlaniAux.setTime(iniP);
-
-
-        Date fiP = formatCalendar2.parse(plani.substring(13, 23));
-        Calendar fiPlaniAux = Calendar.getInstance();
-        fiPlaniAux.setTime(fiP);
-
+        Calendar aux2[] = Conv.idPlanificacio(plani);
+        Calendar iniPlaniAux = aux2[0];
+        Calendar fiPlaniAux = aux2[1];
         Calendar iniPlani;
         Calendar fiPlani;
-
+        
         LinkedList<Planificacio> llistaP = llistaPlanificacions;
 
         if (!temporal) {
@@ -89,7 +79,7 @@ public class ControladorPlanificacio {
             fiPlani = (Calendar) llistaP.get(i).getDataFi();
 
 
-            if (sonIguals(iniPlaniAux, iniPlani) && sonIguals(fiPlaniAux, fiPlani)) {
+            if (Conv.sonIgualsData(iniPlaniAux, iniPlani) && Conv.sonIgualsData(fiPlaniAux, fiPlani)) {
                 trobat = true;
                 P = llistaP.get(i);
             }
@@ -112,11 +102,12 @@ public class ControladorPlanificacio {
 
         Date fiD = formatHora.parse("23:59");
         Calendar fiDia = Calendar.getInstance();
-        fiDia.setTime(fiP);
+        fiDia.setTime(fiD);
 
         /* Rellenem sa primera columna amb ses hores: */
         while (iniDia.before(fiDia) && comptador < 144) {
-            graella[comptador][0] = "" + iniDia.get(Calendar.HOUR_OF_DAY) + ":" + iniDia.get(Calendar.MINUTE);
+           // graella[comptador][0] = "" + iniDia.get(Calendar.HOUR_OF_DAY) + ":" + iniDia.get(Calendar.MINUTE);
+            graella[comptador][0] = Conv.getHora(iniDia);
             iniDia.add(Calendar.MINUTE, +10);
             comptador++;
         }
@@ -261,7 +252,9 @@ public class ControladorPlanificacio {
 
         for (int i = 0; i < llistaPlanificacions.size(); i++) {
             Calendar aux = (Calendar) llistaPlanificacions.get(i).getDataInici().clone();
-            planificacions[i] = "" + aux.get(Calendar.DAY_OF_MONTH) + "/" + (aux.get(Calendar.MONTH) + 1) + "/" + aux.get(Calendar.YEAR) + " - " + aux.get(Calendar.DAY_OF_MONTH) + "/" + (aux.get(Calendar.MONTH) + 1) + "/" + aux.get(Calendar.YEAR);
+            Calendar aux3 = (Calendar) llistaPlanificacions.get(i).getDataFi().clone();
+        //    planificacions[i] = "" + aux.get(Calendar.DAY_OF_MONTH) + "/" + (aux.get(Calendar.MONTH) + 1) + "/" + aux.get(Calendar.YEAR) + " - " + aux.get(Calendar.DAY_OF_MONTH) + "/" + (aux.get(Calendar.MONTH) + 1) + "/" + aux.get(Calendar.YEAR);
+            planificacions[i] = Conv.idPlanificacio(aux, aux3);
         }
 
         return planificacions;
@@ -270,7 +263,8 @@ public class ControladorPlanificacio {
     public String getDataClient(int i) {
 
         Calendar aux = cActual.getLlistaPlan().get(i).getDataInici();
-        return "" + aux.get(Calendar.DAY_OF_MONTH) + "/" + (aux.get(Calendar.MONTH) + 1) + "/" + aux.get(Calendar.YEAR);
+      //  return "" + aux.get(Calendar.DAY_OF_MONTH) + "/" + (aux.get(Calendar.MONTH) + 1) + "/" + aux.get(Calendar.YEAR);
+      return Conv.dateToStr(aux);
     }
 
     public int getNumPlanisClient() {
@@ -297,22 +291,6 @@ public class ControladorPlanificacio {
         return cActual;
     }
 
-    /**
-     * Agafa dos calendaris i comprova si son iguals amb Any, Mes i Dia unicament
-     * @param data1 Data del calendari 1 que volem comparar amb el calendari 2
-     * @param data2 Data del calendari 2 que volem comparar amb el calendari 1
-     * @return Cert si son iguals, fals altrament.
-     */
-    public boolean sonIguals(Calendar data1, Calendar data2) {
-        int any1 = data1.get(Calendar.YEAR);
-        int mes1 = data1.get(Calendar.MONTH);
-        int dia1 = data1.get(Calendar.DATE);
-        int any2 = data2.get(Calendar.YEAR);
-        int mes2 = data2.get(Calendar.MONTH);
-        int dia2 = data2.get(Calendar.DATE);
-
-        return (any1 == any2 && dia1 == dia2 && mes1 == mes2);
-    }
 
     /**
      * Agafa l'identificador d'una planificacio t.q. dIni i dFi, i un nomPrograma. Depenent
@@ -344,7 +322,7 @@ public class ControladorPlanificacio {
             Calendar pIni = P.getDataInici();
             Calendar pFi = P.getDataFi();
 
-            if (sonIguals(dIni, pIni) && sonIguals(dFi, pFi)) {
+            if (Conv.sonIgualsData(dIni, pIni) && Conv.sonIgualsData(dFi, pFi)) {
                 for (int j = 0; j < P.getLlistaEmissions().size() && !trobat; j++) {
                     LinkedList<ServeiPendent> emissionsTemporal = P.getLlistaEmissions();
                     if (emissionsTemporal.get(j).getIdentificador().equals(nomPrograma)) {
@@ -365,10 +343,9 @@ public class ControladorPlanificacio {
         boolean trobat = false;
         for (int i = 0; i <
                 llistaPlanificacions.size() && !trobat; i++) {
-            if (llistaPlanificacions.get(i).getDataInici().equals(dIni) && llistaPlanificacions.get(i).getDataFi().equals(dFi)) {
+            if (Conv.sonIgualsData(llistaPlanificacions.get(i).getDataInici(), dIni) && Conv.sonIgualsData(llistaPlanificacions.get(i).getDataFi(), dFi)){
                 cActual.listPlan.add(llistaPlanificacions.get(i));
-                trobat =
-                        true;
+                trobat = true;
             }
 
         }
@@ -377,6 +354,7 @@ public class ControladorPlanificacio {
 
     public String[] getLlistaPlanificacions(boolean temporal) {
         String[] llista;
+        Planificacio P;
         LinkedList llistaPClient = cActual.getLlistaPlan();
         if (temporal) {
             llistaPClient = llistaPlanificacions;
@@ -387,13 +365,17 @@ public class ControladorPlanificacio {
         }
 
         llista = new String[llistaPClient.size()];
-        String diaIni = "";
+       /* String diaIni = "";
         String mesIni = "";
         String diaFi = "";
         String mesFi = "";
-        for (int i = 0; i <
-                llistaPClient.size(); i++) {
-            Calendar p = (Calendar) ((Planificacio) llistaPClient.get(i)).getDataInici().clone();
+        * */
+        for (int i = 0; i < llistaPClient.size(); i++) {
+            
+            P = (Planificacio) llistaPClient.get(i);
+            llista[i] = Conv.idPlanificacio(P.getDataInici(), P.getDataFi());
+            
+           /**Calendar p = (Calendar) ((Planificacio) llistaPClient.get(i)).getDataInici().clone();
             if (p.get(Calendar.MONTH) < 10) {
                 mesIni = "0" + (p.get(Calendar.MONTH) + 1);
             } else {
@@ -419,6 +401,8 @@ public class ControladorPlanificacio {
             }
 
             llista[i] = "" + diaIni + "/" + mesIni + "/" + (((Planificacio) llistaPClient.get(i)).getDataInici()).get(Calendar.YEAR) + " - " + diaFi + "/" + mesFi + "/" + (((Planificacio) llistaPClient.get(i)).getDataFi()).get(Calendar.YEAR);
+      
+            **/
         }
 
         return llista;
@@ -464,15 +448,9 @@ public class ControladorPlanificacio {
 
     public double getPreuPlan(String planSelectedID) throws ParseException {
 
-        Date iniP = formatCalendar2.parse(planSelectedID.substring(0, 10));
-        Calendar iniPlaniAux = Calendar.getInstance();
-        iniPlaniAux.setTime(iniP);
-
-        Date fiP = formatCalendar2.parse(planSelectedID.substring(13, 23));
-        Calendar fiPlaniAux = Calendar.getInstance();
-        fiPlaniAux.setTime(fiP);
-
-        Planificacio P = getPlanificacio(iniPlaniAux, fiPlaniAux);
+        Calendar idPlan[] = Conv.idPlanificacio(planSelectedID);
+        
+        Planificacio P = getPlanificacio(idPlan[0], idPlan[1]);
         if (P == null) {
             return 0;
         } else {
@@ -483,7 +461,7 @@ public class ControladorPlanificacio {
 
     private Planificacio getPlanificacio(Calendar dataIni, Calendar dataFi) {
         for (Planificacio p : llistaPlanificacions) {
-            if (sonIguals(p.getDataInici(), dataIni) && sonIguals(p.getDataFi(), dataFi)) {
+            if (Conv.sonIgualsData(p.getDataInici(), dataIni) && Conv.sonIgualsData(p.getDataFi(), dataFi)) {
                 return p;
             }
         }
