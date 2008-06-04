@@ -248,8 +248,8 @@ public class VistaGenerada extends javax.swing.JDialog {
         llistaPlanificacionsV.getSelectionModel().addListSelectionListener(lPlanificacions);
         butoSetmanaAnterior.addActionListener(actions[0]);
         butoSetmanaSeguent.addActionListener(actions[1]);
-        botoContractar.addActionListener(actions[2]);
-        butoAnular.addActionListener(actions[3]);
+        botoContractar.addActionListener(actions[3]);
+        butoAnular.addActionListener(actions[2]);
 
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
