@@ -12,14 +12,13 @@ package domini;
  * 
  *
  */
-
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.LinkedList;
 
-public class Planificacio implements Serializable{
+public class Planificacio implements Serializable {
 
-    private int idglobal=0;
+    private int idglobal = 0;
     private int id;
     private Calendar dataInici;
     private Calendar dataFi;
@@ -27,35 +26,33 @@ public class Planificacio implements Serializable{
     private LinkedList<ServeiPendent> llistaEmissions;
 
     public Planificacio(Calendar novaDataInici, Calendar novaDataFi) {
-        this.id=idglobal++;
+        this.id = idglobal++;
         this.dataInici = novaDataInici;
         this.dataFi = novaDataFi;
         preu = 0;
         llistaEmissions = new LinkedList<ServeiPendent>();
     }
- 
+
     public int getId() {
-         return id;
-     }
-    
-    public double getPreu()
-    {
+        return id;
+    }
+
+    public double getPreu() {
         return preu;
     }
 
     //Afegida per jo
-    public void addEmissioPlanificacio(ServeiPendent servei)
-    {
+    public void addEmissioPlanificacio(ServeiPendent servei) {
         llistaEmissions.add(servei);
-        preu+=servei.getPreu();
+        preu += servei.getPreu();
     }
-    
-    public int delEmissioPlanificacio(ServeiPendent servei)
-    {
+
+    public int delEmissioPlanificacio(ServeiPendent servei) {
         llistaEmissions.remove(servei);
         preu -= servei.getPreu();
         return llistaEmissions.size();
     }
+
     /**
      *  Consultora de l'atribut dataInici.
      *  @return La data d'emissio del programa.
@@ -79,12 +76,12 @@ public class Planificacio implements Serializable{
     public LinkedList<ServeiPendent> getLlistaEmissions() {
         return llistaEmissions;
     }
-    
+
     public LinkedList<ServeiPendent> getLlistaServeis() {
         return llistaEmissions;
     }
 
-     /**
+    /**
      *  Modificadora de l'atribut noiaDataInici.
      *  @pre    El parametre novaDataInioi es una data de tipus Calendar valida.
      *  @post   S'ha modificat l'atribut amb el nou valor.
@@ -93,7 +90,7 @@ public class Planificacio implements Serializable{
         dataInici = (Calendar) novaDataInici.clone();
     }
 
-     /**
+    /**
      *  Modificadora de l'atribut novaDataFi.
      *  @pre    El parametre novaDataFi es una data de tipus Calendar valida.
      *  @post   S'ha modificat l'atribut amb el nou valor.
@@ -101,5 +98,4 @@ public class Planificacio implements Serializable{
     public void setDataFi(Calendar novaDataFi) {
         dataFi = (Calendar) novaDataFi.clone();
     }
-
 }

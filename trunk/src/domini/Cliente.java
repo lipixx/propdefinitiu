@@ -15,12 +15,13 @@ import java.util.Calendar;
  * and open the template in the editor.
  */
 import java.util.LinkedList;
+
 /**
  *
  * @author Francisco Javier Rojas (e6464692)
  */
 @SuppressWarnings("unchecked")
-public class Cliente implements Serializable, ClasseAmbClau<String>{
+public class Cliente implements Serializable, ClasseAmbClau<String> {
 
     protected String Nombre;
     protected String Apellidos;
@@ -46,48 +47,45 @@ public class Cliente implements Serializable, ClasseAmbClau<String>{
         ultFact = Calendar.getInstance();
         listFact = new LinkedList<Factura>();
         listPlan = new LinkedList<Planificacio>();
-      //  testingFactures();
-
-    }  
-    
-    public Cliente(){
+    //  testingFactures();
 
     }
 
-    public void testingFactures()
-    {
+    public Cliente() {
+
+    }
+
+    public void testingFactures() {
         //Cream Emissio
         Calendar data1 = Calendar.getInstance();
         Calendar data2 = (Calendar) data1.clone();
-        data2.add(Calendar.MINUTE,20);
-        
+        data2.add(Calendar.MINUTE, 20);
+
         float k = 10;
-        AltresC programa = new AltresC("Test-1",data1,"Descripcio",k);
-        FranjaHoraria nouFranja = new FranjaHoraria(data1,data2,k);
-        Emissio emi = new Emissio(data1, true, false, programa,nouFranja,data1,data2);
+        AltresC programa = new AltresC("Test-1", data1, "Descripcio", k);
+        FranjaHoraria nouFranja = new FranjaHoraria(data1, data2, k);
+        Emissio emi = new Emissio(data1, true, false, programa, nouFranja, data1, data2);
         //Fi Crear Emissio
-        
+
         Planificacio P;
-        
-       for (int ka=0; ka<3; ka++)
-       {
-           Calendar data3 = (Calendar) data2.clone();
-           data3.add(Calendar.MINUTE, 210);
-           P = new Planificacio(data1,data3);
-           
-        for (int i=0; i<1; i++)
-        {
-            programa = new AltresC("Prog Num: "+ i +"-"+ ka, data1,"Descripcio",k);
-            emi = new  Emissio(data1, false, false, programa,nouFranja,data1,data2);
-            emi.setPreu(emi.getPreu()+i);
-            P.addEmissioPlanificacio(emi);
-            System.out.println("Hora ini "+data1.getTime()+" de prog "+i);
-            System.out.println("Hora Fi"+data2.getTime()+" de prog "+i);
-            data1.add(Calendar.MINUTE, 10);
-            data2.add(Calendar.MINUTE, 20);
+
+        for (int ka = 0; ka < 3; ka++) {
+            Calendar data3 = (Calendar) data2.clone();
+            data3.add(Calendar.MINUTE, 210);
+            P = new Planificacio(data1, data3);
+
+            for (int i = 0; i < 1; i++) {
+                programa = new AltresC("Prog Num: " + i + "-" + ka, data1, "Descripcio", k);
+                emi = new Emissio(data1, false, false, programa, nouFranja, data1, data2);
+                emi.setPreu(emi.getPreu() + i);
+                P.addEmissioPlanificacio(emi);
+                System.out.println("Hora ini " + data1.getTime() + " de prog " + i);
+                System.out.println("Hora Fi" + data2.getTime() + " de prog " + i);
+                data1.add(Calendar.MINUTE, 10);
+                data2.add(Calendar.MINUTE, 20);
+            }
+            listPlan.add(P);
         }
-           listPlan.add(P);
-       }
 
     }
 
@@ -119,11 +117,10 @@ public class Cliente implements Serializable, ClasseAmbClau<String>{
         return ultFact;
     }
 
-    public LinkedList<Factura> getListFact()
-    {
+    public LinkedList<Factura> getListFact() {
         return listFact;
     }
-    
+
     public boolean setId(String nuevoID) {
         ID = new String(nuevoID);
         return true;
@@ -155,64 +152,62 @@ public class Cliente implements Serializable, ClasseAmbClau<String>{
         return true;
     }
 
-    public boolean setUltimaFactura(Calendar nuevoUltFact) 
-    {
+    public boolean setUltimaFactura(Calendar nuevoUltFact) {
         this.ultFact = (Calendar) nuevoUltFact.clone();
         return true;
     }
-            
-    public boolean addFactura(Factura F)
-    {
+
+    public boolean addFactura(Factura F) {
         listFact.add(F);
         return true;
     }
-    
-    public Factura getFactura(int id)
-    {
-        for(Factura f : listFact){
-            if(f.getId()==id) return f;
+
+    public Factura getFactura(int id) {
+        for (Factura f : listFact) {
+            if (f.getId() == id) {
+                return f;
+            }
         }
         return null;
     }
-    
-    public boolean clearFactura(){
+
+    public boolean clearFactura() {
         listFact = new LinkedList<Factura>();
         return true;
     }
-    
-    public boolean addPlanificacio(Planificacio P){
+
+    public boolean addPlanificacio(Planificacio P) {
         listPlan.add(P);
         return true;
     }
-    public Planificacio getPlanificacio(int id)
-    {
-        for(Planificacio p : listPlan){
-            if(p.getId()==id) return p;
-        }
-        return null;
-    }
-    
-    /** AFEGIDAAAAAAA CERCA PER DATA INI DATA FI**/
-    public Planificacio getPlanificacio(Calendar dataIni, Calendar dataFi)
-    {
-        for (Planificacio p : listPlan)
-        {
-            if (p.getDataInici().equals(dataIni) && p.getDataFi().equals(dataFi))
-            {
+
+    public Planificacio getPlanificacio(int id) {
+        for (Planificacio p : listPlan) {
+            if (p.getId() == id) {
                 return p;
             }
         }
         return null;
     }
-    
-    public LinkedList<Planificacio> getLlistaPlan()
-    {
+
+    /** Operacio afegida per nosaltres - Retorna una planificacio tal que
+     *compleix que el seu identificador es dataIni,dataFi
+     */
+    public Planificacio getPlanificacio(Calendar dataIni, Calendar dataFi) {
+        for (Planificacio p : listPlan) {
+            if (p.getDataInici().equals(dataIni) && p.getDataFi().equals(dataFi)) {
+                return p;
+            }
+        }
+        return null;
+    }
+
+    public LinkedList<Planificacio> getLlistaPlan() {
         return listPlan;
     }
-    
+
     /*************************************************/
-    
-    public boolean clearPlanificacio(){
+    public boolean clearPlanificacio() {
         listPlan = new LinkedList<Planificacio>();
         return true;
     }
@@ -227,7 +222,7 @@ public class Cliente implements Serializable, ClasseAmbClau<String>{
         intervalFact = objecteACopiar.intervalFact;
         ultFact = (Calendar) objecteACopiar.ultFact.clone();
         listFact = (LinkedList<Factura>) objecteACopiar.getListFact().clone();
-        listPlan = (LinkedList<Planificacio>) objecteACopiar.listPlan.clone();        
+        listPlan = (LinkedList<Planificacio>) objecteACopiar.listPlan.clone();
     }
 
     @Override

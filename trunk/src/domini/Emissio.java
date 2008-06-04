@@ -15,7 +15,7 @@ package domini;
 import java.io.Serializable;
 import java.util.Calendar;
 
-public class Emissio extends ServeiPendent implements Serializable{
+public class Emissio extends ServeiPendent implements Serializable {
 
     private Calendar dataEmissio;
     private Calendar horaInici;
@@ -25,9 +25,8 @@ public class Emissio extends ServeiPendent implements Serializable{
     private Programa programa;
     private FranjaHoraria franja;
 
-    public Emissio(Calendar novaDataEmissio, boolean nouEmes, boolean nouFacturat, Programa nouPrograma, FranjaHoraria nouFranja, Calendar novaHoraInici, Calendar novaHoraFi) 
-    {
-        super(nouFacturat, 0, nouPrograma.getNom(),novaDataEmissio);
+    public Emissio(Calendar novaDataEmissio, boolean nouEmes, boolean nouFacturat, Programa nouPrograma, FranjaHoraria nouFranja, Calendar novaHoraInici, Calendar novaHoraFi) {
+        super(nouFacturat, 0, nouPrograma.getNom(), novaDataEmissio);
         dataEmissio = novaDataEmissio;
         emes = nouEmes;
         programa = nouPrograma;
@@ -100,8 +99,7 @@ public class Emissio extends ServeiPendent implements Serializable{
      * i esta associada a una franja que també ha de tenir una taxa fixada.
      *  @post   S'ha modificat l'atribut amb el nou valor.
      */
-    public void setPreuEmissio(Programa prog, FranjaHoraria franja) 
-    {
+    public void setPreuEmissio(Programa prog, FranjaHoraria franja) {
         double preuF = franja.getTaxa();
         double ppreuP = prog.getPreuBase();
         preuEmissio = prog.getPreuBase() + franja.getTaxa();
