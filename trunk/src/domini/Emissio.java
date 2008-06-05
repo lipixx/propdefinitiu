@@ -27,12 +27,12 @@ public class Emissio extends ServeiPendent implements Serializable {
 
     public Emissio(Calendar novaDataEmissio, boolean nouEmes, boolean nouFacturat, Programa nouPrograma, FranjaHoraria nouFranja, Calendar novaHoraInici, Calendar novaHoraFi) {
         super(nouFacturat, 0, nouPrograma.getNom(), novaDataEmissio);
-        dataEmissio = novaDataEmissio;
+        dataEmissio = (Calendar) novaDataEmissio.clone();
         emes = nouEmes;
         programa = nouPrograma;
         franja = nouFranja;
-        horaInici = novaHoraInici;
-        horaFi = novaHoraFi;
+        horaInici = (Calendar) novaHoraInici.clone();
+        horaFi = (Calendar) novaHoraFi.clone();
         setPreuEmissio(nouPrograma, nouFranja);
     }
 

@@ -400,6 +400,59 @@ public class Generador {
         /* Fi comprovacio igualtat */
 
         }
+        /* COMPROVACIO */
+        System.out.println("");
+        System.out.println("Llista de planificacions:");
+        System.out.println("--------------------");
+
+
+        for (int i = 0; i < llistaPlanificacionsGenerades.size(); i++) {
+
+            System.out.println("");
+            System.out.println("Planificacio #" + (i + 1) + " : ");
+            System.out.println("----------------------");
+            Calendar c = llistaPlanificacionsGenerades.get(i).getDataInici();
+            int day = c.get(Calendar.DATE);
+            int month = c.get(Calendar.MONTH) + 1;
+            int year = c.get(Calendar.YEAR);
+            System.out.println("Data Inici de la Planificacio: " + day + "-" + month + "-" + year);
+
+            c = llistaPlanificacionsGenerades.get(i).getDataFi();
+            day = c.get(Calendar.DATE);
+            month = c.get(Calendar.MONTH) + 1;
+            year = c.get(Calendar.YEAR);
+            System.out.println("Data Fi de la Planificacio: " + day + "-" + month + "-" + year);
+
+            System.out.println("");
+            System.out.println("Llistat d'emissions de la planificacio:");
+            //System.out.println("");
+
+            //System.out.println("size of llistaEmissions=" + llistaPlanificacions.get(i).getLlistaEmissions().size());
+            for (int t = 0; t < llistaPlanificacionsGenerades.get(i).getLlistaEmissions().size(); t++) {
+
+                System.out.println("");
+                System.out.println("Emissio #" + (t + 1));
+                System.out.println("El programa corresponent a l'emissio es: " + ((Emissio) llistaPlanificacionsGenerades.get(i).getLlistaEmissions().get(t)).getPrograma().getNom());
+                c = ((Emissio) llistaPlanificacionsGenerades.get(i).getLlistaEmissions().get(t)).getDataEmissio();
+                int horaIni = ((Emissio) llistaPlanificacionsGenerades.get(i).getLlistaEmissions().get(t)).getHoraInici().get(Calendar.HOUR_OF_DAY);
+                int minutsIni = ((Emissio) llistaPlanificacionsGenerades.get(i).getLlistaEmissions().get(t)).getHoraInici().get(Calendar.MINUTE);
+                int horaFi = ((Emissio) llistaPlanificacionsGenerades.get(i).getLlistaEmissions().get(t)).getHoraFi().get(Calendar.HOUR_OF_DAY);
+                int minutsFi = ((Emissio) llistaPlanificacionsGenerades.get(i).getLlistaEmissions().get(t)).getHoraFi().get(Calendar.MINUTE);
+                day = c.get(Calendar.DATE);
+                month = c.get(Calendar.MONTH) + 1;
+                year = c.get(Calendar.YEAR);
+
+                if (minutsFi < 10) {
+                    System.out.println("La data d'emissio es: " + day + "-" + (month) + "-" + year + " a les: " + horaIni + ":" + minutsIni + " fins les: " + horaFi + ":0" + minutsFi);
+                } else {
+                    System.out.println("La data d'emissio es: " + day + "-" + (month) + "-" + year + " a les: " + horaIni + ":" + minutsIni + " fins les: " + horaFi + ":" + minutsFi);
+                }
+
+
+
+            }
+        }
+        /* COMPROVACIO */
         return llistaPlanificacionsGenerades;
     }
 
