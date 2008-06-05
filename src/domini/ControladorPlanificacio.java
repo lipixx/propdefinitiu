@@ -62,7 +62,7 @@ public class ControladorPlanificacio {
         Calendar fiPlaniAux = aux2[1];
         Calendar iniPlani;
         Calendar fiPlani;
-        
+
         LinkedList<Planificacio> llistaP = llistaPlanificacions;
 
         if (!temporal) {
@@ -106,7 +106,7 @@ public class ControladorPlanificacio {
 
         /* Rellenem sa primera columna amb ses hores: */
         while (iniDia.before(fiDia) && comptador < 144) {
-           // graella[comptador][0] = "" + iniDia.get(Calendar.HOUR_OF_DAY) + ":" + iniDia.get(Calendar.MINUTE);
+            // graella[comptador][0] = "" + iniDia.get(Calendar.HOUR_OF_DAY) + ":" + iniDia.get(Calendar.MINUTE);
             graella[comptador][0] = Conv.getHora(iniDia);
             iniDia.add(Calendar.MINUTE, +10);
             comptador++;
@@ -162,7 +162,7 @@ public class ControladorPlanificacio {
         /* Retorna un vector de String que identifiquen les planificacions generades mitjancant la seva data ini i fi */
 
         llistaProgrames.clear();
-
+        
         if (nousCriteris.autoGen) {
 
             Vector<String> programesDefinitius = new Vector<String>();
@@ -173,7 +173,7 @@ public class ControladorPlanificacio {
 
                 if (filtres[k]) {
 
-                    String[] programa = CProgrames.getllistaFiltrada("categoria", ""+(k+1));
+                    String[] programa = CProgrames.getllistaFiltrada("categoria", "" + (k + 1));
 
                     for (int j = 0; j < programa.length; j++) {
                         hies = false;
@@ -244,6 +244,7 @@ public class ControladorPlanificacio {
         prioritats = nousCriteris.prioritats;
 
         LinkedList<FranjaHoraria> frangesH = RepoFranges.listaObject();
+
         llistaPlanificacions = generador.generar(llistaProgrames, nousCriteris.preuMaxim, prioritats, llistaFrangesPreferides, llistaFrangesProhibides, nousCriteris.dataIni, nousCriteris.dataFi, nousCriteris.nombrePlanis, frangesH);
 
 
@@ -253,7 +254,7 @@ public class ControladorPlanificacio {
         for (int i = 0; i < llistaPlanificacions.size(); i++) {
             Calendar aux = (Calendar) llistaPlanificacions.get(i).getDataInici().clone();
             Calendar aux3 = (Calendar) llistaPlanificacions.get(i).getDataFi().clone();
-        //    planificacions[i] = "" + aux.get(Calendar.DAY_OF_MONTH) + "/" + (aux.get(Calendar.MONTH) + 1) + "/" + aux.get(Calendar.YEAR) + " - " + aux.get(Calendar.DAY_OF_MONTH) + "/" + (aux.get(Calendar.MONTH) + 1) + "/" + aux.get(Calendar.YEAR);
+            //    planificacions[i] = "" + aux.get(Calendar.DAY_OF_MONTH) + "/" + (aux.get(Calendar.MONTH) + 1) + "/" + aux.get(Calendar.YEAR) + " - " + aux.get(Calendar.DAY_OF_MONTH) + "/" + (aux.get(Calendar.MONTH) + 1) + "/" + aux.get(Calendar.YEAR);
             planificacions[i] = Conv.idPlanificacio(aux, aux3);
         }
 
@@ -262,9 +263,8 @@ public class ControladorPlanificacio {
 
     public String getDataClient(int i) {
 
-        Calendar aux = cActual.getLlistaPlan().get(i).getDataInici();
-      //  return "" + aux.get(Calendar.DAY_OF_MONTH) + "/" + (aux.get(Calendar.MONTH) + 1) + "/" + aux.get(Calendar.YEAR);
-      return Conv.dateToStr(aux);
+        Calendar aux = cActual.getLlistaPlan().get(i).getDataFi();
+        return Conv.dateToStr(aux);
     }
 
     public int getNumPlanisClient() {
@@ -291,7 +291,6 @@ public class ControladorPlanificacio {
         return cActual;
     }
 
-
     /**
      * Agafa l'identificador d'una planificacio t.q. dIni i dFi, i un nomPrograma. Depenent
      * del boolea temporal cercara la planificacio a la llista temporal de planificacions acabades
@@ -311,12 +310,12 @@ public class ControladorPlanificacio {
         // true implica que es TEMPORAL
         Emissio e;
         Planificacio P;
-        Calendar pIni,pFi,avui;
+        Calendar pIni, pFi, avui;
         avui = Calendar.getInstance();
-        
+
         boolean trobat = false;
         LinkedList<ServeiPendent> emissionsTemporal;
-        
+
         LinkedList<Planificacio> llistaPlanisTemporal = llistaPlanificacions;
         if (!temporal) {
             llistaPlanisTemporal = cActual.getLlistaPlan();
@@ -327,38 +326,30 @@ public class ControladorPlanificacio {
             pIni = P.getDataInici();
             pFi = P.getDataFi();
 
-            if (Conv.sonIgualsData(dIni, pIni) && Conv.sonIgualsData(dFi, pFi))
-            {
-                for (int j = 0; j < P.getLlistaEmissions().size() && !trobat; j++) 
-                {
+            if (Conv.sonIgualsData(dIni, pIni) && Conv.sonIgualsData(dFi, pFi)) {
+                for (int j = 0; j < P.getLlistaEmissions().size() && !trobat; j++) {
                     emissionsTemporal = P.getLlistaEmissions();
-                    
-                    if (emissionsTemporal.get(j).getIdentificador().equalsIgnoreCase(nomPrograma)) 
-                    {
+
+                    if (emissionsTemporal.get(j).getIdentificador().equalsIgnoreCase(nomPrograma)) {
                         e = (Emissio) emissionsTemporal.get(j);
                         //Marcam, si procedeix, l'emissio com emesa
-                        if (Conv.comparacioData(e.getDataEmissio(), avui) < 0)
-                        {
+                        if (Conv.comparacioData(e.getDataEmissio(), avui) < 0) {
                             e.setEmes(true);
-                        }
-                        else
-                        {
-                            if (Conv.comparacioData(e.getDataEmissio(),avui) == 0)
-                            {
-                                if (Conv.horaMajor(avui,e.getDataEmissio()))
+                        } else {
+                            if (Conv.comparacioData(e.getDataEmissio(), avui) == 0) {
+                                if (Conv.horaMajor(avui, e.getDataEmissio())) {
                                     e.setEmes(true);
+                                }
                             }
                         }
-                        
-                        
+
+
                         //Nomes eliminar si no ha estat emes o si es temporal
-                        if (!e.getEmes() || temporal)
-                        {
-                        //Si no queda cap emissio, eliminar la planificacio de l'usuari
-                        if (P.delEmissioPlanificacio(e) == 0) 
-                        {
+                        if (!e.getEmes() || temporal) {
+                            //Si no queda cap emissio, eliminar la planificacio de l'usuari
+                            if (P.delEmissioPlanificacio(e) == 0) {
                                 trobat = llistaPlanisTemporal.remove(P);
-                        }
+                            }
                         }
                     }
                 }
@@ -372,7 +363,7 @@ public class ControladorPlanificacio {
         boolean trobat = false;
         for (int i = 0; i <
                 llistaPlanificacions.size() && !trobat; i++) {
-            if (Conv.sonIgualsData(llistaPlanificacions.get(i).getDataInici(), dIni) && Conv.sonIgualsData(llistaPlanificacions.get(i).getDataFi(), dFi)){
+            if (Conv.sonIgualsData(llistaPlanificacions.get(i).getDataInici(), dIni) && Conv.sonIgualsData(llistaPlanificacions.get(i).getDataFi(), dFi)) {
                 cActual.listPlan.add(llistaPlanificacions.get(i));
                 trobat = true;
             }
@@ -394,16 +385,16 @@ public class ControladorPlanificacio {
         }
 
         llista = new String[llistaPClient.size()];
-       /* String diaIni = "";
+        /* String diaIni = "";
         String mesIni = "";
         String diaFi = "";
         String mesFi = "";
-        * */
+         * */
         for (int i = 0; i < llistaPClient.size(); i++) {
-            
+
             P = (Planificacio) llistaPClient.get(i);
             llista[i] = Conv.idPlanificacio(P.getDataInici(), P.getDataFi());
-            
+
         }
 
         return llista;
@@ -450,7 +441,7 @@ public class ControladorPlanificacio {
     public double getPreuPlan(String planSelectedID) throws ParseException {
 
         Calendar idPlan[] = Conv.idPlanificacio(planSelectedID);
-        
+
         Planificacio P = getPlanificacio(idPlan[0], idPlan[1]);
         if (P == null) {
             return 0;
