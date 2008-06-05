@@ -63,7 +63,7 @@ public class kVistaPlanificacio {
         initGraella();
         initVistaCriteris();
         initVistaGenerat();
-
+        initVistaSelectProg();
     }
 
     public VistaPlanificacio getVistaPlan() {
@@ -324,7 +324,7 @@ public class kVistaPlanificacio {
 
                         vGen.setVisible(false);
                         actualitzaVista(false);
-                    //      actualitzaVista(true);
+                        actualitzaVista(true);
 
                     } catch (ParseException ex) {
                         System.out.println("Error: L 372");
@@ -387,7 +387,7 @@ public class kVistaPlanificacio {
 
                     vSprog.setLocationRelativeTo(vCriteris);
                     vSprog.setTitle("Seleccionar programes");
-                    initVistaSelectProg();
+
                     if (llistaProgrames.length == 0) {
                         JOptionPane.showMessageDialog(null, "Atenció, no hi ha cap programa en el període especificat." +
                                 "\n Llista Buida.");
@@ -648,7 +648,7 @@ public class kVistaPlanificacio {
         tuplaPrograma aux;
         String[] patata = new String[mida];
 
-        if (mida > 0) {
+        if (mida > 0 && nousCriteris != null) {
             int nPatates = 0;
             for (int i = 0; i < mida; i++) {
 
