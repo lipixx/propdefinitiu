@@ -270,37 +270,7 @@ public class VistaGenerada extends javax.swing.JDialog {
     private javax.swing.JList llistaPlanificacionsV;
     private javax.swing.JTextField preuTotalV;
     // End of variables declaration//GEN-END:variables
-    /*void pintarGraella(String[][] novaGraella) {
-    ((DefaultTableModel) (graella.getModel())).setDataVector(novaGraella, headGraella);
-    }*/
-    /* void pintarGraella(tuplaEmissio[] tEmissio) throws ParseException {
-    Calendar rightNow = Calendar.getInstance();
-    Calendar inici = Calendar.getInstance();
-    Calendar fi = Calendar.getInstance();
-    int ara = rightNow.get(Calendar.DAY_OF_WEEK);
-    // SUNDAY=0, MONDAY=1, TUESDAY=2, WEDNESDAY=3, THURSDAY=4, FRIDAY=5 and SATURDAY=6 
-    int sumar = 0;
-    if (ara == 0) {
-    sumar = 6;
-    } else {
-    sumar = ara - 1;
-    }
-    inici.add(Calendar.DAY_OF_MONTH, -(sumar));
-    int dia = inici.get(Calendar.DAY_OF_MONTH);
-    int mes = inici.get(Calendar.MONTH);
-    int any = inici.get(Calendar.YEAR);
-    SimpleDateFormat formatCalendar = new SimpleDateFormat("dd-MM-yyyy");
-    Date dateInici = formatCalendar.parse("" + dia + "-" + mes + "-" + any);
-    inici = Calendar.getInstance();
-    inici.setTime(dateInici);
-    Date dateFi = formatCalendar.parse("" + dia + "-" + mes + "-" + any);
-    fi = Calendar.getInstance();
-    fi.setTime(dateFi);
-    fi.add(Calendar.DAY_OF_MONTH, +7);
-    }*/
-    /**
-     * @param args the command line arguments
-     */
+
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
 

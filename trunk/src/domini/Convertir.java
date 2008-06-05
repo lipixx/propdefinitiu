@@ -263,7 +263,7 @@ public class Convertir {
         if (any1 < any2) {
             return -1;
         }
-        if (any2 > any1) {
+        if (any1 > any2) {
             return 1;
         }
 
