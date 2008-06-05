@@ -109,6 +109,7 @@ public class kVistaPlanificacio {
 
             public void actionPerformed(ActionEvent e) {
                 if (CPlani.getClient() != null && CPG.getNProgs() != 0 && CPG.getNFranges() != 0) {
+                    iniDataClient();
                     vCriteris.setLocationRelativeTo(vPlani);
                     vCriteris.setTitle("Definir criteris planificacio");
                     vCriteris.setVisible(true);
@@ -337,7 +338,7 @@ public class kVistaPlanificacio {
                 vGen.setLocationRelativeTo(vSprog);
                 vGen.setTitle("Planificacio Generada! - Resum");
 
-                llistaPlanificacions = CPlani.getLlistaPlanificacions(true);
+                actualitzaVista(true);
                 vGen.setLlistaPlans(llistaPlanificacions);
                 vGen.setVisible(true);
             } else {
@@ -512,7 +513,7 @@ public class kVistaPlanificacio {
         // generar graella amb akesta tupla demissions (segons la setmana indicada en globals)
         String planSelectedID = vGen.getPlanSelected();
         if (planSelectedID != null) {
-
+            
             //Aixo vol dir que cercara ses planificacions des client i no ses
             //generades per s'algoritme
             boolean temporal = true;
@@ -526,7 +527,6 @@ public class kVistaPlanificacio {
             {
                 vGen.pintarGraella(graella);
             }
-
             vGen.setPreu(CPlani.getPreuPlan(planSelectedID));
         }
 
