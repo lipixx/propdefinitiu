@@ -209,7 +209,6 @@ public class Convertir {
             resultat[0].setTime(iniP);
 
             Date fiP = formatCalendari.parse(idPlanificacio.substring(13, 23));
-            Calendar fiPlaniAux = Calendar.getInstance();
             resultat[1].setTime(fiP);
 
         } catch (ParseException ex) {
