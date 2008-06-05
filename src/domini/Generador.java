@@ -365,7 +365,7 @@ public class Generador {
             if (llistaPlanificacionsGenerades.size() == 0 && plani.getLlistaEmissions().size() > 0) {
                 llistaPlanificacionsGenerades.add(plani);
 
-            } else {
+            } else if(plani.getLlistaEmissions().size() > 0){
 
                 igual = false;
 
