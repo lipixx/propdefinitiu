@@ -45,6 +45,7 @@ public class Convertir {
     public Convertir() {
     }
 
+
     /*****************************************/
     /**OBTENIR STRINGS A PARTIR DE CALENDARS*/
     /***************************************/
@@ -145,6 +146,27 @@ public class Convertir {
         return out;
     }
 
+    
+     /**
+     *  Aquesta funcio retorna un Calendar nou a partir d'una
+     * data en format string t.q. dd/MM/yyyy o HH:MM indiferentment
+      * @param data Es la data a la que volem setejar-li la hora
+      * @param hora Es la hora que li volem posar
+      * @pre -
+      * @post S'ha setejat la hora del calendari a l'especificada a
+      * l'string en format HH:MM
+     */
+    public void setHora(Calendar data, String hora) 
+    {
+        Calendar aux = strToCalendar(hora);
+        int iHora = aux.get(Calendar.HOUR_OF_DAY);
+        int min = aux.get(Calendar.MINUTE);
+        int seg = 0;
+        
+        data.set(Calendar.HOUR_OF_DAY, iHora);
+        data.set(Calendar.MINUTE, min);
+        data.set(Calendar.SECOND, seg);
+    }
     /**
      * Donat un string del format "dd/MM/yyyy - dd/MM/yyyy"
      * retorna dos calendars setejats a n'aquetes dates.
