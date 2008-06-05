@@ -48,8 +48,11 @@ public class Planificacio implements Serializable {
     }
 
     public int delEmissioPlanificacio(ServeiPendent servei) {
+        if (!servei.getFacturat())
+        {
         llistaEmissions.remove(servei);
         preu -= servei.getPreu();
+        }
         return llistaEmissions.size();
     }
 
