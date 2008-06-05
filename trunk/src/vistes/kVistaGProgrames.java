@@ -10,12 +10,12 @@ package vistes;
 
 import dades.GestorDiscException;
 import domini.ControladorProgrames;
+import domini.Convertir;
 import domini.tuplaPrograma;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -29,6 +29,7 @@ public class kVistaGProgrames {
     private String[] llistaProgrames;
     private String[] llistaFiltres;
     private SimpleDateFormat formatCalendar;
+    private Convertir Conv;
 
     public kVistaGProgrames(ControladorProgrames cpgComu) {
         /**Controlador de programes que li pasa el kVistes*/
@@ -38,7 +39,7 @@ public class kVistaGProgrames {
         llistaProgrames = null;
         llistaFiltres = null;
         dadesPrograma = null;
-        formatCalendar = new SimpleDateFormat("dd-MM-yyyy");
+        Conv = new Convertir();
 
         vADDP = new vAfegirPrograma(new javax.swing.JFrame(), true);
         vMODP = new vAfegirPrograma(new javax.swing.JFrame(), true);
@@ -380,19 +381,18 @@ public class kVistaGProgrames {
 
         //Agafem fitxa del programa seleccionat
         //i actualizem la fitxa
-        ////// FALTA INICIEMISSIO i DATA CADUCITATTTTTTTTT
         tuplaPrograma dadesP = CPG.veureFitxa(nomP.toLowerCase());
         if (dadesP != null) {
-            String fitxa = "Nom: " + dadesP.nom + "\nPreu: " + dadesP.preu + "\nFormat: " + dadesP.format + "\nCategoria: " + dadesP.categoria + "\nDescripcio: " + dadesP.descripcio + "\nData Caducitat: " + dadesP.dataCad.get(Calendar.DATE) + "/" + (dadesP.dataCad.get(Calendar.MONTH) + 1) +
-                    "/" + dadesP.dataCad.get(Calendar.YEAR);
+            String fitxa = "Nom: " + dadesP.nom + "\nPreu: " + dadesP.preu + "\nFormat: " + dadesP.format + "\nCategoria: " + dadesP.categoria + "\nDescripcio: " + dadesP.descripcio + "\nData Caducitat: " +Conv.dateToStr(dadesP.dataCad);
 
             if (dadesP.format == 2 || dadesP.format == 0) {
                 fitxa += "\nDuracio: " + dadesP.duracio;
             }
 
             if (dadesP.format == 2) {
-                fitxa = fitxa + "\nData Inici Emissio:" + dadesP.iniciEmissio.get(Calendar.DATE) + "/" + (dadesP.iniciEmissio.get(Calendar.MONTH) + 1) +
-                        "/" + dadesP.iniciEmissio.get(Calendar.YEAR) + " a les " + dadesP.iniciEmissio.get(Calendar.HOUR_OF_DAY) + ":" + dadesP.iniciEmissio.get(Calendar.MINUTE);
+                fitxa = fitxa +"\nData Inici Emissio:"
+                        +Conv.dateToStr(dadesP.iniciEmissio)+" a les "
+                        +Conv.getHora(dadesP.iniciEmissio);
             }
 
 

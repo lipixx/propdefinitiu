@@ -294,7 +294,7 @@ public class kVistes {
                     } catch (GestorDiscException ex) {
                         System.out.println("Warning! guardant tot - pot ser que no existisin dades.");
                     }
-                }
+                } System.exit(0);
             }
         });
 

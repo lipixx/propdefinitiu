@@ -8,6 +8,7 @@
  */
 package vistes;
 
+import domini.Convertir;
 import domini.tuplaPrograma;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
@@ -24,9 +25,11 @@ import javax.swing.text.NumberFormatter;
 public class vAfegirPrograma extends javax.swing.JDialog {
 
     tuplaPrograma nouPrograma;
-
+    private Convertir Conv;
+    
     public vAfegirPrograma(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        Conv = new Convertir();
         initComponents();
     }
 
@@ -45,24 +48,15 @@ public class vAfegirPrograma extends javax.swing.JDialog {
             descripcio.setText(dadesP.descripcio);
             preu.setValue(dadesP.preu);
 
-            int dia = dadesP.dataCad.get(Calendar.DAY_OF_MONTH);
-            int mes = dadesP.dataCad.get(Calendar.MONTH);
-            int any = dadesP.dataCad.get(Calendar.YEAR);
-            dataC.setText(dia + "/" + mes + "/" + any);
+            dataC.setText(Conv.dateToStr(dadesP.dataCad));
 
             if (dadesP.format == 2 || dadesP.format == 0) {
                 duracio.setValue(dadesP.duracio);
             }
 
             if (dadesP.format == 2) {
-                dia = dadesP.iniciEmissio.get(Calendar.DAY_OF_MONTH);
-                mes = dadesP.iniciEmissio.get(Calendar.MONTH);
-                any = dadesP.iniciEmissio.get(Calendar.YEAR);
-                int horax = dadesP.iniciEmissio.get(Calendar.HOUR_OF_DAY);
-                int minuts = dadesP.iniciEmissio.get(Calendar.MINUTE);
-
-                dIniEmissio.setText(dia + "/" + mes + "/" + any);
-                hora.setText(horax + ":" + minuts);
+                dIniEmissio.setText(Conv.dateToStr(dadesP.iniciEmissio));
+                hora.setText(Conv.getHora(dadesP.iniciEmissio));
             }
 
             llistaFormats.setSelectedIndex(dadesP.format);
@@ -204,9 +198,6 @@ public class vAfegirPrograma extends javax.swing.JDialog {
      * correcte.
      */
     public tuplaPrograma getTupla() {
-        try {
-            SimpleDateFormat formatCalendar = new SimpleDateFormat("dd/MM/yyyy");
-            SimpleDateFormat formatHora = new SimpleDateFormat("k:mm");
             nouPrograma = new tuplaPrograma();
 
             nouPrograma.nom = nom.getText();
@@ -228,21 +219,13 @@ public class vAfegirPrograma extends javax.swing.JDialog {
             nouPrograma.descripcio = descripcio.getText();
 
             /**Data Caducitat*/
-            Date date = formatCalendar.parse(dataC.getText());
-            nouPrograma.dataCad = Calendar.getInstance();
-            nouPrograma.dataCad.setTime(date);
-
+            nouPrograma.dataCad = Conv.strToCalendar(dataC.getText());
+          
             /**Data Inici - Nomes Directe*/
             if (llistaFormats.getSelectedIndex() == 2) {
-                Date date1 = formatCalendar.parse(dIniEmissio.getText());
-                Date hora1 = formatHora.parse(hora.getText());
-                Calendar aux2 = Calendar.getInstance();
-                aux2.setTime(hora1);
-
-                nouPrograma.iniciEmissio = Calendar.getInstance();
-                nouPrograma.iniciEmissio.setTime(date);
-                nouPrograma.iniciEmissio.set(Calendar.HOUR_OF_DAY, aux2.get(Calendar.HOUR_OF_DAY));
-                nouPrograma.iniciEmissio.set(Calendar.MINUTE, aux2.get(Calendar.MINUTE));
+                
+                nouPrograma.iniciEmissio = Conv.strToCalendar(dIniEmissio.getText());
+                Conv.setHora(nouPrograma.iniciEmissio, hora.getText());
 
                 if (nouPrograma.iniciEmissio.before(nouPrograma.dataCad)) {
                     JOptionPane.showMessageDialog(null, "La data de caducitat era anterior a la data d'inici d'emissio.");
@@ -387,12 +370,6 @@ public class vAfegirPrograma extends javax.swing.JDialog {
             nouPrograma.tematiques[nouPrograma.tematiques.length - 1] = "General";
             clearComponents();
             return nouPrograma;
-
-        } catch (ParseException ex) {
-            JOptionPane.showMessageDialog(null, "Error Intern - vAfegirPrograma.getTupla: L27. ->" + ex.getMessage());
-            initComponents();
-            return null;
-        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
