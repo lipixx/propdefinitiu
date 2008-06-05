@@ -363,7 +363,7 @@ public class Generador {
             nemis = 0;
             preuSobrepassat = false;
             numCriterisAfluixats = 0;
-            if (plani.getLlistaEmissions().size() == 0) {
+            if (llistaPlanificacionsGenerades.size() == 0 && plani.getLlistaEmissions().size() > 0) {
                 llistaPlanificacionsGenerades.add(plani);
 
             } else {
