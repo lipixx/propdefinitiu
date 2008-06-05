@@ -13,8 +13,7 @@ import java.util.Random;
  * La classe Generador proveeix l'objecte amb els atributs i estructures de dades,
  * aixi com les operacions necessaries per accedir i modificar els camps.
  * 
- * Un Generador s'identifica per una llista de Programes llistaProgs.
- * 
+ *  
  * @author  Josep Marti 41743212Y
  * @version 3.0, 30 Maig 2008 
  * 
