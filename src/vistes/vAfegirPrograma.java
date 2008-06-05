@@ -13,9 +13,7 @@ import domini.tuplaPrograma;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.NumberFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.StringTokenizer;
 import javax.swing.JOptionPane;
@@ -227,7 +225,7 @@ public class vAfegirPrograma extends javax.swing.JDialog {
                 nouPrograma.iniciEmissio = Conv.strToCalendar(dIniEmissio.getText());
                 Conv.setHora(nouPrograma.iniciEmissio, hora.getText());
 
-                if (nouPrograma.iniciEmissio.before(nouPrograma.dataCad)) {
+                if (Conv.comparacioData(nouPrograma.iniciEmissio, nouPrograma.dataCad) > 0) {
                     JOptionPane.showMessageDialog(null, "La data de caducitat era anterior a la data d'inici d'emissio.");
                     return null;
                 }

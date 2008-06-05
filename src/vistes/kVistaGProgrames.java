@@ -291,14 +291,16 @@ public class kVistaGProgrames {
     private void addProgramaDeForm() {
         tuplaPrograma nou = vADDP.getTupla();
 
-        if (nou == null) {
+        if (nou == null) 
+        {
             System.out.println("Dades inexistents o incompletes!");
-        } else if (!CPG.afegirPrograma(nou)) {
+        } else if (!CPG.afegirPrograma(nou)) 
+        {
             JOptionPane.showMessageDialog(null, "El programa existeix.");
         } else {
             System.out.println("El programa ha estat afegit!");
+            vADDP.setVisible(false);
         }
-        vADDP.setVisible(false);
     }
 
     /**
