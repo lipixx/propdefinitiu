@@ -140,7 +140,7 @@ public class ControladorPlanificacio {
                     }
 
                     String nom = mirantEmissio.getIdentificador();
-                    while (posIni < posFi || ((posIni > posFi) && diaSeg) || (diaSeg && (posIni > 143))) {
+                    while ((dia < 7 && posIni < posFi) || ((posIni > posFi) && diaSeg) || (diaSeg && (posIni > 143))) {
 
                         if (diaSeg && (posIni > 143)) {
                             dia++;
@@ -309,28 +309,58 @@ public class ControladorPlanificacio {
     public boolean anularEmissio(String nomPrograma, Calendar dIni, Calendar dFi, boolean temporal) {
         // idPLanificacio son 2 calendars dd/mm/yyyy - dd/mm/yyyy 
         // true implica que es TEMPORAL
-
+        Emissio e;
+        Planificacio P;
+        Calendar pIni,pFi,avui;
+        avui = Calendar.getInstance();
+        
         boolean trobat = false;
+        LinkedList<ServeiPendent> emissionsTemporal;
+        
         LinkedList<Planificacio> llistaPlanisTemporal = llistaPlanificacions;
-
         if (!temporal) {
             llistaPlanisTemporal = cActual.getLlistaPlan();
         }
 
         for (int i = 0; i < llistaPlanisTemporal.size() && !trobat; i++) {
-            Planificacio P = llistaPlanisTemporal.get(i);
-            Calendar pIni = P.getDataInici();
-            Calendar pFi = P.getDataFi();
+            P = llistaPlanisTemporal.get(i);
+            pIni = P.getDataInici();
+            pFi = P.getDataFi();
 
-            if (Conv.sonIgualsData(dIni, pIni) && Conv.sonIgualsData(dFi, pFi)) {
-                for (int j = 0; j < P.getLlistaEmissions().size() && !trobat; j++) {
-                    LinkedList<ServeiPendent> emissionsTemporal = P.getLlistaEmissions();
-                    if (emissionsTemporal.get(j).getIdentificador().equals(nomPrograma)) {
+            if (Conv.sonIgualsData(dIni, pIni) && Conv.sonIgualsData(dFi, pFi))
+            {
+                for (int j = 0; j < P.getLlistaEmissions().size() && !trobat; j++) 
+                {
+                    emissionsTemporal = P.getLlistaEmissions();
+                    
+                    if (emissionsTemporal.get(j).getIdentificador().equals(nomPrograma)) 
+                    {
+                        e = (Emissio) emissionsTemporal.get(j);
+                        //Marcam, si procedeix, l'emissio com emesa
+                        if (Conv.comparacioData(e.getDataEmissio(), avui) < 0)
+                        {
+                            e.setEmes(true);
+                        }
+                        else
+                        {
+                            if (Conv.comparacioData(e.getDataEmissio(),avui) == 0)
+                            {
+                                if (Conv.horaMajor(avui,e.getDataEmissio()))
+                                    e.setEmes(true);
+                            }
+                        }
+                        
+                        
+                        //Nomes eliminar si no ha estat emes o si es temporal
+                        if (!e.getEmes() || temporal)
+                        {
                         //Si no queda cap emissio, eliminar la planificacio de l'usuari
-                        if (P.delEmissioPlanificacio(emissionsTemporal.get(j)) == 0) {
+                        if (P.delEmissioPlanificacio(e) == 0) 
+                        {
                             llistaPlanisTemporal.remove(P);
                         }
                         trobat = true;
+                        }
                     }
                 }
             }
@@ -375,34 +405,6 @@ public class ControladorPlanificacio {
             P = (Planificacio) llistaPClient.get(i);
             llista[i] = Conv.idPlanificacio(P.getDataInici(), P.getDataFi());
             
-           /**Calendar p = (Calendar) ((Planificacio) llistaPClient.get(i)).getDataInici().clone();
-            if (p.get(Calendar.MONTH) < 10) {
-                mesIni = "0" + (p.get(Calendar.MONTH) + 1);
-            } else {
-                mesIni = "" + (p.get(Calendar.MONTH) + 1);
-            }
-
-            if (p.get(Calendar.MONTH) < 10) {
-                mesFi = "0" + (p.get(Calendar.MONTH) + 1);
-            } else {
-                mesFi = "" + (p.get(Calendar.MONTH) + 1);
-            }
-
-            if (p.get(Calendar.DAY_OF_MONTH) < 10) {
-                diaIni = "0" + (p.get(Calendar.DAY_OF_MONTH));
-            } else {
-                diaIni = "" + (p.get(Calendar.DAY_OF_MONTH));
-            }
-
-            if (p.get(Calendar.DAY_OF_MONTH) < 10) {
-                diaFi = "0" + (p.get(Calendar.DAY_OF_MONTH));
-            } else {
-                diaFi = "" + (p.get(Calendar.DAY_OF_MONTH));
-            }
-
-            llista[i] = "" + diaIni + "/" + mesIni + "/" + (((Planificacio) llistaPClient.get(i)).getDataInici()).get(Calendar.YEAR) + " - " + diaFi + "/" + mesFi + "/" + (((Planificacio) llistaPClient.get(i)).getDataFi()).get(Calendar.YEAR);
-      
-            **/
         }
 
         return llista;
