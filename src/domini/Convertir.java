@@ -45,17 +45,17 @@ public class Convertir {
     public Convertir() {
     }
 
-
     /*****************************************/
     /**OBTENIR STRINGS A PARTIR DE CALENDARS*/
     /***************************************/
-    
-   public String obteSetmana(Calendar data) {
-        if (data == null) return null;
+    public String obteSetmana(Calendar data) {
+        if (data == null) {
+            return null;
+        }
         Calendar iniciSetmana = (Calendar) data.clone();
         Calendar fiSetmana = (Calendar) data.clone();
         int ara = data.get(Calendar.DAY_OF_WEEK);
-        
+
         /* SUNDAY=0, MONDAY=1, TUESDAY=2, WEDNESDAY=3, THURSDAY=4, FRIDAY=5 and SATURDAY=6 */
 
         int sumar = 0, restar = 0;
@@ -73,8 +73,7 @@ public class Convertir {
         return setmana;
 
     }
-    
-    
+
     /**
      * Aquesta funcio genera un string de la forma:
      *  "dd/MM/yyyy a dd/MM/yyyy" a partir de dues dates
@@ -142,14 +141,10 @@ public class Convertir {
 
         return setmana;
     }
-    
-    
 
     /*****************************************/
     /**OBTENIR CALENDARS A PARTIR DE STRINGS */
     /***************************************/
-    
-    
     /**
      *  Aquesta funcio retorna un Calendar nou a partir d'una
      * data en format string t.q. dd/MM/yyyy o HH:MM indiferentment
@@ -172,27 +167,26 @@ public class Convertir {
         return out;
     }
 
-    
-     /**
+    /**
      *  Aquesta funcio retorna un Calendar nou a partir d'una
      * data en format string t.q. dd/MM/yyyy o HH:MM indiferentment
-      * @param data Es la data a la que volem setejar-li la hora
-      * @param hora Es la hora que li volem posar
-      * @pre -
-      * @post S'ha setejat la hora del calendari a l'especificada a
-      * l'string en format HH:MM
+     * @param data Es la data a la que volem setejar-li la hora
+     * @param hora Es la hora que li volem posar
+     * @pre -
+     * @post S'ha setejat la hora del calendari a l'especificada a
+     * l'string en format HH:MM
      */
-    public void setHora(Calendar data, String hora) 
-    {
+    public void setHora(Calendar data, String hora) {
         Calendar aux = strToCalendar(hora);
         int iHora = aux.get(Calendar.HOUR_OF_DAY);
         int min = aux.get(Calendar.MINUTE);
         int seg = 0;
-        
+
         data.set(Calendar.HOUR_OF_DAY, iHora);
         data.set(Calendar.MINUTE, min);
         data.set(Calendar.SECOND, seg);
     }
+
     /**
      * Donat un string del format "dd/MM/yyyy - dd/MM/yyyy"
      * retorna dos calendars setejats a n'aquetes dates.
@@ -226,14 +220,9 @@ public class Convertir {
         return resultat;
     }
 
-    
-    
-    
-     /*****************************************/
+    /*****************************************/
     /**             COMPARACIONS             */
     /***************************************/
-    
-    
     /**
      * Agafa dos calendaris i comprova si son iguals amb Any, Mes i Dia unicament
      * @param data1 Data del calendari 1 que volem comparar amb el calendari 2
@@ -342,14 +331,23 @@ public class Convertir {
         return false;
     }
 
-    
-    
     /*****************************************/
     /**        ALTRES OPERACIONS            */
     /***************************************/
-    
-    
-    
+    /**
+     * Donada una data en format Date, la converteix a Calendar
+     * @param date La date que volem convertir a Calendar
+     * @return El calendari corresponent a date
+     */
+    public Calendar dateToCalendar(Date date) {
+        if (date == null) {
+            return null;
+        }
+        Calendar resultat = Calendar.getInstance();
+        resultat.setTimeInMillis(date.getTime());
+        return resultat;
+    }
+
     /** 
      * Aquesta funcio suma n dies al calendar passat
      * @param data1 Es la data a la que volem sumar els dies

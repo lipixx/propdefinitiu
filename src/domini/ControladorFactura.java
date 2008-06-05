@@ -12,12 +12,14 @@ public class ControladorFactura {
 
     private Factura factura;
     private String compte;
+    private Convertir Conv;
     private LinkedList<ServeiPendent> llistaConceptes;
     private LinkedList<Integer> llistaConceptesActuals;
     private LinkedList<Factura> llistaFactures;
     private Cliente clientActual;
     
     public ControladorFactura() {
+        Conv = new Convertir();
         this.llistaConceptes = new LinkedList<ServeiPendent>();
         this.llistaConceptesActuals = new LinkedList<Integer>();
         this.llistaFactures = new LinkedList<Factura>();
@@ -116,7 +118,7 @@ public class ControladorFactura {
             Conceptes[i][0] = i;
             Conceptes[i][1] = ((Emissio) llistaConceptes.get(i)).getPrograma().getNom();
             Conceptes[i][2] = ((Emissio) llistaConceptes.get(i)).getPrograma().getPreuBase();
-            Conceptes[i][3] = ((Emissio) llistaConceptes.get(i)).getDataEmissio().get(Calendar.DAY_OF_MONTH) + "/" + ((Emissio) llistaConceptes.get(i)).getDataEmissio().get(Calendar.MONTH) + "/" + ((Emissio) llistaConceptes.get(i)).getDataEmissio().get(Calendar.YEAR);
+            Conceptes[i][3] = Conv.dateToStr(((Emissio) llistaConceptes.get(i)).getDataEmissio());
             Conceptes[i][4] = llistaConceptes.get(i).getPreu();
 
         }
@@ -141,7 +143,7 @@ public class ControladorFactura {
         for (i = 0; i < llistaConceptesActuals.size(); i++) {
             Conceptes[i][0] = llistaConceptesActuals.get(i);
             Conceptes[i][1] = ((Emissio) llistaConceptes.get(llistaConceptesActuals.get(i))).getPrograma().getNom();
-            Conceptes[i][2] = ((Emissio) llistaConceptes.get(llistaConceptesActuals.get(i))).getDataEmissio().get(Calendar.DAY_OF_MONTH) + "/" + ((Emissio) llistaConceptes.get(llistaConceptesActuals.get(i))).getDataEmissio().get(Calendar.MONTH) + "/" + ((Emissio) llistaConceptes.get(llistaConceptesActuals.get(i))).getDataEmissio().get(Calendar.YEAR);
+            Conceptes[i][2] = Conv.dateToStr(llistaConceptes.get(llistaConceptesActuals.get(i)).getDataReal());
             Conceptes[i][3] = ((Emissio) llistaConceptes.get(llistaConceptesActuals.get(i))).getPreu();
         }
         return Conceptes;
@@ -159,7 +161,7 @@ public class ControladorFactura {
         int i = 0;
 
         for (i = 0; i < llistaFactures.size(); i++) {
-            Factures[i][0] = llistaFactures.get(i).getDataFacturacio().get(Calendar.DAY_OF_MONTH) + "/" + llistaFactures.get(i).getDataFacturacio().get(Calendar.MONTH) + "/" + llistaFactures.get(i).getDataFacturacio().get(Calendar.YEAR);
+            Factures[i][0] = Conv.dateToStr(llistaFactures.get(i).getDataFacturacio());
             Factures[i][1] = llistaFactures.get(i).getTotal();
             Factures[i][2] = llistaFactures.get(i).getLlistaConceptos().toArray();
         }
@@ -186,7 +188,7 @@ public class ControladorFactura {
 
         for (i = 0; i < lsEmissions.size(); i++) {
             Emissions[i][0] = lsEmissions.get(i).getIdentificador();
-            Emissions[i][1] = lsEmissions.get(i).getDataReal().get(Calendar.DAY_OF_MONTH) + "/" + lsEmissions.get(i).getDataReal().get(Calendar.MONTH) + "/" + lsEmissions.get(i).getDataReal().get(Calendar.YEAR);
+            Emissions[i][1] = Conv.dateToStr(lsEmissions.get(i).getDataReal());
             Emissions[i][2] = lsEmissions.get(i).getPreu();
         }
         return Emissions;
@@ -264,7 +266,7 @@ public class ControladorFactura {
         for (i = 0; i < llistaAutofacturats.size(); i++) {
             Conceptes[i][0] = llistaAutofacturats.get(i);
             Conceptes[i][1] = ((Emissio) llistaConceptes.get(llistaAutofacturats.get(i))).getPrograma().getNom();
-            Conceptes[i][2] = ((Emissio) llistaConceptes.get(llistaAutofacturats.get(i))).getDataEmissio().get(Calendar.DAY_OF_MONTH) + "/" +  ((Emissio) llistaConceptes.get(llistaAutofacturats.get(i))).getDataEmissio().get(Calendar.MONTH) + "/" +  ((Emissio) llistaConceptes.get(llistaAutofacturats.get(i))).getDataEmissio().get(Calendar.YEAR);
+            Conceptes[i][2] = Conv.dateToStr(llistaConceptes.get(llistaAutofacturats.get(i)).getDataReal());
             Conceptes[i][3] = llistaConceptes.get(llistaAutofacturats.get(i)).getPreu();
         }
 
@@ -339,7 +341,7 @@ public class ControladorFactura {
         for (i = 0; i < llistaAutofacturats.size(); i++) {
             Conceptes[i][0] = llistaAutofacturats.get(i);
             Conceptes[i][1] = ((Emissio) llistaConceptes.get(llistaAutofacturats.get(i))).getPrograma().getNom();
-            Conceptes[i][2] = ((Emissio) llistaConceptes.get(llistaAutofacturats.get(i))).getDataEmissio().get(Calendar.DAY_OF_MONTH) + "/" +  ((Emissio) llistaConceptes.get(llistaAutofacturats.get(i))).getDataEmissio().get(Calendar.MONTH) + "/" +  ((Emissio) llistaConceptes.get(llistaAutofacturats.get(i))).getDataEmissio().get(Calendar.YEAR);
+            Conceptes[i][2] = Conv.dateToStr(((Emissio) llistaConceptes.get(llistaAutofacturats.get(i))).getDataEmissio());
             Conceptes[i][3] = ((Emissio) llistaConceptes.get(llistaAutofacturats.get(i))).getPreu();
         }
 
@@ -435,7 +437,7 @@ public class ControladorFactura {
 
         while (i < llistaConceptes.size()) {
             dataEmissio = ((Emissio) llistaConceptes.get(i)).getDataEmissio();
-            if (!(llistaConceptes.get(i).getFacturat()) && (dataEmissio.after(inPI)) && (dataEmissio.before(inPF))) {
+            if (!(llistaConceptes.get(i).getFacturat()) && (Conv.comparacioData(dataEmissio,inPI) >=0) && (Conv.comparacioData(dataEmissio,inPF) <= 0)) {
 
                 llista.add(i);
             }

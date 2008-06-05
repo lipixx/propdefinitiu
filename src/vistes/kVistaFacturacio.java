@@ -10,7 +10,6 @@ import domini.ControladorFactura;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowListener;
-import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.event.ListSelectionListener;
@@ -227,15 +226,9 @@ public class kVistaFacturacio {
      * AutoFactura Data
      * @throws java.lang.Exception
      */
-    public void autofacturaPeriode() throws Exception {
-        Calendar cali = Calendar.getInstance();
-        Calendar calf = Calendar.getInstance();
-
-        cali = vnf.getAutofacturaPeriodeInici();
-        calf = vnf.getAutofacturaPeriodeFi();
-
-
-        vnf.setListaSeleccionados(cf.autofacturaPeriode(cali, calf));
+    public void autofacturaPeriode() throws Exception 
+    {
+        vnf.setListaSeleccionados(cf.autofacturaPeriode(vnf.getAutofacturaPeriodeInici(), vnf.getAutofacturaPeriodeFi()));
     }
 
     /**

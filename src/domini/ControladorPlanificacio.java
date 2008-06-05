@@ -333,7 +333,7 @@ public class ControladorPlanificacio {
                 {
                     emissionsTemporal = P.getLlistaEmissions();
                     
-                    if (emissionsTemporal.get(j).getIdentificador().equals(nomPrograma)) 
+                    if (emissionsTemporal.get(j).getIdentificador().equalsIgnoreCase(nomPrograma)) 
                     {
                         e = (Emissio) emissionsTemporal.get(j);
                         //Marcam, si procedeix, l'emissio com emesa
@@ -357,9 +357,8 @@ public class ControladorPlanificacio {
                         //Si no queda cap emissio, eliminar la planificacio de l'usuari
                         if (P.delEmissioPlanificacio(e) == 0) 
                         {
-                            llistaPlanisTemporal.remove(P);
+                                trobat = llistaPlanisTemporal.remove(P);
                         }
-                        trobat = true;
                         }
                     }
                 }
