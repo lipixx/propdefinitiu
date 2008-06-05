@@ -168,12 +168,14 @@ public class ControladorPlanificacio {
             Vector<String> programesDefinitius = new Vector<String>();
             boolean[] filtres = nousCriteris.filtres;
             boolean hies = false;
-
-            for (int k = 0; k < 10; k++) {
+            boolean cap = true;
+            
+            for (int k = 0; k < 11; k++) 
+            {
 
                 if (filtres[k]) {
-
-                    String[] programa = CProgrames.getllistaFiltrada("categoria", "" + (k + 1));
+                   cap  = false;
+                    String[] programa = CProgrames.getllistaFiltrada("categoria", "" +k);
 
                     for (int j = 0; j < programa.length; j++) {
                         hies = false;
@@ -190,6 +192,10 @@ public class ControladorPlanificacio {
                     }
                 }
             }
+           if (!cap) 
+           {
+               String[] programa = CProgrames.getllistaFiltrada("tots", null);
+           }
 
             String[] aux = new String[programesDefinitius.size()];
             llistaProgrames = CProgrames.llistarProgramesNom(programesDefinitius.toArray(aux));
@@ -241,8 +247,13 @@ public class ControladorPlanificacio {
             llistaFrangesProhibides.add(franja);
         }
 
-        prioritats = nousCriteris.prioritats;
-
+        prioritats = new int[5];
+        prioritats[nousCriteris.prioritats[0]-1] = 1;
+        prioritats[nousCriteris.prioritats[1]-1] = 2;
+        prioritats[nousCriteris.prioritats[2]-1] = 3;
+        prioritats[nousCriteris.prioritats[3]-1] = 4;
+        prioritats[nousCriteris.prioritats[4]-1] = 5;
+                
         LinkedList<FranjaHoraria> frangesH = RepoFranges.listaObject();
 
         llistaPlanificacions = generador.generar(llistaProgrames, nousCriteris.preuMaxim, prioritats, llistaFrangesPreferides, llistaFrangesProhibides, nousCriteris.dataIni, nousCriteris.dataFi, nousCriteris.nombrePlanis, frangesH);

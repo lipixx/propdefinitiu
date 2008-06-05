@@ -294,7 +294,7 @@ public class kVistaPlanificacio {
     private void clicatBotoContractar() {
         resetSetmana();
         initSetmana();
-        
+
         String idPlanificacio = vGen.getPlanSelected();
 
         if (idPlanificacio != null) {
@@ -513,7 +513,13 @@ public class kVistaPlanificacio {
         // generar graella amb akesta tupla demissions (segons la setmana indicada en globals)
         String planSelectedID = vGen.getPlanSelected();
         if (planSelectedID != null) {
-            
+
+            Calendar idPlan[] = Conv.idPlanificacio(planSelectedID);
+            String setmana = Conv.obteSetmana(idPlan[0]);
+            iniciSetmana = idPlan[0];
+            fiSetmana = idPlan[1];
+            vGen.setSetmana(setmana);
+
             //Aixo vol dir que cercara ses planificacions des client i no ses
             //generades per s'algoritme
             boolean temporal = true;
@@ -542,6 +548,12 @@ public class kVistaPlanificacio {
             //generades per s'algoritme
             boolean temporal = false;
 
+            Calendar idPlan[] = Conv.idPlanificacio(planSelectedID);
+            String setmana = Conv.obteSetmana(idPlan[0]);
+            iniciSetmana = idPlan[0];
+            fiSetmana = idPlan[1];
+            vPlani.setSetmana(setmana);
+            
             //Seteja sa Graella amb ses noves tEmissio[]
 
 
