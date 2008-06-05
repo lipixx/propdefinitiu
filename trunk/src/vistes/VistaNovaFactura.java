@@ -7,11 +7,11 @@ package vistes;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowListener;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.LinkedList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-
+import domini.Convertir;
+import java.util.Date;
 /**
  *
  * @author  rael
@@ -19,6 +19,7 @@ import javax.swing.table.DefaultTableModel;
 @SuppressWarnings("unchecked")
 public class VistaNovaFactura extends javax.swing.JFrame {
 
+    private Convertir Conv;
     private static String[] CabeceraListaPendientes = {"ID", "Nom Programa", "Preu Base", "Data Emissió", "Preu"};
     private static String[] CabeceraListaParaFacturar = {"ID", "Nom Programa", "Data Emissió", "Preu"};
     Object[][] listaParaFacturar;
@@ -29,6 +30,7 @@ public class VistaNovaFactura extends javax.swing.JFrame {
     public VistaNovaFactura() {
         initComponents();
         llistaSeleccionats = new LinkedList<Integer>();
+        Conv = new Convertir();
     }
 
     public void aviso(String inmsg) {
@@ -40,16 +42,14 @@ public class VistaNovaFactura extends javax.swing.JFrame {
         return tbAutofacturaPreu.getText();
     }
 
-    public Calendar getAutofacturaPeriodeInici() {
-        Calendar c = Calendar.getInstance();
-        c.setTime((Date) this.spPeriodoInicio.getValue());
-        return c;
+    public Calendar getAutofacturaPeriodeInici() 
+    {
+        return Conv.dateToCalendar((Date) spPeriodoInicio.getValue());
     }
 
-    public Calendar getAutofacturaPeriodeFi() {
-        Calendar c = Calendar.getInstance();
-        c.setTime((Date) this.spPeriodoFin.getValue());
-        return c;
+    public Calendar getAutofacturaPeriodeFi() 
+    { 
+        return Conv.dateToCalendar((Date) spPeriodoFin.getValue());
     }
 
 // Cosas de la vista
@@ -191,11 +191,15 @@ public class VistaNovaFactura extends javax.swing.JFrame {
         lsProgramesPendents.setVerifyInputWhenFocusTarget(false);
         jScrollPane2.setViewportView(lsProgramesPendents);
 
+        spPeriodoInicio.setModel(new javax.swing.SpinnerDateModel());
+
         tbAutofacturaPreu.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         tbAutofacturaPreu.setText("0"); // NOI18N
 
-        bAutofacturaPreu.setFont(new java.awt.Font("Lucida Grande 13", 0, 12)); // NOI18N
+        bAutofacturaPreu.setFont(new java.awt.Font("Lucida Grande 13", 0, 12));
         bAutofacturaPreu.setText("AutoFactura"); // NOI18N
+
+        spPeriodoFin.setModel(new javax.swing.SpinnerDateModel());
 
         bAutofacturaPeriode.setFont(new java.awt.Font("Lucida Grande 13", 0, 12));
         bAutofacturaPeriode.setText("AutoFactura"); // NOI18N
@@ -220,6 +224,7 @@ public class VistaNovaFactura extends javax.swing.JFrame {
         etTotal.setFont(new java.awt.Font("Lucida Grande 16", 0, 12));
         etTotal.setText("Total a pagar"); // NOI18N
 
+        tbTotal.setEditable(false);
         tbTotal.setFont(new java.awt.Font("Lucida Grande 16 12", 0, 12));
         tbTotal.setText("0"); // NOI18N
 
@@ -330,7 +335,7 @@ public class VistaNovaFactura extends javax.swing.JFrame {
                             .addComponent(etTotal)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(tbTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 115, Short.MAX_VALUE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 111, Short.MAX_VALUE)
                             .addComponent(bFacturar))
                         .addGroup(layout.createSequentialGroup()
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -369,11 +374,11 @@ public class VistaNovaFactura extends javax.swing.JFrame {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(etTitolSeleccionManual)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 351, Short.MAX_VALUE))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE))
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(bNetejarFactura)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 436, Short.MAX_VALUE)))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE)))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(bAfegirSeleccio)
