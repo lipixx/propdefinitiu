@@ -563,16 +563,16 @@ public class kVistaPlanificacio {
 
         tuplaPrograma dadesP = CPG.veureFitxa(nomP.toLowerCase());
         if (dadesP != null) {
-            String fitxa = "Nom: " + dadesP.nom + "\nPreu: " + dadesP.preu + "\nFormat: " + dadesP.format + "\nCategoria: " + dadesP.categoria + "\nDescripcio: " + dadesP.descripcio + "\nData Caducitat: " + dadesP.dataCad.get(Calendar.DATE) + "/" + (dadesP.dataCad.get(Calendar.MONTH) + 1) +
-                    "/" + dadesP.dataCad.get(Calendar.YEAR);
+            String fitxa = "Nom: " + dadesP.nom + "\nPreu: " + dadesP.preu + "\nFormat: " + dadesP.format + "\nCategoria: " + dadesP.categoria + "\nDescripcio: " + dadesP.descripcio + "\nData Caducitat: " +Conv.dateToStr(dadesP.dataCad);
 
             if (dadesP.format == 2 || dadesP.format == 0) {
                 fitxa += "\nDuracio: " + dadesP.duracio;
             }
 
-            if (dadesP.format == 2) {
-                fitxa = fitxa + "\nData Inici Emissio:" + dadesP.iniciEmissio.get(Calendar.DATE) + "/" + (dadesP.iniciEmissio.get(Calendar.MONTH) + 1) +
-                        "/" + dadesP.iniciEmissio.get(Calendar.YEAR) + " a les " + dadesP.iniciEmissio.get(Calendar.HOUR_OF_DAY) + ":" + dadesP.iniciEmissio.get(Calendar.MINUTE);
+             if (dadesP.format == 2) {
+                fitxa = fitxa +"\nData Inici Emissio:"
+                        +Conv.dateToStr(dadesP.iniciEmissio)+" a les "
+                        +Conv.getHora(dadesP.iniciEmissio);
             }
 
             if (dadesP.tematiques != null) {
@@ -639,20 +639,23 @@ public class kVistaPlanificacio {
                     switch (aux.format) {
                         case 0: //Normal
 
-                            if (aux.dataCad.after(nousCriteris.dataIni)) {
-                                patata[i] = llistaProgrames[i];
+                            if (Conv.comparacioData(aux.dataCad, nousCriteris.dataIni) >= 0) {
+                                patata[nPatates] = llistaProgrames[i];
                                 nPatates++;
                             }
                             break;
                         case 1: //Continu
-                            if (aux.dataCad.after(nousCriteris.dataIni)) {
-                                patata[i] = llistaProgrames[i];
+                            if (Conv.comparacioData(aux.dataCad, nousCriteris.dataIni) >= 0) {
+                                patata[nPatates] = llistaProgrames[i];
                                 nPatates++;
                             }
                             break;
                         case 2: //Directe
-                            if (aux.iniciEmissio.after(nousCriteris.dataIni) && aux.iniciEmissio.before(nousCriteris.dataFi) && aux.dataCad.after(nousCriteris.dataIni)) {
-                                patata[i] = llistaProgrames[i];
+                            if ((Conv.comparacioData(aux.iniciEmissio, nousCriteris.dataIni) >= 0) 
+                                    && (Conv.comparacioData(aux.iniciEmissio, nousCriteris.dataFi) < 0) 
+                                    && (Conv.comparacioData(aux.dataCad, nousCriteris.dataIni) == 1)) 
+                            {
+                                patata[nPatates] = llistaProgrames[i];
                                 nPatates++;
                             }
                             break;
@@ -709,11 +712,11 @@ public class kVistaPlanificacio {
         llistaProgrames = CPG.getllistaFiltrada(tipusFiltre, valorFiltre);
 
         //Actualitza llista
-        if (llistaProgrames == null) {
+        if (llistaProgrames == null || llistaProgrames.length == 0) {
             llistaProgrames = new String[1];
             llistaProgrames[0] = "";
         }
-        filtraPeriode();
+        if (llistaProgrames[0] != null) filtraPeriode();
         vSprog.setLlistaProgrames(llistaProgrames);
     }
 
