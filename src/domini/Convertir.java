@@ -49,6 +49,32 @@ public class Convertir {
     /*****************************************/
     /**OBTENIR STRINGS A PARTIR DE CALENDARS*/
     /***************************************/
+    
+   public String obteSetmana(Calendar data) {
+        if (data == null) return null;
+        Calendar iniciSetmana = (Calendar) data.clone();
+        Calendar fiSetmana = (Calendar) data.clone();
+        int ara = data.get(Calendar.DAY_OF_WEEK);
+        
+        /* SUNDAY=0, MONDAY=1, TUESDAY=2, WEDNESDAY=3, THURSDAY=4, FRIDAY=5 and SATURDAY=6 */
+
+        int sumar = 0, restar = 0;
+        if (ara == 1) {
+            sumar = 0;
+            restar = 6;
+        } else {
+            sumar = (7 - ara) + 1;
+            restar = ara - 2;
+        }
+
+        iniciSetmana.add(Calendar.DAY_OF_MONTH, -restar);
+        fiSetmana.add(Calendar.DAY_OF_MONTH, +sumar);
+        String setmana = setmana(iniciSetmana, fiSetmana);
+        return setmana;
+
+    }
+    
+    
     /**
      * Aquesta funcio genera un string de la forma:
      *  "dd/MM/yyyy a dd/MM/yyyy" a partir de dues dates
