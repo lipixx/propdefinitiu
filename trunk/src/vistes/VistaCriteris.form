@@ -1082,7 +1082,7 @@
         <Property name="text" type="java.lang.String" value="250"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(formatadorNombre)"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField()"/>
       </AuxValues>
     </Component>
     <Component class="javax.swing.JCheckBox" name="botoAAltres">

@@ -58,20 +58,15 @@ public class VistaCriteris extends javax.swing.JDialog {
      *  a la caixa corresponent iniPeriodePlani. Tambe es seteja 7 dies mes tart fiPeriodePlani.
      * @param dataIni Data de inici de la ultima planificacio
      */
-    public void setDataUltimaPlani(String dataIniUp) 
-    {
-        if (!dataIniUp.equalsIgnoreCase("")) 
+    public void setDataUltimaPlani(String dataIniUp) {
+        if (!dataIniUp.equalsIgnoreCase("")) {
             iniPeriodePlani = Conv.strToCalendar(dataIniUp);
-        else iniPeriodePlani = Calendar.getInstance();
-        
-            fiPeriodePlani = (Calendar) iniPeriodePlani.clone();
-            Conv.sumaDies(fiPeriodePlani, 7);
-            botoDInici.setText(Conv.dateToStr(iniPeriodePlani));
-            botoDFi.setText(Conv.dateToStr(fiPeriodePlani));
-    }
+        } else {
+            iniPeriodePlani = Calendar.getInstance();
+        }
 
-    private void setDates() //DEPRECATED
-    {
+        fiPeriodePlani = (Calendar) iniPeriodePlani.clone();
+        Conv.sumaDies(fiPeriodePlani, 7);
         botoDInici.setText(Conv.dateToStr(iniPeriodePlani));
         botoDFi.setText(Conv.dateToStr(fiPeriodePlani));
     }
@@ -88,7 +83,7 @@ public class VistaCriteris extends javax.swing.JDialog {
         boolean correcte = true;
 
         /**Agafem el preu*/
-        criteris.preuMaxim = Float.parseFloat(casellaPreuMax.getText());
+        criteris.preuMaxim = (float) Integer.parseInt(casellaPreuMax.getText());
 
         if (criteris.preuMaxim < 0) {
             criteris.preuMaxim = 0;
@@ -389,7 +384,7 @@ public class VistaCriteris extends javax.swing.JDialog {
         botoNombrePlanis = new javax.swing.JSpinner();
         jLabel36 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        casellaPreuMax = new javax.swing.JFormattedTextField(formatadorNombre);
+        casellaPreuMax = new javax.swing.JFormattedTextField();
         botoAAltres = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
