@@ -158,53 +158,68 @@ public class ControladorPlanificacio {
         return graella;
     }
 
+    /**
+     * Aquesta funcio genera un vector de Strings que identifiquen les planificacions
+     * generades mitjançant el format: dd/MM/yyyy - dd/MM/yyyy
+     * @param programesSeleccionats Son els programes que s'han seleccionat a les vistes.
+     * Si s'ha seleccionat autogeneracio, llavors aquesta llista conte tots els programes,
+     * i s'hauran d'eliminar els que corresponguin a categories marcades com a fals.
+     * Si no s'ha marcat cap categoria, es podra utilitzar directament aquesta llista, ja
+     * que presuposarem que els volem tots.
+     * 
+     * @param nousCriteris La tupla de criteris que l'usuari ha seleccionat
+     * @return Un string[] que identifica les planificacions generades amb el format
+     * dd/MM/yyyy - dd/MM/yyyy
+     * @throws java.text.ParseException
+     */
     public String[] gene(Vector<String> programesSeleccionats, tuplaCriteris nousCriteris) throws ParseException {
-        /* Retorna un vector de String que identifiquen les planificacions generades mitjancant la seva data ini i fi */
 
+        //Netejem la llista global de programes
         llistaProgrames.clear();
-        
+
+        /**Si s'ha seleccionat autogeneracio, mirarem si existeixen filtres marcats.
+         * Si existeixen, buidarem la llista programesSeleccionats i  per cada filtre
+         * seleccionat, obtindrem la llista de programes corresponents i els afegirem
+         * tots al vector programesSeleccionats.
+         * Si no existeixen, ens servira la llista programesSeleccionats per saber
+         * quins s'han seleccionat.
+         */
         if (nousCriteris.autoGen) {
 
-            Vector<String> programesDefinitius = new Vector<String>();
             boolean[] filtres = nousCriteris.filtres;
+            String[] programesFiltrats;
             boolean hies = false;
-            boolean cap = true;
-            
-            for (int k = 0; k < 11; k++) 
-            {
+            boolean nhia = false;
 
+
+            /**Per cada filtre de categoria (Adults, Pelicula, Serie, etc.) mirem
+             *si n'hi ha algun de marcat, llavors esborrem la llista i passem a
+             *omplirla
+             */
+            for (int k = 0; k < 11 && !nhia; k++) {
                 if (filtres[k]) {
-                   cap  = false;
-                    String[] programa = CProgrames.getllistaFiltrada("categoria", "" +k);
+                    nhia = true;
+                    programesSeleccionats.clear();
+                }
+            }
 
-                    for (int j = 0; j < programa.length; j++) {
-                        hies = false;
-                        for (int i = 0; i < llistaProgrames.size() && !hies; i++) {
-                            /* Cercam si ja hi ha el programa dins llistaProgames */
-                            if (llistaProgrames.get(i).getNom().compareToIgnoreCase(programa[j]) == 0) {
-                                hies = true;
-                            }
-                        }
-                        if (!hies) {
-                            programesDefinitius.add(programa[j]);
+            if (nhia) {
+                for (int k = 0; k < 11; k++) {
 
+                    //Mirem si el filtre esta seleccionat
+                    if (filtres[k]) {
+                        programesFiltrats = CProgrames.getllistaFiltrada("categoria", "" + k);
+
+                        for (int j = 0; j < programesFiltrats.length; j++) {
+                            programesSeleccionats.add(programesFiltrats[j]);
                         }
                     }
                 }
             }
-           if (!cap) 
-           {
-               String[] programa = CProgrames.getllistaFiltrada("tots", null);
-           }
-
-            String[] aux = new String[programesDefinitius.size()];
-            llistaProgrames = CProgrames.llistarProgramesNom(programesDefinitius.toArray(aux));
-
-        } else {
-            String[] aux = new String[programesSeleccionats.size()];
-            llistaProgrames = CProgrames.llistarProgramesNom(programesSeleccionats.toArray(aux));
         }
 
+        String[] tomatiga = new String[programesSeleccionats.size()];
+        llistaProgrames = CProgrames.llistarProgramesNom(programesSeleccionats.toArray(tomatiga));
         FranjaHoraria franja;
 
         if (nousCriteris.pre1Ini != null) {
@@ -248,12 +263,12 @@ public class ControladorPlanificacio {
         }
 
         prioritats = new int[5];
-        prioritats[nousCriteris.prioritats[0]-1] = 1;
-        prioritats[nousCriteris.prioritats[1]-1] = 2;
-        prioritats[nousCriteris.prioritats[2]-1] = 3;
-        prioritats[nousCriteris.prioritats[3]-1] = 4;
-        prioritats[nousCriteris.prioritats[4]-1] = 5;
-                
+        prioritats[nousCriteris.prioritats[0] - 1] = 1;
+        prioritats[nousCriteris.prioritats[1] - 1] = 2;
+        prioritats[nousCriteris.prioritats[2] - 1] = 3;
+        prioritats[nousCriteris.prioritats[3] - 1] = 4;
+        prioritats[nousCriteris.prioritats[4] - 1] = 5;
+
         LinkedList<FranjaHoraria> frangesH = RepoFranges.listaObject();
 
         llistaPlanificacions = generador.generar(llistaProgrames, nousCriteris.preuMaxim, prioritats, llistaFrangesPreferides, llistaFrangesProhibides, nousCriteris.dataIni, nousCriteris.dataFi, nousCriteris.nombrePlanis, frangesH);
@@ -265,7 +280,6 @@ public class ControladorPlanificacio {
         for (int i = 0; i < llistaPlanificacions.size(); i++) {
             Calendar aux = (Calendar) llistaPlanificacions.get(i).getDataInici().clone();
             Calendar aux3 = (Calendar) llistaPlanificacions.get(i).getDataFi().clone();
-            //    planificacions[i] = "" + aux.get(Calendar.DAY_OF_MONTH) + "/" + (aux.get(Calendar.MONTH) + 1) + "/" + aux.get(Calendar.YEAR) + " - " + aux.get(Calendar.DAY_OF_MONTH) + "/" + (aux.get(Calendar.MONTH) + 1) + "/" + aux.get(Calendar.YEAR);
             planificacions[i] = Conv.idPlanificacio(aux, aux3);
         }
 
