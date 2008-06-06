@@ -322,7 +322,8 @@ public class Convertir {
         int m1 = hora1.get(Calendar.MINUTE);
         int m2 = hora2.get(Calendar.MINUTE);
 
-        if (h1 >= h2) {
+        if (h1 > h2) return true;
+        if (h1 == h2) {
             if (m1 > m2) {
                 return true;
             }
