@@ -93,21 +93,19 @@ public class ControladorPlanificacio {
             }
         }
 
+        //Ara tenim p, que es la planificacio que volem pintar:
+
         int comptador = 0;
         int dia, horaInici, minutInici, horaFi, minutFi, posIni, posFi;
-        //boolean diaSeg = false;
 
-        Date iniD = formatHora.parse("00:00");
-        Calendar iniDia = Calendar.getInstance();
-        iniDia.setTime(iniD);
 
-        Date fiD = formatHora.parse("23:59");
-        Calendar fiDia = Calendar.getInstance();
-        fiDia.setTime(fiD);
+
+        Calendar iniDia = Conv.strToCalendar("00:00");
+        Calendar fiDia = Conv.strToCalendar("23:59");
 
         /* Rellenem sa primera columna amb ses hores: */
-        while (iniDia.before(fiDia) && comptador < 144) {
-            // graella[comptador][0] = "" + iniDia.get(Calendar.HOUR_OF_DAY) + ":" + iniDia.get(Calendar.MINUTE);
+        while (!Conv.horaMajor(iniDia, fiDia) && comptador < 144) {
+
             graella[comptador][0] = Conv.getHora(iniDia);
             iniDia.add(Calendar.MINUTE, +10);
             comptador++;
@@ -135,27 +133,12 @@ public class ControladorPlanificacio {
                     posIni = (horaInici * 6) + (minutInici / 10);
 
                     aux = ((Emissio) mirantEmissio).getHoraFi();
-                    horaFi = aux.get(Calendar.HOUR);
+                    horaFi = aux.get(Calendar.HOUR_OF_DAY);
                     minutFi = aux.get(Calendar.MINUTE);
                     posFi = (horaFi * 6) + (minutFi / 10);
-                    /*
-                    if (posIni > posFi) {
-                    diaSeg = true;
-                    } else {
-                    diaSeg = false;
-                    }
-                     */
+
                     String nom = mirantEmissio.getIdentificador();
-                    //  while ((posIni < posFi) || ((posIni > posFi) && diaSeg) || (diaSeg && (posIni > 143))) {
-                    //    if (dia >= 7) {
-                    //       break;
-                    // }
                     while (posIni < posFi) {
-                        /*if (diaSeg && (posIni > 143)) {
-                        dia++;
-                        diaSeg = false;
-                        posIni = 0;
-                        }*/
                         graella[posIni][dia] = nom;
                         posIni++;
                     }
@@ -163,7 +146,14 @@ public class ControladorPlanificacio {
 
             }
         }
-
+        if (graella != null) {
+            for (int tubercul = 0; tubercul < 144; tubercul++) {
+                System.out.println("\n");
+                for (int llimacDivergent = 0; llimacDivergent < 8; llimacDivergent++) {
+                    System.out.println("" + graella[tubercul][llimacDivergent]);
+                }
+            }
+        }
         return graella;
     }
 
