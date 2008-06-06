@@ -146,14 +146,7 @@ public class ControladorPlanificacio {
 
             }
         }
-        if (graella != null) {
-            for (int tubercul = 0; tubercul < 144; tubercul++) {
-                System.out.println("\n");
-                for (int llimacDivergent = 0; llimacDivergent < 8; llimacDivergent++) {
-                    System.out.println("" + graella[tubercul][llimacDivergent]);
-                }
-            }
-        }
+        
         return graella;
     }
 
