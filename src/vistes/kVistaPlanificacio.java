@@ -159,7 +159,7 @@ public class kVistaPlanificacio {
                                 vPlani.setSelectPlan(planSelected);
                             }
                         } else {
-                            JOptionPane.showMessageDialog(null, "Aquesta emissio ja ha estat emesa o facturada.");
+                            JOptionPane.showMessageDialog(null, "Aquesta emissio ja ha estat emesa, facturada, o queden menys de 24h per ser vista.");
                         }
 
                     }
