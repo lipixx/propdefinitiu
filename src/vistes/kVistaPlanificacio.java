@@ -340,7 +340,7 @@ public class kVistaPlanificacio {
      */
     private void clicatBotoGenerar() {
         try {
-
+            
             programesSeleccionats = vSprog.getLlistaSeleccionats();
             if (programesSeleccionats.size() != 0) {
                 llistaPlanificacions = CPlani.gene(programesSeleccionats, nousCriteris);
@@ -411,12 +411,15 @@ public class kVistaPlanificacio {
 
                     //Si s'ha definit "AutoGeneracio" hi ha que fer la generacio a partir
                     // de tots els programes possibles.
-                    String temp[] = CPG.getllistaFiltrada("tots", "");
+
+                    llistaProgrames = CPG.getllistaFiltrada("tots", "");
+                    filtraPeriode();
+
                     programesSeleccionats = new Vector<String>();
-                    for (int i = 0; i < temp.length; i++) {
-                        programesSeleccionats.add(temp[i]);
+                    for (int i = 0; i < llistaProgrames.length; i++) {
+                        programesSeleccionats.add(llistaProgrames[i]);
                     }
-                    //
+
                     llistaPlanificacions = CPlani.gene(programesSeleccionats, nousCriteris);
                     vGen.setLlistaPlans(llistaPlanificacions);
                     vCriteris.setVisible(false);
