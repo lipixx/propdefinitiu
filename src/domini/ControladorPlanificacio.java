@@ -309,6 +309,44 @@ public class ControladorPlanificacio {
         }
     }
 
+    public String genResum(String idPlanificacio, boolean temporal) {
+        LinkedList<Planificacio> llistaP = llistaPlanificacions;
+        String out = new String();
+
+        if (!temporal) {
+            llistaP = cActual.getLlistaPlan();
+        }
+
+        Calendar aux2[] = Conv.idPlanificacio(idPlanificacio);
+        Calendar iniPlaniAux = aux2[0];
+        Calendar fiPlaniAux = aux2[1];
+        Calendar iniPlani;
+        Calendar fiPlani;
+
+
+        Planificacio p = null;
+        boolean trobat = false;
+
+        for (int i = 0; i < llistaP.size() && !trobat; i++) {
+            iniPlani = (Calendar) llistaP.get(i).getDataInici();
+            fiPlani = (Calendar) llistaP.get(i).getDataFi();
+
+            if (Conv.sonIgualsData(iniPlaniAux, iniPlani) && Conv.sonIgualsData(fiPlaniAux, fiPlani)) {
+                trobat = true;
+                p = llistaP.get(i);
+            }
+        }
+
+        if (p != null) {
+            for (int j = 0; j < p.getLlistaEmissions().size(); j++) {
+                ServeiPendent mirantEmissio = (ServeiPendent) p.getLlistaEmissions().get(j);
+                out = out + "" + "Nom Programa: " + mirantEmissio.getIdentificador() + "\n" + "Data Emissio: " + Conv.dateToStr(mirantEmissio.getDataReal()) + "\nHora Inici emissio: " + Conv.getHora(((Emissio) mirantEmissio).getHoraInici()) + "\n Hora Fi emissio:" + Conv.getHora(((Emissio) mirantEmissio).getHoraFi()) + "\nPreu: " + mirantEmissio.getPreu() + "\n\n";
+            }
+
+        }
+        return out;
+    }
+
     /**S'ha canviat el client actual del domini, per aixo
      * se li avisa n'aquest controlador.
      * 
