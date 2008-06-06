@@ -69,7 +69,8 @@ public class ControladorPlanificacio {
             llistaP = cActual.getLlistaPlan();
         }
 
-        Planificacio P = null;
+
+        Planificacio p = null;
         boolean trobat = false;
 
         for (int i = 0; i < llistaP.size() && !trobat; i++) {
@@ -81,20 +82,20 @@ public class ControladorPlanificacio {
 
             if (Conv.sonIgualsData(iniPlaniAux, iniPlani) && Conv.sonIgualsData(fiPlaniAux, fiPlani)) {
                 trobat = true;
-                P = llistaP.get(i);
+                p = llistaP.get(i);
             }
         }
 
         String[][] graella = new String[144][8];
         for (int hmm = 0; hmm < 144; hmm++) {
-            for (int l = 0; l < 8; l++) {
-                graella[hmm][l] = "-";
+            for (int wowo = 1; wowo < 8; wowo++) {
+                graella[hmm][wowo] = "-";
             }
         }
 
         int comptador = 0;
         int dia, horaInici, minutInici, horaFi, minutFi, posIni, posFi;
-        boolean diaSeg = false;
+        //boolean diaSeg = false;
 
         Date iniD = formatHora.parse("00:00");
         Calendar iniDia = Calendar.getInstance();
@@ -111,13 +112,16 @@ public class ControladorPlanificacio {
             iniDia.add(Calendar.MINUTE, +10);
             comptador++;
         }
-        if (P != null) {
-            for (int j = 0; j < P.getLlistaEmissions().size(); j++) {
-                ServeiPendent mirantEmissio = (ServeiPendent) P.getLlistaEmissions().get(j);
+        if (p != null) {
+            for (int j = 0; j < p.getLlistaEmissions().size(); j++) {
+                ServeiPendent mirantEmissio = (ServeiPendent) p.getLlistaEmissions().get(j);
 
                 if (!mirantEmissio.getDataReal().before(iniSetmana) && (!mirantEmissio.getDataReal().after(fiSetmana))) {
 
                     dia = mirantEmissio.getDataReal().get(Calendar.DAY_OF_WEEK);
+
+                    /* SUNDAY=1, MONDAY=2, TUESDAY=3, WEDNESDAY=4, THURSDAY=5, FRIDAY=6 and SATURDAY=7 */
+
                     if (dia == 1) {
                         /* Si es diumenge, la pintam a sa columna nombre 8, es a dir, posicio 7 */
                         dia = 7;
@@ -125,28 +129,33 @@ public class ControladorPlanificacio {
                         dia--;
                     }
 
-                    horaInici = ((Emissio) mirantEmissio).getHoraInici().get(Calendar.HOUR_OF_DAY);
-                    minutInici = ((Emissio) mirantEmissio).getHoraInici().get(Calendar.MINUTE);
+                    Calendar aux = ((Emissio) mirantEmissio).getHoraInici();
+                    horaInici = aux.get(Calendar.HOUR_OF_DAY);
+                    minutInici = aux.get(Calendar.MINUTE);
                     posIni = (horaInici * 6) + (minutInici / 10);
 
-                    horaFi = ((Emissio) mirantEmissio).getHoraFi().get(Calendar.HOUR);
-                    minutFi = ((Emissio) mirantEmissio).getHoraFi().get(Calendar.MINUTE);
+                    aux = ((Emissio) mirantEmissio).getHoraFi();
+                    horaFi = aux.get(Calendar.HOUR);
+                    minutFi = aux.get(Calendar.MINUTE);
                     posFi = (horaFi * 6) + (minutFi / 10);
-
+                    /*
                     if (posIni > posFi) {
-                        diaSeg = true;
+                    diaSeg = true;
                     } else {
-                        diaSeg = false;
+                    diaSeg = false;
                     }
-
+                     */
                     String nom = mirantEmissio.getIdentificador();
-                    while ((posIni < posFi) || ((posIni > posFi) && diaSeg) || (diaSeg && (posIni > 143))) {
-                    if (dia >= 7) break;
-                        if (diaSeg && (posIni > 143)) {
-                            dia++;
-                            diaSeg = false;
-                            posIni = 0;
-                        }
+                    //  while ((posIni < posFi) || ((posIni > posFi) && diaSeg) || (diaSeg && (posIni > 143))) {
+                    //    if (dia >= 7) {
+                    //       break;
+                    // }
+                    while (posIni <= posFi) {
+                        /*if (diaSeg && (posIni > 143)) {
+                        dia++;
+                        diaSeg = false;
+                        posIni = 0;
+                        }*/
                         graella[posIni][dia] = nom;
                         posIni++;
                     }
