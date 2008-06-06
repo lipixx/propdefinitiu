@@ -59,12 +59,14 @@ public class VistaCriteris extends javax.swing.JDialog {
      * @param dataIni Data de inici de la ultima planificacio
      */
     public void setDataUltimaPlani(String dataIniUp) {
-        if (!dataIniUp.equalsIgnoreCase("")) {
+        if (!dataIniUp.equalsIgnoreCase("")) 
+        {
             iniPeriodePlani = Conv.strToCalendar(dataIniUp);
-        } else {
+        } else 
+        {
             iniPeriodePlani = Calendar.getInstance();
         }
-
+        Conv.sumaDies(iniPeriodePlani, 1);
         fiPeriodePlani = (Calendar) iniPeriodePlani.clone();
         Conv.sumaDies(fiPeriodePlani, 7);
         botoDInici.setText(Conv.dateToStr(iniPeriodePlani));
@@ -128,7 +130,7 @@ public class VistaCriteris extends javax.swing.JDialog {
             //iniPlani ha de ser superior a avui i a la data de la ultima planificacio de lusuari
             // fiPlani superior a iniPlani
             //
-            if (Conv.comparacioData(criteris.dataIni, avui) < 1 || Conv.comparacioData(criteris.dataIni, iniPeriodePlani) == -1 || Conv.comparacioData(criteris.dataIni, criteris.dataFi) > 0) {
+            if (Conv.comparacioData(criteris.dataIni, avui) < 1 || Conv.comparacioData(criteris.dataIni, iniPeriodePlani) < 1|| Conv.comparacioData(criteris.dataIni, criteris.dataFi) > 0) {
                 JOptionPane.showMessageDialog(null, "El periode inicial de la planificacio no pot ser anterior al dia d'avui \n ni a la data de la ultima planificacio.");
                 return null;
             }
