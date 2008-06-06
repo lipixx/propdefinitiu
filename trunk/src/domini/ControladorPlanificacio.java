@@ -146,7 +146,7 @@ public class ControladorPlanificacio {
 
             }
         }
-        
+
         return graella;
     }
 
@@ -363,18 +363,19 @@ public class ControladorPlanificacio {
         // idPLanificacio son 2 calendars dd/mm/yyyy - dd/mm/yyyy 
         // true implica que es TEMPORAL
         Emissio e = null;
-        Planificacio P;
+        Planificacio P = null;
         Calendar pIni, pFi, avui;
         avui = Calendar.getInstance();
-
+        boolean resultat = false;
         boolean trobat = false;
-        LinkedList<ServeiPendent> emissionsTemporal;
+        LinkedList<ServeiPendent> emissionsTemporal = null;
 
         LinkedList<Planificacio> llistaPlanisTemporal = llistaPlanificacions;
         if (!temporal) {
             llistaPlanisTemporal = cActual.getLlistaPlan();
         }
 
+        //Cerquem la Planificacio a la llista:
         for (int i = 0; i < llistaPlanisTemporal.size() && !trobat; i++) {
             P = llistaPlanisTemporal.get(i);
             pIni = P.getDataInici();
@@ -383,55 +384,57 @@ public class ControladorPlanificacio {
             if (Conv.sonIgualsData(dIni, pIni) && Conv.sonIgualsData(dFi, pFi)) 
             {
                 emissionsTemporal = P.getLlistaEmissions();
-                
-                for (int j = 0; j < emissionsTemporal.size() && !trobat; j++) 
-                {
-                    
+                trobat = true;
+            }
+        }
+        trobat = false;
 
-                    if (emissionsTemporal.get(j).getIdentificador().equalsIgnoreCase(nomPrograma)) 
-                    {
-                        trobat = true;
-                        e = (Emissio) emissionsTemporal.get(j);
-                        
-                        //Marcam, si procedeix, l'emissio com emesa
-                        if (Conv.comparacioData(e.getDataEmissio(), avui) < 0 && !temporal) 
-                        {
+        //Ara tenim la llista d'emissions de la planificacio trobada, cercarem la emissio ssi
+        //hem trobat emissions
+        if (emissionsTemporal != null) {
+            for (int j = 0; j < emissionsTemporal.size() && !trobat; j++) {
+                if (emissionsTemporal.get(j).getIdentificador().equalsIgnoreCase(nomPrograma)) {
+                    trobat = true;
+                    e = (Emissio) emissionsTemporal.get(j);
+                }
+            }
+        }
+
+        //Si hem trobat l'emissio procedim de formes diferents si son emissions temporals o no:
+
+        if (trobat) {
+            if (temporal) {
+                if (P.delEmissioPlanificacio(e) == 0) {
+                    llistaPlanificacions.remove(P);
+                }
+                resultat = true;
+            }
+
+            if (!temporal) {
+                //Mirem si la podem eliminar
+                //Ja s'ha emes la emissio?, si s'ha emes impossible eliminar.
+                if (Conv.comparacioData(e.getDataEmissio(), avui) < 0) {
+                    e.setEmes(true);
+                    resultat = false;
+                } else {
+                    if (Conv.comparacioData(e.getDataEmissio(), avui) == 0) {
+                        if (Conv.horaMajor(avui, e.getHoraInici())) {
                             e.setEmes(true);
-                        } 
-                        else 
-                        {
-                            if (Conv.comparacioData(e.getDataEmissio(), avui) == 0 && !temporal) 
-                            {
-                                if (Conv.horaMajor(avui, e.getHoraInici())) 
-                                {
-                                    e.setEmes(true);
-                                }
+                            resultat = false;
+                        }
+                    } else {
+                        if (!e.getEmes() && !e.getFacturat()) {
+                            if (P.delEmissioPlanificacio(e) == 0) {
+                                llistaPlanificacions.remove(P);
                             }
+                            resultat = true;
                         }
                     }
                 }
-                    
-
-                        //Nomes eliminar si no ha estat emes o si es temporal
-                        if (e == null)
-                        {
-                            System.out.println("err");
-                            return false;
-                        }
-                
-                        if (!e.getEmes() || temporal)
-                        {
-                            //Si no queda cap emissio, eliminar la planificacio de l'usuari
-                            if (P.delEmissioPlanificacio(e) == 0)
-                            {
-                                llistaPlanisTemporal.remove(P);
-                                return true;
-                            }
-                        }
-                    }
             }
-        
-        return trobat;
+        }
+
+        return resultat;
     }
 
     public void contractar(Calendar dIni, Calendar dFi) {
