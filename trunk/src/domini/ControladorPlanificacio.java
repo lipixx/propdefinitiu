@@ -340,7 +340,7 @@ public class ControladorPlanificacio {
         if (p != null) {
             for (int j = 0; j < p.getLlistaEmissions().size(); j++) {
                 ServeiPendent mirantEmissio = (ServeiPendent) p.getLlistaEmissions().get(j);
-                out = out + "" + "Nom Programa: " + mirantEmissio.getIdentificador() + "\n" + "Data Emissio: " + Conv.dateToStr(mirantEmissio.getDataReal()) + "\nHora Inici emissio: " + Conv.getHora(((Emissio) mirantEmissio).getHoraInici()) + "\n Hora Fi emissio:" + Conv.getHora(((Emissio) mirantEmissio).getHoraFi()) + "\nPreu: " + mirantEmissio.getPreu() + "\n\n";
+                out = out + "" + "Nom Programa: " + mirantEmissio.getIdentificador() + "\n" + "Data Emissio: " + Conv.dateToStr(mirantEmissio.getDataReal()) + "\nHora Inici emissio: " + Conv.getHora(((Emissio) mirantEmissio).getHoraInici()) + "\nHora Fi emissio:" + Conv.getHora(((Emissio) mirantEmissio).getHoraFi()) + "\nPreu: " + mirantEmissio.getPreu() + "\n-------------------------------------\n\n";
             }
 
         }
