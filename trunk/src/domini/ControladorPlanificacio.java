@@ -150,7 +150,7 @@ public class ControladorPlanificacio {
                     //    if (dia >= 7) {
                     //       break;
                     // }
-                    while (posIni <= posFi) {
+                    while (posIni < posFi) {
                         /*if (diaSeg && (posIni > 143)) {
                         dia++;
                         diaSeg = false;
