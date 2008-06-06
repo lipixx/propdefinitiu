@@ -197,7 +197,6 @@ public class ControladorPlanificacio {
 
             boolean[] filtres = nousCriteris.filtres;
             String[] programesFiltrats;
-            boolean hies = false;
             boolean nhia = false;
 
 
