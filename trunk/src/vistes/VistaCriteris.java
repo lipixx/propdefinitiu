@@ -130,7 +130,7 @@ public class VistaCriteris extends javax.swing.JDialog {
             //iniPlani ha de ser superior a avui i a la data de la ultima planificacio de lusuari
             // fiPlani superior a iniPlani
             //
-            if (Conv.comparacioData(criteris.dataIni, avui) < 1 || Conv.comparacioData(criteris.dataIni, iniPeriodePlani) < 1|| Conv.comparacioData(criteris.dataIni, criteris.dataFi) > 0) {
+            if (Conv.comparacioData(criteris.dataIni, avui) < 1 || Conv.comparacioData(criteris.dataIni, iniPeriodePlani) < 0 || Conv.comparacioData(criteris.dataIni, criteris.dataFi) > 0) {
                 JOptionPane.showMessageDialog(null, "El periode inicial de la planificacio no pot ser anterior al dia d'avui \n ni a la data de la ultima planificacio.");
                 return null;
             }
