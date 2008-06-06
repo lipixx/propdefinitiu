@@ -56,21 +56,19 @@ public class Generador {
         String valor[] = new String[2];
         int maxEmisDia = 1;
         int numEmisDia = 0;
-        boolean planNova = true;
         boolean igual = false;
         Calendar in = (Calendar) superDataIni.clone();
         Calendar fi = (Calendar) superDataFi.clone();
-        int dia, mes, any;
+        //int dia, mes, any;
         Calendar dataEmissio = Calendar.getInstance(), dataFiEmissio = Calendar.getInstance();
         Calendar min = null, max = null;
-        SimpleDateFormat formatCalendar = new SimpleDateFormat("dd-MM-yyyy");
+        //SimpleDateFormat formatCalendar = new SimpleDateFormat("dd-MM-yyyy");
         Calendar copiaDataEmissio = Calendar.getInstance();
 
         for (int k = 0; k < 5; k++) {
             /* INICIALITZAR CRITERIS AMB ELS VALORS PASSATS PER PARAMETRE A PRIORITATS */
             /* Maxima prioritat =1, minima prioritat = 5 */
             criteris[k][0] = prioritats[k];
-            System.out.println("Criteris[" + k + "][0] =" + criteris[k][0]);
         }
 
         /* Inicialitzar llista de programes i franges d'acord amb els criteris esecificats */
@@ -82,7 +80,6 @@ public class Generador {
 
         for (int j = 0; j < llistaFranT.size(); j++) {
             repositoriFranges.add(llistaFranT.get(j));
-            System.out.println("Franja #" + j + " te horaInici =" + llistaFranT.get(j).getHoraInici().get(Calendar.HOUR_OF_DAY) + ":" + llistaFranT.get(j).getHoraInici().get(Calendar.MINUTE) + " i horaFi = " + llistaFranT.get(j).getHoraFi().get(Calendar.HOUR_OF_DAY) + ":" + llistaFranT.get(j).getHoraFi().get(Calendar.MINUTE) + " on la taxa es =" + llistaFranT.get(j).getTaxa());
         }
 
         if (criteris[0][0] == 1) {
@@ -98,7 +95,6 @@ public class Generador {
                 crearFrangesNoProhibidesNiPreferides(fPreferides, fProhibides);
 
                 for (int k = 0; k < llistaFranges.size(); k++) {
-                    System.out.println("Franja #" + k + " te horaInici =" + llistaFranges.get(k).getHoraInici().get(Calendar.HOUR_OF_DAY) + ":" + llistaFranges.get(k).getHoraInici().get(Calendar.MINUTE) + " i horaFi = " + llistaFranges.get(k).getHoraFi().get(Calendar.HOUR_OF_DAY) + ":" + llistaFranges.get(k).getHoraFi().get(Calendar.MINUTE) + " on la taxa es =" + llistaFranges.get(k).getTaxa());
                     listFranAux.add(llistaFranges.get(k));
                 }
             }
@@ -129,26 +125,14 @@ public class Generador {
 
             inicialitzarCriteris(prioritats);
 
-            // if (planNova && !igual) {
-
             plani = new Planificacio(in, fi);
-            System.out.println("NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
-            /* Setejam les dates dataEmissio i dataFiEmissio a la data superDataIni i superDataFi */
-            /* dia = superDataIni.get(Calendar.DAY_OF_MONTH);
-            mes = (superDataIni.get(Calendar.MONTH) + 1);
-            any = superDataIni.get(Calendar.YEAR);
-            Date dat = formatCalendar.parse("" + dia + "-" + mes + "-" + any);
-            dataEmissio = Calendar.getInstance();*/
-            dataEmissio = (Calendar) in.clone();
-            /* dataEmissio actualment correspon a la data d'inici de la planificacio */
 
-            /*dia = superDataFi.get(Calendar.DAY_OF_MONTH);
-            mes = (superDataFi.get(Calendar.MONTH) + 1);
-            any = superDataFi.get(Calendar.YEAR);
-            dat = formatCalendar.parse("" + dia + "-" + mes + "-" + any);
-            dataFiEmissio = Calendar.getInstance();*/
+            /* dataEmissio actualment correspon a la data d'inici de la planificacio */
+            dataEmissio = (Calendar) in.clone();
+
+
             dataFiEmissio = (Calendar) fi.clone();
-            //}
+
 
 
             if (llistaPlanificacionsGenerades.size() > 0 || total >= 3) {
@@ -157,14 +141,9 @@ public class Generador {
                 /* En les planificacions posteriors, els programes s'ordenaran en ordre aleatori per generar una major varietat en les planificacions */
                 Random rnd = new Random();
                 mesclarProgrames(llistaProgrames, rnd);
-            /*if (comptadorIguals % 2 == 1 && llistaProgrames.size() > 1) {
-            Programa aux = llistaProgrames.get(0);
-            llistaProgrames.remove(0);
-            }*/
+
             }
-            for (int k = 0; k < llistaProgrames.size(); k++) {
-                System.out.println("Programa #" + k + " =" + llistaProgrames.get(k).getNom());
-            }
+
 
             /* Numero de programes que a priori volem que constin a la nostra planificacio */
             /* Posteriorment aquest valor es pot decrementar en funcio dels criteris que l'usuari hagi elegit */
@@ -175,8 +154,6 @@ public class Generador {
             /* Mentres no obtinguem una planificacio amb n emissions o els criteris ja no es puguin afluixar mes 
             intentarem crear una planificacio el mes optima possible d'acord amb els criteris de l'usuari */
             while (nemis < n && numCriterisAfluixats <= 5) {
-                //!dataEmissio.after(dataFiEmissio)) {
-
 
                 /* Per a cada programa, mentre el preu no s'hagi sobrepassat intentarem associar-lo a una emissio */
                 for (int i = 0; i < llistaProgrames.size() && !preuSobrepassat; i++) {
@@ -195,22 +172,12 @@ public class Generador {
                         if (((llistaProgrames.get(i).getClass()).getName().charAt(llistaProgrames.get(i).getClass().getName().length() - 1)) == 'D') {
                             /* Si es tracta d'un programa de format DIRECTE setejarem la dataEmissio a la del programa (i despres recuperarem la actual) */
 
-                            /* dia = dataEmissio.get(Calendar.DAY_OF_MONTH);
-                            mes = (dataEmissio.get(Calendar.MONTH) + 1);
-                            any = dataEmissio.get(Calendar.YEAR);
-                            Date dat = formatCalendar.parse("" + dia + "-" + mes + "-" + any);
-                            copiaDataEmissio = Calendar.getInstance();*/
                             copiaDataEmissio = (Calendar) dataEmissio.clone();
                             /* Copia per restaurar el valor de la dataEmissio al valor actual una volta s'hagi intentat crear una emissio d'un programa de format directe,
                             ja que te una data determinada, i nomes pot ser aquella */
 
                             directe = true;
-                            /* Calendar aux = ((Directe) (llistaProgrames.get(i))).getIniciEmissio();
-                            dia = aux.get(Calendar.DAY_OF_MONTH);
-                            mes = (aux.get(Calendar.MONTH) + 1);
-                            any = aux.get(Calendar.YEAR);
-                            Date dat = formatCalendar.parse("" + dia + "-" + mes + "-" + any);
-                            dataEmissio = Calendar.getInstance();*/
+
                             dataEmissio = ((Directe) (llistaProgrames.get(i))).getIniciEmissio();
 
                         } else {
@@ -247,24 +214,12 @@ public class Generador {
                                 llistaFranges = ordenarFrangesPreu(listFranAux);
                             }
 
-                            /**/
-                            for (int k = 0; k < llistaFranges.size(); k++) {
-                                System.out.println("Franja #" + k + " te horaInici =" + llistaFranges.get(k).getHoraInici().get(Calendar.HOUR_OF_DAY) + ":" + llistaFranges.get(k).getHoraInici().get(Calendar.MINUTE) + " i horaFi = " + llistaFranges.get(k).getHoraFi().get(Calendar.HOUR_OF_DAY) + ":" + llistaFranges.get(k).getHoraFi().get(Calendar.MINUTE) + " on la taxa es =" + llistaFranges.get(k).getTaxa());
-                            }
-                            /**/
 
-                            if (total % 3 == 2) {
+                            if (total % 3 == 2 && llistaFranges.size() > 0) {
                                 /* Quan les franges sempre siguin les mateixes i es generin les mateixes planificacions reordenarem les franges de nou*/
                                 rnd = new Random();
                                 mesclarFranges(llistaFranges, rnd);
-                                System.out.println("RANDOM DE FRANGES!!! OJO LOCO!!");
                             }
-
-                            /**/
-                            for (int k = 0; k < llistaFranges.size(); k++) {
-                                System.out.println("Franja #" + k + " te horaInici =" + llistaFranges.get(k).getHoraInici().get(Calendar.HOUR_OF_DAY) + ":" + llistaFranges.get(k).getHoraInici().get(Calendar.MINUTE) + " i horaFi = " + llistaFranges.get(k).getHoraFi().get(Calendar.HOUR_OF_DAY) + ":" + llistaFranges.get(k).getHoraFi().get(Calendar.MINUTE) + " on la taxa es =" + llistaFranges.get(k).getTaxa());
-                            }
-                            /**/
 
                             /* Mentre el programa no s'hagi associat a una emissio (ok=true) o s'hagi sobrepassat el preu, mirarem si un programa es pot associar a alguna franja */
                             for (int j = 0; j < llistaFranges.size() && !ok; j++) {
@@ -294,7 +249,6 @@ public class Generador {
                                     if (criteris[0][1] == 1) {
                                         /* Si tenim la opcio del preu maxim deshabilitada no farem la comparacio i afegirem la emissio directament, altrament mirarem de no sobrepassar el limit */
                                         if ((preuTotal + emi.getPreuEmissio()) <= preuMax) {
-                                            System.out.println("new emissio amb preu maxim");
                                             if (min == null) {
                                                 min = (Calendar) dataEmissio.clone();
                                                 max = (Calendar) dataEmissio.clone();
@@ -314,18 +268,15 @@ public class Generador {
 
                                             afluixarCriteris();
                                             if (criteris[0][1] == 0) {
-                                                System.out.println("preu sobrepassat -> pero hem afluixat el criteri de preu! ");
                                                 plani.addEmissioPlanificacio(emi);
                                                 nemis++;
                                                 numEmisDia++;
                                                 preuTotal += emi.getPreuEmissio();
                                             } else {
-                                                System.out.println("preu sobrepassat");
                                                 preuSobrepassat = true;
                                             }
                                         }
                                     } else {
-                                        System.out.println("new emissio sense preu");
                                         if (min == null) {
                                             min = (Calendar) dataEmissio.clone();
                                             max = (Calendar) dataEmissio.clone();
@@ -350,11 +301,9 @@ public class Generador {
                                     n--;
                                 }
                             }
-                            System.out.println("ABANS DIA ++");
 
                             if (numEmisDia >= maxEmisDia || criteris[4][1] == 0 || !ok) {
 
-                                System.out.println("DIA +++++++++++++++++++++++++++++++++++++++++++++");
                                 dataEmissio.add(Calendar.DAY_OF_MONTH, +1);
                                 numEmisDia = 0;
                                 if (dataEmissio.after(dataFiEmissio) && criteris[4][1] == 0 && !directe) {
@@ -366,11 +315,6 @@ public class Generador {
                         if (directe) {
                             /* Si s'havia canviat la data d'emissio perque es tractava d'un programa de format directe, ara la reestablim */
 
-                            /*dia = copiaDataEmissio.get(Calendar.DAY_OF_MONTH);
-                            mes = (copiaDataEmissio.get(Calendar.MONTH) + 1);
-                            any = copiaDataEmissio.get(Calendar.YEAR);
-                            Date dat = formatCalendar.parse("" + dia + "-" + mes + "-" + any);
-                            dataEmissio = Calendar.getInstance();*/
                             dataEmissio = (Calendar) copiaDataEmissio.clone();
                         }
                     }
@@ -387,10 +331,7 @@ public class Generador {
                     afluixam els criteris per veure si podem trobar alguna emissio que s'aproximi el maxim
                     possible a les nostres preferencies */
                     afluixarCriteris();
-                    planNova = false;
                     preuSobrepassat = false;
-                } else {
-                    planNova = true;
                 }
 
             }
@@ -398,7 +339,6 @@ public class Generador {
 
             /* COMMPROVAM QUE NO EXISTEIX UNA PLANIFICACIO IGUAL */
             total++;
-            planNova = true;
             preuTotal = 0;
             nemis = 0;
             preuSobrepassat = false;
@@ -427,8 +367,6 @@ public class Generador {
                                 }
                                 comptadorIguals++;
                                 igual = true;
-                                System.out.println("PLANIFICACIONS IGUALS");
-
                             }
                         }
                     }
@@ -439,7 +377,6 @@ public class Generador {
                     plani.setDataInici(min);
                     plani.setDataFi(max);
                     llistaPlanificacionsGenerades.add(plani);
-                    System.out.println("PLANIFICACIO AGREGADA CORRECTAMENT");
                 }
             }
 
@@ -447,8 +384,6 @@ public class Generador {
                 in = (Calendar) superDataIni.clone();
                 fi = (Calendar) superDataFi.clone();
             }
-            System.out.println("comptadorIguals =" + comptadorIguals);
-            System.out.println("DIA INI PLANI =" + in.get(Calendar.DAY_OF_MONTH));
 
         /* Fi comprovacio igualtat */
 
@@ -481,7 +416,7 @@ public class Generador {
         /* Desabilitam el criteri que era menys prioritari */
         criteris[pos][1] = 0;
         numCriterisAfluixats++;
-        System.out.println("AFLUIXAM ELS CRITERISSSSSSSSSS ==>> POS =" + pos);
+
     }
 
     private FranjaHoraria cercarFranja(Calendar horaInici, LinkedList<FranjaHoraria> llistaFran) throws ParseException {
@@ -493,12 +428,7 @@ public class Generador {
                 llistaFran.size(); i++) {
             if (!horaInici.before(llistaFran.get(i).getHoraInici()) && horaInici.before(llistaFran.get(i).getHoraFi())) {
                 return llistaFran.get(i);
-            } /*else {
-        if (llistaFran.get(i).getHoraInici().after(fra.getHoraInici())) {
-        fra = llistaFran.get(i);
-        }
-        }*/
-
+            }
         }
         return fra;
     /* Si no ha trobat la franja es perque la franja esta definida per una horaInici abans de 00:00 i un horaFi despres de 00:00,
@@ -547,7 +477,7 @@ public class Generador {
             Date dateFi = formatCalendar2.parse("23:59");
             fi =
                     (Calendar) ini.clone();
-            // Calendar.getInstance();
+
             fi.setTime(dateFi);
 
             FranjaHoraria franja = new FranjaHoraria(ini, fi, (float) 0.10);
@@ -565,7 +495,7 @@ public class Generador {
                     formatCalendar2.parse("20:59");
             fi =
                     (Calendar) ini.clone();
-            // Calendar.getInstance();
+
             fi.setTime(dateFi);
             franja =
                     new FranjaHoraria(ini, fi, (float) 0.10);
@@ -702,8 +632,7 @@ public class Generador {
 
         /* Utilitzarem aquest vector per guardar els valors que ens retorna la funcio solapa, 
         valor[0] -> 1 si es solapa, i per tant no es factible, valor[1] que conte la hora d'inici de la emissio a generar, 
-        valor[2] conte la hora de fi la nostra nov emissio, i finalment valor[3] -> 1 s'ha d'incrementar en un el dia de la 
-        emissio perque s'emet a partir de les 00:00 */
+        i finalment, valor[2] conte la hora de fi la nostra nov emissio*/
 
         String valor[] = new String[3];
 
@@ -978,13 +907,11 @@ public class Generador {
     private void mesclarProgrames(LinkedList<Programa> llistaProgrames, Random rnd) {
 
         if (llistaProgrames.size() > 1) {
-            System.out.println("MESCLAR PROGRS SIZE > 1 ");
             int random = (int) (rnd.nextDouble() * 123456.0);
             random %=
                     llistaProgrames.size();
             for (int i = 0; i <=
                     random; i++) {
-                System.out.println("MESCLAR PROGS, ARA ENTRA?");
                 if ((i + random) % 2 == 0) {
                     /* Si random es un numero parell*/
                     llistaProgrames.addLast(llistaProgrames.get(random));
@@ -1057,12 +984,7 @@ public class Generador {
         LinkedList<Emissio> llista = new LinkedList<Emissio>();
         LinkedList<Emissio> list = new LinkedList<Emissio>();
 
-        System.out.println("DATA EMISSIO = " + dataEmissio.get(Calendar.DAY_OF_MONTH));
-
         for (int i = 0; i < plani.getLlistaEmissions().size(); i++) {
-
-            System.out.println("Emi #" + i + " te hroa ini =" + ((Emissio) plani.getLlistaServeis().get(i)).getHoraInici().get(Calendar.HOUR_OF_DAY) + ":" + ((Emissio) plani.getLlistaServeis().get(i)).getHoraInici().get(Calendar.MINUTE));
-            System.out.println("Emi #" + i + " te hroa ini =" + ((Emissio) plani.getLlistaServeis().get(i)).getHoraFi().get(Calendar.HOUR_OF_DAY) + ":" + ((Emissio) plani.getLlistaServeis().get(i)).getHoraFi().get(Calendar.MINUTE));
 
             /* Perque una emissio es solapi amb una altra aquest dues han de emitir-se el mateix dia */
             if (sonIguals((plani.getLlistaEmissions().get(i)).getDataReal(), dataEmissio)) {
@@ -1075,12 +997,6 @@ public class Generador {
         int n = llista.size();
 
         calendarInici = franja.getHoraInici();
-
-        for (int i = 0; i < llista.size(); i++) {
-
-            System.out.println("Emi #" + i + " te hroa ini =" + ((Emissio) plani.getLlistaServeis().get(i)).getHoraInici().get(Calendar.HOUR_OF_DAY) + ":" + ((Emissio) plani.getLlistaServeis().get(i)).getHoraInici().get(Calendar.MINUTE));
-            System.out.println("Emi #" + i + " te hroa ini =" + ((Emissio) plani.getLlistaServeis().get(i)).getHoraFi().get(Calendar.HOUR_OF_DAY) + ":" + ((Emissio) plani.getLlistaServeis().get(i)).getHoraFi().get(Calendar.MINUTE));
-        }
 
         do {
 
@@ -1095,16 +1011,11 @@ public class Generador {
                         calendarInici.get(Calendar.HOUR_OF_DAY);
                 minutIni =
                         calendarInici.get(Calendar.MINUTE);
-                /**/
-                System.out.println("SOLAPA -> DIRECTE calendarInici = " + horaIni + ":" + minutIni);
-                /**/
+
                 horaFi =
                         ((minutIni + dura) / 60) + horaIni;
                 minutFi =
                         (dura + minutIni) % 60;
-                /**/
-                System.out.println("SOLAPA -> DIRECTE calendarFi = " + horaFi + ":" + minutFi);
-                /**/
 
                 if (minutFi < 10) {
                     hora = formatCalendar2.parse("" + horaFi + ":0" + minutFi);
@@ -1114,13 +1025,6 @@ public class Generador {
 
                 calendarFi = Calendar.getInstance();
                 calendarFi.setTime(hora);
-
-
-            // if (calendarInici.before(franja.getHoraInici()) || calendarFi.after(franja.getHoraFi())) {
-                /* NO ES FACTIBLE    */
-            //   solapa = true;
-            //}
-
 
             } else {
                 /* EL PROGRAMA NO ES DE FORMAT DIRECTE */
@@ -1136,18 +1040,12 @@ public class Generador {
                 minutIni =
                         calendarInici.get(Calendar.MINUTE);
 
-                /**/
-                System.out.println("SOLAPA -> NO DIRECTE calendarInici = " + horaIni + ":" + minutIni);
-                /**/
 
                 horaFi =
                         ((minutIni + dura) / 60) + horaIni;
                 minutFi =
                         (dura + minutIni) % 60;
 
-                /**/
-                System.out.println("SOLAPA -> NO DIRECTE calendarFi = " + horaFi + ":" + minutFi);
-                /**/
 
                 if (minutFi < 10) {
                     hora = formatCalendar2.parse("" + horaFi + ":0" + minutFi);
@@ -1211,10 +1109,10 @@ public class Generador {
 
 
         if (solapa || !ok) {
-            System.out.println("SOLAPAAAAA =>>>> TRUE!!!!!!!!!!!");
+            /* SOLAPA = TRUE */
             valor[0] = "" + 1;
         } else {
-            System.out.println("SOLAPAAAAA =>>>> FALSE!!!!!!!!!!!");
+            /* SOLAPA = FALSE */
             valor[0] = "" + 0;
         }
 
