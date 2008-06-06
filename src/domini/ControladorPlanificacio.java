@@ -140,8 +140,8 @@ public class ControladorPlanificacio {
                     }
 
                     String nom = mirantEmissio.getIdentificador();
-                    while ((dia < 7 && posIni < posFi) || ((posIni > posFi) && diaSeg) || (diaSeg && (posIni > 143))) {
-
+                    while ((posIni < posFi) || ((posIni > posFi) && diaSeg) || (diaSeg && (posIni > 143))) {
+                    if (dia >= 7) break;
                         if (diaSeg && (posIni > 143)) {
                             dia++;
                             diaSeg = false;
@@ -362,7 +362,7 @@ public class ControladorPlanificacio {
                             e.setEmes(true);
                         } else {
                             if (Conv.comparacioData(e.getDataEmissio(), avui) == 0) {
-                                if (Conv.horaMajor(avui, e.getDataEmissio())) {
+                                if (Conv.horaMajor(avui, e.getHoraInici())) {
                                     e.setEmes(true);
                                 }
                             }

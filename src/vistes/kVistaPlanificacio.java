@@ -58,8 +58,8 @@ public class kVistaPlanificacio {
         vSprog = new VistaSelectProgrames(new javax.swing.JFrame(), true);
         vGen = new VistaGenerada(new javax.swing.JFrame(), true);
 
-        initVistaPlanificacio();
         initSetmana();
+        initVistaPlanificacio();
         initGraella();
         initVistaCriteris();
         initVistaGenerat();
@@ -85,10 +85,9 @@ public class kVistaPlanificacio {
     public void initVistaPlanificacio() {
 
         //Fem un init de la setmana actual
-        resetSetmana();
-
         vPlani = new VistaPlanificacio();
 
+        vPlani.setSetmana(Conv.setmana(iniciSetmana, fiSetmana));
         ActionListener actions[] = new ActionListener[4];
 
         ListSelectionListener selPlan;
@@ -266,11 +265,6 @@ public class kVistaPlanificacio {
         vSprog.setListeners(accions, selFiltre, selPrograma, selSel);
     }
 
-    private void initSetmana() {
-        String setmana = Conv.obteSetmana(Calendar.getInstance());
-        vPlani.setSetmana(setmana);
-    }
-
     private void initVistaCriteris() {
 
         ActionListener actions = (new ActionListener() {
@@ -292,8 +286,8 @@ public class kVistaPlanificacio {
      * de VistaGenerat.
      */
     private void clicatBotoContractar() {
-        resetSetmana();
         initSetmana();
+        vPlani.setSetmana(Conv.setmana(iniciSetmana, fiSetmana));
 
         String idPlanificacio = vGen.getPlanSelected();
 
@@ -368,10 +362,15 @@ public class kVistaPlanificacio {
                     vSprog.setLocationRelativeTo(vCriteris);
                     vSprog.setTitle("Seleccionar programes");
 
+                    actLlistaProgrames("tots", "");
+                    filtraPeriode();
+
+
                     if (llistaProgrames.length == 0) {
                         JOptionPane.showMessageDialog(null, "Atenció, no hi ha cap programa en el període especificat." +
                                 "\n Llista Buida.");
                     } else {
+                        vSprog.setLlistaProgrames(llistaProgrames);
                         vCriteris.setVisible(false);
                         vSprog.setVisible(true);
                     }
@@ -406,8 +405,8 @@ public class kVistaPlanificacio {
 
     private void initVistaGenerat() {
 
-
         ActionListener actions[] = new ActionListener[4];
+        vGen.setSetmana(Conv.setmana(iniciSetmana, fiSetmana));
 
         ListSelectionListener selPlan;
 
@@ -428,14 +427,6 @@ public class kVistaPlanificacio {
 
             public void actionPerformed(ActionEvent e) {
                 retrocedirSetmana(true);
-                if (vGen.getPlanSelected() != null) {
-                    try {
-                        seleccionatPlanGen();
-                    } catch (ParseException ex) {
-                        System.out.println("Error L433 kVistaPlanif in retrocedirSetmana..: " + ex.getMessage());
-                    }
-                }
-
             }
         });
 
@@ -444,14 +435,6 @@ public class kVistaPlanificacio {
 
             public void actionPerformed(ActionEvent e) {
                 avancarSetmana(true);
-                if (vGen.getPlanSelected() != null) {
-                    try {
-                        seleccionatPlanGen();
-                    } catch (ParseException ex) {
-                        System.out.println("Error L450 kVistaPlanif in avansarSetmana..: " + ex.getMessage());
-                    }
-                }
-
             }
         });
 
@@ -495,7 +478,7 @@ public class kVistaPlanificacio {
         vGen.setActions(actions, selPlan);
     }
 
-    private void resetSetmana() {
+    private void initSetmana() {
         String setmana = Conv.obteSetmana(Calendar.getInstance());
         Calendar[] aux = Conv.idPlanificacio(setmana);
         iniciSetmana = aux[0];
@@ -512,12 +495,15 @@ public class kVistaPlanificacio {
         // vPlanGen.pintarGraella(graella);
         // generar graella amb akesta tupla demissions (segons la setmana indicada en globals)
         String planSelectedID = vGen.getPlanSelected();
+
         if (planSelectedID != null) {
 
             Calendar idPlan[] = Conv.idPlanificacio(planSelectedID);
             String setmana = Conv.obteSetmana(idPlan[0]);
+            idPlan = Conv.idPlanificacio(setmana);
             iniciSetmana = idPlan[0];
             fiSetmana = idPlan[1];
+
             vGen.setSetmana(setmana);
 
             //Aixo vol dir que cercara ses planificacions des client i no ses
@@ -538,6 +524,40 @@ public class kVistaPlanificacio {
 
     }
 
+    private void avancarPlanificacio(boolean temporal) throws ParseException {
+        String planSelectedID;
+        if (temporal) {
+            planSelectedID = vGen.getPlanSelected();
+        } else {
+            planSelectedID = vPlani.getPlanSelected();
+        }
+        if (planSelectedID != null) {
+            generarGraella(temporal);
+            if (temporal) {
+                vGen.pintarGraella(graella);
+            } else {
+                vPlani.pintarGraella(graella);
+            }
+        }
+    }
+
+    private void retrocedirPlanificacio(boolean temporal) throws ParseException {
+        String planSelectedID;
+        if (temporal) {
+            planSelectedID = vGen.getPlanSelected();
+        } else {
+            planSelectedID = vPlani.getPlanSelected();
+        }
+        if (planSelectedID != null) {
+            generarGraella(temporal);
+            if (temporal) {
+                vGen.pintarGraella(graella);
+            } else {
+                vPlani.pintarGraella(graella);
+            }
+        }
+    }
+
     private void seleccionatPlanificacio() throws ParseException {
 
         String planSelectedID = vPlani.getPlanSelected();
@@ -550,13 +570,12 @@ public class kVistaPlanificacio {
 
             Calendar idPlan[] = Conv.idPlanificacio(planSelectedID);
             String setmana = Conv.obteSetmana(idPlan[0]);
+            idPlan = Conv.idPlanificacio(setmana);
             iniciSetmana = idPlan[0];
             fiSetmana = idPlan[1];
             vPlani.setSetmana(setmana);
-            
+
             //Seteja sa Graella amb ses noves tEmissio[]
-
-
             generarGraella(temporal);
 
             if (graella != null)//Pintar-la
@@ -611,26 +630,36 @@ public class kVistaPlanificacio {
     }
 
     private void retrocedirSetmana(boolean generada) {
-        Conv.sumaDies(iniciSetmana, -7);
-        Conv.sumaDies(fiSetmana, -7);
+        try {
+            Conv.sumaDies(iniciSetmana, -7);
+            Conv.sumaDies(fiSetmana, -7);
 
-        String setmana = Conv.setmana(iniciSetmana, fiSetmana);
-        if (!generada) {
-            vPlani.setSetmana(setmana);
-        } else {
-            vGen.setSetmana(setmana);
+            if (!generada) {
+                vPlani.setSetmana(Conv.setmana(iniciSetmana, fiSetmana));
+            } else {
+                vGen.setSetmana(Conv.setmana(iniciSetmana, fiSetmana));
+            }
+            retrocedirPlanificacio(generada);
+
+        } catch (ParseException ex) {
+            Logger.getLogger(kVistaPlanificacio.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     private void avancarSetmana(boolean generada) {
-        Conv.sumaDies(iniciSetmana, +7);
-        Conv.sumaDies(fiSetmana, +7);
-        String setmana = Conv.setmana(iniciSetmana, fiSetmana);
+        try {
+            Conv.sumaDies(iniciSetmana, +7);
+            Conv.sumaDies(fiSetmana, +7);
 
-        if (!generada) {
-            vPlani.setSetmana(setmana);
-        } else {
-            vGen.setSetmana(setmana);
+            if (!generada) {
+                vPlani.setSetmana(Conv.setmana(iniciSetmana, fiSetmana));
+            } else {
+                vGen.setSetmana(Conv.setmana(iniciSetmana, fiSetmana));
+            }
+            avancarPlanificacio(generada);
+
+        } catch (ParseException ex) {
+            Logger.getLogger(kVistaPlanificacio.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -687,6 +716,7 @@ public class kVistaPlanificacio {
     private void generarGraella(boolean temporal) throws ParseException {
         String inici = Conv.dateToStr(iniciSetmana);
         String fi = Conv.dateToStr(fiSetmana);
+
         if (temporal) {
             graella = CPlani.genSet(inici, fi, vGen.getPlanSelected(), temporal);
         } else {

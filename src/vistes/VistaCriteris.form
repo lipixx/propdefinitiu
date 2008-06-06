@@ -266,7 +266,7 @@
                       <Component id="botoActivarProh4" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace pref="275" max="32767" attributes="0"/>
+              <EmptySpace pref="1284" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>

@@ -232,7 +232,6 @@ public class VistaGenerada extends javax.swing.JDialog {
     }
 
     public void setGraella() {
-
         String[][] graellaAuxiliar = new String[144][8];
         graella.setModel(new javax.swing.table.DefaultTableModel(
                 graellaAuxiliar,
