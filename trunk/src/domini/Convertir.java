@@ -56,7 +56,7 @@ public class Convertir {
         Calendar fiSetmana = (Calendar) data.clone();
         int ara = data.get(Calendar.DAY_OF_WEEK);
 
-        /* SUNDAY=0, MONDAY=1, TUESDAY=2, WEDNESDAY=3, THURSDAY=4, FRIDAY=5 and SATURDAY=6 */
+        /* SUNDAY=1, MONDAY=2, TUESDAY=3, WEDNESDAY=4, THURSDAY=5, FRIDAY=6 and SATURDAY=7 */
 
         int sumar = 0, restar = 0;
         if (ara == 1) {
