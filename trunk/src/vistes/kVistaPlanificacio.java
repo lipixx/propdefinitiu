@@ -58,7 +58,7 @@ public class kVistaPlanificacio {
         vCriteris = new VistaCriteris(new javax.swing.JFrame(), true);
         vSprog = new VistaSelectProgrames(new javax.swing.JFrame(), true);
         vGen = new VistaGenerada(new javax.swing.JFrame(), true);
-        vResum = new VistaVeureResumP();
+        vResum = new VistaVeureResumP(new javax.swing.JFrame(), true);
         initSetmana();
         initVistaPlanificacio();
         initGraella();

@@ -127,8 +127,8 @@ public class VistaCriteris extends javax.swing.JDialog {
 
             //iniPlani ha de ser superior a avui i a la data de la ultima planificacio de lusuari
             // fiPlani superior a iniPlani
-            //|| criteris.dataIni.after(criteris.dataFi)
-            if (Conv.comparacioData(criteris.dataIni, avui) == -1 || Conv.comparacioData(criteris.dataIni, iniPeriodePlani) == -1) {
+            //
+            if (Conv.comparacioData(criteris.dataIni, avui) < 1 || Conv.comparacioData(criteris.dataIni, iniPeriodePlani) == -1 || Conv.comparacioData(criteris.dataIni, criteris.dataFi) > 0) {
                 JOptionPane.showMessageDialog(null, "El periode inicial de la planificacio no pot ser anterior al dia d'avui \n ni a la data de la ultima planificacio.");
                 return null;
             }
@@ -700,7 +700,7 @@ public class VistaCriteris extends javax.swing.JDialog {
                                                 .addComponent(jLabel33))))
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(layout.createSequentialGroup()
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 591, Short.MAX_VALUE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
                                             .addComponent(jLabel36)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                             .addComponent(botoNombrePlanis, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -719,7 +719,7 @@ public class VistaCriteris extends javax.swing.JDialog {
                                     .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING)))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 584, Short.MAX_VALUE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addGroup(layout.createSequentialGroup()
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -767,7 +767,7 @@ public class VistaCriteris extends javax.swing.JDialog {
                                 .addGap(12, 12, 12)
                                 .addComponent(jLabel30))
                             .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING))))
-                .addContainerGap(542, Short.MAX_VALUE))
+                .addContainerGap(45, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(56, 56, 56)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -863,7 +863,7 @@ public class VistaCriteris extends javax.swing.JDialog {
                         .addComponent(botoProhFi4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(botoActivarProh4)))
-                .addContainerGap(1284, Short.MAX_VALUE))
+                .addContainerGap(275, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -872,7 +872,7 @@ public class VistaCriteris extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel33)
                     .addComponent(jLabel34))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 104, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 99, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel35)
