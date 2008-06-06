@@ -362,7 +362,7 @@ public class ControladorPlanificacio {
     public boolean anularEmissio(String nomPrograma, Calendar dIni, Calendar dFi, boolean temporal) {
         // idPLanificacio son 2 calendars dd/mm/yyyy - dd/mm/yyyy 
         // true implica que es TEMPORAL
-        Emissio e;
+        Emissio e = null;
         Planificacio P;
         Calendar pIni, pFi, avui;
         avui = Calendar.getInstance();
@@ -380,35 +380,57 @@ public class ControladorPlanificacio {
             pIni = P.getDataInici();
             pFi = P.getDataFi();
 
-            if (Conv.sonIgualsData(dIni, pIni) && Conv.sonIgualsData(dFi, pFi)) {
-                for (int j = 0; j < P.getLlistaEmissions().size() && !trobat; j++) {
-                    emissionsTemporal = P.getLlistaEmissions();
+            if (Conv.sonIgualsData(dIni, pIni) && Conv.sonIgualsData(dFi, pFi)) 
+            {
+                emissionsTemporal = P.getLlistaEmissions();
+                
+                for (int j = 0; j < emissionsTemporal.size() && !trobat; j++) 
+                {
+                    
 
-                    if (emissionsTemporal.get(j).getIdentificador().equalsIgnoreCase(nomPrograma)) {
+                    if (emissionsTemporal.get(j).getIdentificador().equalsIgnoreCase(nomPrograma)) 
+                    {
+                        trobat = true;
                         e = (Emissio) emissionsTemporal.get(j);
+                        
                         //Marcam, si procedeix, l'emissio com emesa
-                        if (Conv.comparacioData(e.getDataEmissio(), avui) < 0) {
+                        if (Conv.comparacioData(e.getDataEmissio(), avui) < 0 && !temporal) 
+                        {
                             e.setEmes(true);
-                        } else {
-                            if (Conv.comparacioData(e.getDataEmissio(), avui) == 0) {
-                                if (Conv.horaMajor(avui, e.getHoraInici())) {
+                        } 
+                        else 
+                        {
+                            if (Conv.comparacioData(e.getDataEmissio(), avui) == 0 && !temporal) 
+                            {
+                                if (Conv.horaMajor(avui, e.getHoraInici())) 
+                                {
                                     e.setEmes(true);
                                 }
                             }
                         }
-
+                    }
+                }
+                    
 
                         //Nomes eliminar si no ha estat emes o si es temporal
-                        if (!e.getEmes() || temporal) {
+                        if (e == null)
+                        {
+                            System.out.println("err");
+                            return false;
+                        }
+                
+                        if (!e.getEmes() || temporal)
+                        {
                             //Si no queda cap emissio, eliminar la planificacio de l'usuari
-                            if (P.delEmissioPlanificacio(e) == 0) {
-                                trobat = llistaPlanisTemporal.remove(P);
+                            if (P.delEmissioPlanificacio(e) == 0)
+                            {
+                                llistaPlanisTemporal.remove(P);
+                                return true;
                             }
                         }
                     }
-                }
             }
-        }
+        
         return trobat;
     }
 
