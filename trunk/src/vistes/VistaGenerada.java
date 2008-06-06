@@ -31,10 +31,11 @@ public class VistaGenerada extends javax.swing.JDialog {
 
     String getGraellaSelected() {
         /* Retorna un String que identifica una Emissio */
-        if (!(graella.getSelectedColumn() == 0 ||  graella.getSelectedColumn() == -1 || graella.getSelectedRow() == -1))
-        return (String) graella.getValueAt(graella.getSelectedRow(), graella.getSelectedColumn());
-        else
+        if (!(graella.getSelectedColumn() == 0 || graella.getSelectedColumn() == -1 || graella.getSelectedRow() == -1)) {
+            return (String) graella.getValueAt(graella.getSelectedRow(), graella.getSelectedColumn());
+        } else {
             return null;
+        }
     }
 
     public int getIndexsSelected() {
@@ -50,7 +51,7 @@ public class VistaGenerada extends javax.swing.JDialog {
     }
 
     void setPreu(double preu) {
-        preuTotalV.setText(""+preu);
+        preuTotalV.setText("" + preu);
     }
 
     /** This method is called from within the constructor to
@@ -77,6 +78,7 @@ public class VistaGenerada extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         botoSetmana = new javax.swing.JTextPane();
+        veureResum = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -123,22 +125,26 @@ public class VistaGenerada extends javax.swing.JDialog {
         botoSetmana.setAlignmentY(1.0F);
         jScrollPane3.setViewportView(botoSetmana);
 
+        veureResum.setText("Llista");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(23, 23, 23)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 655, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(103, 103, 103)
+                        .addGap(64, 64, 64)
                         .addComponent(butoSetmanaAnterior)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(butoSetmanaSeguent)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(butoSetmanaSeguent)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(veureResum, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(59, 59, 59)
@@ -168,11 +174,14 @@ public class VistaGenerada extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jLabel4)
-                        .addComponent(butoSetmanaAnterior))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(jLabel4))
+                    .addComponent(butoSetmanaAnterior)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(butoSetmanaSeguent))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(butoSetmanaSeguent)
+                        .addComponent(veureResum)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -241,14 +250,14 @@ public class VistaGenerada extends javax.swing.JDialog {
 
     }
 
-    public void setActions(ActionListener actions[], ListSelectionListener lPlanificacions) {
-
+    public void setActions(ActionListener actions[], ListSelectionListener lPlanificacions) 
+    {
         llistaPlanificacionsV.getSelectionModel().addListSelectionListener(lPlanificacions);
         butoSetmanaAnterior.addActionListener(actions[0]);
         butoSetmanaSeguent.addActionListener(actions[1]);
-        botoContractar.addActionListener(actions[3]);
         butoAnular.addActionListener(actions[2]);
-
+        botoContractar.addActionListener(actions[3]);
+        veureResum.addActionListener(actions[4]);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botoContractar;
@@ -267,8 +276,8 @@ public class VistaGenerada extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JList llistaPlanificacionsV;
     private javax.swing.JTextField preuTotalV;
+    private javax.swing.JButton veureResum;
     // End of variables declaration//GEN-END:variables
-
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
 

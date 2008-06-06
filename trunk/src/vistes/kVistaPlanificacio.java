@@ -32,6 +32,7 @@ public class kVistaPlanificacio {
     private VistaGenerada vGen;
     private VistaCriteris vCriteris;
     private VistaSelectProgrames vSprog;
+    private VistaVeureResumP vResum;
     private ControladorProgrames CPG;
     private String[] llistaPlanificacions;
     private String[][] graella;
@@ -57,7 +58,7 @@ public class kVistaPlanificacio {
         vCriteris = new VistaCriteris(new javax.swing.JFrame(), true);
         vSprog = new VistaSelectProgrames(new javax.swing.JFrame(), true);
         vGen = new VistaGenerada(new javax.swing.JFrame(), true);
-
+        vResum = new VistaVeureResumP();
         initSetmana();
         initVistaPlanificacio();
         initGraella();
@@ -88,7 +89,7 @@ public class kVistaPlanificacio {
         vPlani = new VistaPlanificacio();
 
         vPlani.setSetmana(Conv.setmana(iniciSetmana, fiSetmana));
-        ActionListener actions[] = new ActionListener[4];
+        ActionListener actions[] = new ActionListener[5];
 
         ListSelectionListener selPlan;
 
@@ -168,7 +169,34 @@ public class kVistaPlanificacio {
             }
         });
 
+        actions[4] = (new ActionListener() {
+            /* Veure Resum */
+
+            public void actionPerformed(ActionEvent e) {
+                veureResum(false);
+            }
+        });
+
         vPlani.setActions(actions, selPlan);
+    }
+
+    public void veureResum(boolean temporal) {
+        String idPlanificacio;
+
+        if (temporal) {
+            idPlanificacio = vGen.getPlanSelected();
+            vResum.setLocationRelativeTo(vGen);
+        } else {
+            idPlanificacio = vPlani.getPlanSelected();
+            vResum.setLocationRelativeTo(vPlani);
+        }
+
+        if (idPlanificacio != null) 
+        {
+            vResum.setTitle("Resum de la planificacio " + idPlanificacio);
+            vResum.setResum(CPlani.genResum(idPlanificacio, temporal), idPlanificacio);
+            vResum.setVisible(true);
+        }
     }
 
     public void iniDataClient() {
@@ -191,7 +219,7 @@ public class kVistaPlanificacio {
     private void initVistaSelectProg() {
 
         ListSelectionListener selFiltre, selPrograma, selSel;
-        ActionListener accions[] = new ActionListener[7];
+        ActionListener accions[] = new ActionListener[5];
 
 
         /**Setejem les dues llistes que tenim, la de programes i la de filtres
@@ -405,7 +433,7 @@ public class kVistaPlanificacio {
 
     private void initVistaGenerat() {
 
-        ActionListener actions[] = new ActionListener[4];
+        ActionListener actions[] = new ActionListener[5];
         vGen.setSetmana(Conv.setmana(iniciSetmana, fiSetmana));
 
         ListSelectionListener selPlan;
@@ -472,6 +500,14 @@ public class kVistaPlanificacio {
             public void actionPerformed(ActionEvent e) {
 
                 clicatBotoContractar();
+            }
+        });
+
+        actions[4] = (new ActionListener() {
+
+            /*Veure resum de la planificacio seleccionada*/
+            public void actionPerformed(ActionEvent e) {
+                veureResum(true);
             }
         });
 
