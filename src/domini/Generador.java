@@ -641,33 +641,50 @@ public class Generador {
 
             Random rnd = new Random();
             int x = (int) (rnd.nextDouble() * 123456.0);
-            x %=
-                    7;
+            x %=13;
 
             switch (x) {
                 case 1:
-                    duracio = 15;
+                    duracio = 10;
                     break;
                 case 2:
-                    duracio = 45;
+                    duracio = 20;
                     break;
                 case 3:
-                    duracio = 60;
+                    duracio = 30;
                     break;
                 case 4:
-                    duracio = 75;
+                    duracio = 40;
                     break;
                 case 5:
-                    duracio = 90;
+                    duracio = 50;
                     break;
                 case 6:
+                    duracio = 60;
+                    break;
+                    case 7:
+                    duracio = 70;
+                    break;
+                case 8:
+                    duracio = 80;
+                    break;
+                case 9:
+                    duracio = 90;
+                    break;
+                case 10:
+                    duracio = 100;
+                    break;
+                case 11:
+                    duracio = 110;
+                    break;
+                case 12:
                     duracio = 120;
                     break;
                 default:
-                    duracio = 15;
+                    duracio = 130;
                     break;
                 }
-        /* Suposem que una emissio de menys de 15 minuts ni de mes de 120 minuts no s'ha de generar de forma AUTOMATICA */
+        /* Suposem que una emissio de menys de 10 minuts ni de mes de 130 minuts no s'ha de generar de forma AUTOMATICA */
 
         }
 
