@@ -167,7 +167,7 @@ public class ControladorPlanificacio {
 
         //Netejem la llista global de programes
         llistaProgrames.clear();
-
+        llistaPlanificacions.clear();
         /**Si s'ha seleccionat autogeneracio, mirarem si existeixen filtres marcats.
          * Si existeixen, buidarem la llista programesSeleccionats i  per cada filtre
          * seleccionat, obtindrem la llista de programes corresponents i els afegirem
@@ -380,8 +380,7 @@ public class ControladorPlanificacio {
             pIni = P.getDataInici();
             pFi = P.getDataFi();
 
-            if (Conv.sonIgualsData(dIni, pIni) && Conv.sonIgualsData(dFi, pFi)) 
-            {
+            if (Conv.sonIgualsData(dIni, pIni) && Conv.sonIgualsData(dFi, pFi)) {
                 emissionsTemporal = P.getLlistaEmissions();
                 trobat = true;
             }

@@ -20,6 +20,7 @@ public class FranjaHoraria implements ClasseAmbClau<Float>, Serializable {
     private Calendar horaInici;
     private Calendar horaFi;
     private float taxa;
+    private Convertir conv = new Convertir();
 
     /**
      *  Cerca un programa al repositori de programes.  
@@ -30,7 +31,7 @@ public class FranjaHoraria implements ClasseAmbClau<Float>, Serializable {
      *  @post   -
      */
     public FranjaHoraria(Calendar NhoraInici, Calendar NhoraFi, float Ntaxa) {
-        if (NhoraInici.after(NhoraFi) || taxa < 0) {
+        if (conv.horaMajor(NhoraInici, NhoraFi) || taxa < 0) {
             horaInici = null;
             horaFi = null;
             taxa = 0;
