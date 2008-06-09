@@ -554,7 +554,7 @@ public class Generador {
         Calendar fin = Calendar.getInstance();
         fin.setTime(dateFin);
 
-        Calendar fi = (Calendar) ini.clone();
+        Calendar fi = (Calendar) fin.clone();
         Calendar zero = (Calendar) ini.clone();
         zero.setTime(dateIni);
 
@@ -576,7 +576,7 @@ public class Generador {
              * 
              *  D'AQUESTA MANERA, NOSALTRES PRENEM L'INTERVAL 20:30 - 23:59 com a PRIME TIME
              * horaInici =20:0
-horaFinal =21:30
+            horaFinal =21:30
              */
 
             dateIni = formatCalendar2.parse("20:30");
@@ -612,62 +612,83 @@ horaFinal =21:30
         } else { /* ARA: si tenim alguna franja */
             //else if (!(listFranAux.size() == 1 && sonHoresIguals(listFranAux.get(0).getHoraInici(), listFranAux.get(0).getHoraFi()))) {
         /* Si te mes d'una franja i ses hores d'inici i de fi son diferents */
-            boolean afegir = false, afegida =false;
+            boolean afegir = false, afegida = false, end = false;
 
             for (int i = 0; i <
-                    listFranAux.size(); i++) {
+                    listFranAux.size() && !end; i++) {
 
-                /* La primera franja comença a les 00:00    */
-                if (sonHoresIguals(listFranAux.get(i).getHoraInici(), zero)) {
+                if (sonHoresIguals(listFranAux.get(0).getHoraInici(), zero) && sonHoresIguals(listFranAux.get(0).getHoraFi(), fin)) {
+                    /* Si la unio de les dues llistes de franges retornen una unica franja que abarca tot el dia retornarem la mateixa franja */
+                    llistaFranges.add(listFranAux.get(0));
+                    end = true;
+
+                } else if (sonHoresIguals(listFranAux.get(i).getHoraInici(), zero)) {
+                    /* Si la primera franja comenca a les 00:00, setejarem la hora d'inici a la fi de la primera franja */
                     conv.debugCalendar(listFranAux.get(i).getHoraFi(), i);
                     ini = listFranAux.get(i).getHoraFi();
                     ini.add(Calendar.MINUTE, +1);
                     conv.debugCalendar(ini, i);
-                } else{
-                    
+                //if (i == (listFranAux.size() - 1)) {
+                        /* Si es sa darrera franja afegirem una que abarcara desde el fi d'aquesta franja fins 23:59 */
+                //  afegir = true;
+                //}
+
+                } else if (sonHoresIguals(listFranAux.get(i).getHoraFi(), fin)) {
+                    /* Si la ultima franja acaba a les 23:59, la seva hora de fi sera la hora d'inici d'aquesta franja */
                     fi = listFranAux.get(i).getHoraInici();
-                    fi.add(Calendar.MINUTE, +1);
+                    fi.add(Calendar.MINUTE, -1);
+                } else {
+                    /* Altrament, si la franja i no comenca ni a les 00:00 ni acaba a les 23:59 */
+                    fi = listFranAux.get(i).getHoraInici();
+                    fi.add(Calendar.MINUTE, -1);
                     conv.debugCalendar(fi, i);
-                    afegida=true;
+                    if (i == (listFranAux.size() - 1)) {
+                        /* Si es sa darrera franja afegirem una que abarcara desde el fi d'aquesta franja fins 23:59 */
+                        afegir = true;
+                    }
                 }
 
-                if (i + 1 < listFranAux.size() && !afegida) {
-                    /* Si hi ha una altra franja i no n'hem creat una de correcte */
+                if (i + 1 < listFranAux.size()) {
+                    /* Si hi ha una altra franja */
                     if (!sonHoresIguals(listFranAux.get(0).getHoraInici(), zero)) {
                         fi = listFranAux.get(i).getHoraInici();
                         conv.debugCalendar(fi, i);
                     } else { /* horaInici primera franja == 00:00 */
                         fi = listFranAux.get(i + 1).getHoraInici();
                         conv.debugCalendar(fi, i);
+                        if (i == listFranAux.size()) {
+                            /* Si es sa darrera franja afegirem una que abarcara desde el fi d'aquesta franja fins 23:59 */
+                            afegir = true;
+                        }
                     }
 
                 /* Si no hi ha cap més franja i no n'hem creat cap de correcte */
-                } else if (!afegida) {
-                    //if (!sonHoresIguals(listFranAux.get(i).getHoraFi(), zero) && !sonHoresIguals(listFranAux.get(i).getHoraInici(), zero) && !sonHoresIguals(ini, listFranAux.get(i).getHoraFi())) {
-                    if (sonHoresIguals(listFranAux.get(i).getHoraFi(), fin)) {
-                        fi = listFranAux.get(i).getHoraInici();
-                        fi.add(Calendar.MINUTE, -1);
-                        conv.debugCalendar(fi, i);
-                        afegir =
-                                true;
-                    } else {
-                        fi.setTime(dateFin);
-                        conv.debugCalendar(fi, i);
-                    /* fi = 23:59 */
+                } else if (listFranAux.size() != 1) {
+                    if (!sonHoresIguals(listFranAux.get(i).getHoraFi(), zero) && !sonHoresIguals(listFranAux.get(i).getHoraInici(), zero) && !sonHoresIguals(ini, listFranAux.get(i).getHoraFi())) {
+                        if (sonHoresIguals(listFranAux.get(i).getHoraFi(), fin)) {
+                            fi = listFranAux.get(i).getHoraInici();
+                            fi.add(Calendar.MINUTE, -1);
+                            conv.debugCalendar(fi, i);
+                            afegir =
+                                    true;
+                        } else {
+                            fi.setTime(dateFin);
+                            conv.debugCalendar(fi, i);
+                        /* fi = 23:59 */
 
+                        }
                     }
-
                 }
-
-                FranjaHoraria franja = new FranjaHoraria(ini, fi, (float) 0.00);
-                llistaFranges.add(franja);
-
+                FranjaHoraria franja;
+                if (!end) {
+                    franja = new FranjaHoraria(ini, fi, (float) 0.00);
+                    llistaFranges.add(franja);
+                }
                 if (afegir) {
 
-                    franja = new FranjaHoraria(listFranAux.get(i).getHoraFi(), zero, (float) 0.00);
+                    franja = new FranjaHoraria(listFranAux.get(i).getHoraFi(), fin, (float) 0.00);
                     llistaFranges.add(franja);
-                    afegir =
-                            false;
+                    afegir = false;
                 }
 
                 if (i + 1 < listFranAux.size()) {
