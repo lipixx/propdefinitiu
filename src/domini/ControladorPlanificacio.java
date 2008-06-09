@@ -403,7 +403,7 @@ public class ControladorPlanificacio {
         if (trobat) {
             if (temporal) {
                 if (P.delEmissioPlanificacio(e) == 0) {
-                    llistaPlanificacions.remove(P);
+                    llistaPlanisTemporal.remove(P);
                 }
                 resultat = true;
             }
@@ -423,7 +423,7 @@ public class ControladorPlanificacio {
                     } else {
                         if (!e.getEmes() && !e.getFacturat()) {
                             if (P.delEmissioPlanificacio(e) == 0) {
-                                llistaPlanificacions.remove(P);
+                                llistaPlanisTemporal.remove(P);
                             }
                             resultat = true;
                         }
@@ -462,11 +462,11 @@ public class ControladorPlanificacio {
         }
 
         llista = new String[llistaPClient.size()];
-        /* String diaIni = "";
+        /** String diaIni = "";
         String mesIni = "";
         String diaFi = "";
         String mesFi = "";
-         * */
+         */
         for (int i = 0; i < llistaPClient.size(); i++) {
 
             P = (Planificacio) llistaPClient.get(i);
