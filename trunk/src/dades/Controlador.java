@@ -40,6 +40,7 @@ public class Controlador <K,T extends ClasseAmbClau<K>>
         }
         catch(GestorDiscException g)
         {
+            System.out.println("err franges: "+g.getMessage());
             llista = new LinkedList<T>();
         }
         /* Post:
