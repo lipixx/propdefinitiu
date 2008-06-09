@@ -376,4 +376,17 @@ public class Convertir {
             System.out.println("Debug " + i + ": " + dateToStr(data1) + " " + getHora(data1));
         }
     }
+
+    /**
+     * Compara dues hores i retorna un enter segons el resultat de la comparacio.
+     * @param hora1 Es vol comparar amb hora2
+     * @param hora2 Es vol comparar amb hora1
+     * @return 1 si hora1>hora2, 0 si hora1==hora2, -1 si hora1 < hora2
+     */
+    int comparacioHores(Calendar hora1, Calendar hora2) 
+    {
+        if (horaMajor(hora1, hora2)) return 1;
+        if (!horesDiferents(hora1,hora2)) return 0;
+        return -1;
+    }
 }
