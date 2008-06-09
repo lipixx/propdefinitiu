@@ -20,7 +20,6 @@ public class FranjaHoraria implements ClasseAmbClau<Float>, Serializable {
     private Calendar horaInici;
     private Calendar horaFi;
     private float taxa;
-    private Convertir conv = new Convertir();
 
     /**
      *  Cerca un programa al repositori de programes.  
@@ -31,14 +30,20 @@ public class FranjaHoraria implements ClasseAmbClau<Float>, Serializable {
      *  @post   -
      */
     public FranjaHoraria(Calendar NhoraInici, Calendar NhoraFi, float Ntaxa) {
-        if (conv.horaMajor(NhoraInici, NhoraFi) || taxa < 0) {
+        if (NhoraInici != null && NhoraFi != null) {
+            if (horaMajor(NhoraInici, NhoraFi) || taxa < 0) {
+                horaInici = null;
+                horaFi = null;
+                taxa = 0;
+            } else {
+                horaInici = (Calendar) NhoraInici.clone();
+                horaFi = (Calendar) NhoraFi.clone();
+                taxa = Ntaxa;
+            }
+        } else {
             horaInici = null;
             horaFi = null;
             taxa = 0;
-        } else {
-            horaInici = (Calendar) NhoraInici.clone();
-            horaFi = (Calendar) NhoraFi.clone();
-            taxa = Ntaxa;
         }
     }
 
@@ -102,6 +107,32 @@ public class FranjaHoraria implements ClasseAmbClau<Float>, Serializable {
         } else {
             this.taxa = taxa;
         }
+    }
+
+    /**
+     * Es una funcio que compara dues hores. No mira res mes que HH i MM.
+     * @param hora1 Hora a comparar amb hora2
+     * @param hora2 Hora a comparar amb hora1
+     * @return cert hora1 > hora2, fals altrament
+     */
+    public boolean horaMajor(Calendar hora1, Calendar hora2) {
+        if (hora1 == null || hora2 == null) {
+            return false;
+        }
+        int h1 = hora1.get(Calendar.HOUR_OF_DAY);
+        int h2 = hora2.get(Calendar.HOUR_OF_DAY);
+        int m1 = hora1.get(Calendar.MINUTE);
+        int m2 = hora2.get(Calendar.MINUTE);
+
+        if (h1 > h2) {
+            return true;
+        }
+        if (h1 == h2) {
+            if (m1 > m2) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /** Implementacio dels metodes abstractes de ClasseAmbClau*/
