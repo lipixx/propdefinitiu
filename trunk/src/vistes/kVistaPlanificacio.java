@@ -324,7 +324,7 @@ public class kVistaPlanificacio {
                 Calendar[] idPlanif = Conv.idPlanificacio(idPlanificacio);
                 CPlani.contractar(idPlanif[0], idPlanif[1]);
                 // cerca sa planificacio de sa llista temporal i fa un client.addPlanificacio(plani);
-
+                vGen.setPreu(0);
                 vGen.setVisible(false);
                 actualitzaVista(false);
                 actualitzaVista(true);
