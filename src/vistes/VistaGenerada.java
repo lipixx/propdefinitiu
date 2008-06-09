@@ -224,6 +224,7 @@ public class VistaGenerada extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     private void butoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butoCancelarActionPerformed
+        setPreu(0);
         this.setVisible(false);
     }//GEN-LAST:event_butoCancelarActionPerformed
 
