@@ -9,7 +9,9 @@
  */
 package dades;
 
-public class RepositoriFranges extends Controlador<Float, domini.FranjaHoraria> {
+import java.util.Calendar;
+
+public class RepositoriFranges extends Controlador<Calendar, domini.FranjaHoraria> {
 
     public RepositoriFranges() {
         super("domini.FranjaHoraria", "RepositoriFranges.db");

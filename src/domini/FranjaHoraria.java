@@ -15,7 +15,7 @@ package domini;
 import java.util.Calendar;
 import java.io.Serializable;
 
-public class FranjaHoraria implements ClasseAmbClau<Float>, Serializable {
+public class FranjaHoraria implements ClasseAmbClau<Calendar>, Serializable {
 
     private Calendar horaInici;
     private Calendar horaFi;
@@ -136,8 +136,8 @@ public class FranjaHoraria implements ClasseAmbClau<Float>, Serializable {
     }
 
     /** Implementacio dels metodes abstractes de ClasseAmbClau*/
-    public Float getClau() {
-        return taxa;
+    public Calendar getClau() {
+        return horaInici;
     }
 
     public void setCopia(ClasseAmbClau objecteACopiar) {
