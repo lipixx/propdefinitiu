@@ -20,7 +20,6 @@ public class kVistaFranges {
     public kVistaFranges(ControladorProgrames NcProgs)
     {
         cProgs = NcProgs;
-        
         initVFranges();
     }
 
