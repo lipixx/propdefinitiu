@@ -487,17 +487,12 @@ public class Generador {
      */
     private boolean planificacionsIguals(Planificacio P1, Planificacio P2) {
 
-        /*Comentar per fer comprovacio de dataInici i dataFi*/
-        if (P1.getPreu() != P2.getPreu()) return false;
-        
-        /* Descomentar per fer comprovacio de dataInici i dataFi
         if (P1.getPreu() != P2.getPreu()
                 || conv.comparacioData(P1.getDataFi(), P2.getDataFi()) != 0 
                 || conv.comparacioData(P1.getDataInici(), P2.getDataInici()) != 0) 
         {
             return false;
         }
-        */
 
         LinkedList<ServeiPendent> emissionsP1 = P1.getLlistaEmissions();
         LinkedList<ServeiPendent> emissionsP2 = P2.getLlistaEmissions();
@@ -510,8 +505,10 @@ public class Generador {
         boolean hies = true;
 
         /**Per totes ses emissions de P1*/
-        for (int i = 0; i < nEmissions; i++) {
-            if (!hies) {
+        for (int i = 0; i < nEmissions; i++) 
+        {
+            if (!hies) 
+            {
                 return false;
             }
             hies = false;
@@ -522,9 +519,11 @@ public class Generador {
              */
             Emissio e1 = (Emissio) emissionsP1.get(i);
 
-            for (int j = 0; j < nEmissions && !hies; j++) {
+            for (int j = 0; j < nEmissions && !hies; j++) 
+            {
                 Emissio e2 = (Emissio) emissionsP2.get(j);
-                if (emissionsIguals(e1, e2)) {
+                if (emissionsIguals(e1, e2)) 
+                {
                     hies = true;
                 }
             }
