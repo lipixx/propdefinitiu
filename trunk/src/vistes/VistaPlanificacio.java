@@ -81,7 +81,7 @@ public class VistaPlanificacio extends javax.swing.JPanel {
     }
 
     void setPreu(double preu) {
-        preuTotalV.setText(""+preu);
+        preuTotalV.setText(""+(float) preu);
     }
 
     /** This method is called from within the constructor to
