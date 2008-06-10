@@ -635,81 +635,76 @@ public class Generador {
 
                 } else if (sonHoresIguals(listFranAux.get(i).getHoraFi(), fin)) {
                     /* Si la ultima franja acaba a les 23:59, la seva hora de fi sera la hora d'inici d'aquesta franja */
+                    //  if (sonHoresIguals(listFranAux.get(0).getHoraInici(), zero) || listFranAux.size() == 1) {
                     fi = listFranAux.get(i).getHoraInici();
                     fi.add(Calendar.MINUTE, -1);
+                //} else {
+                // end = true;
+                //}
                 } else {
                     /* Altrament, si la franja i no comenca ni a les 00:00 ni acaba a les 23:59 */
-                    fi = listFranAux.get(i).getHoraInici();
-                    fi.add(Calendar.MINUTE, -1);
-                    conv.debugCalendar(fi, i);
-                    if (i == (listFranAux.size() - 1)) {
-                        /* Si es sa darrera franja afegirem una que abarcara desde el fi d'aquesta franja fins 23:59 */
-                        afegir = true;
+
+                    if (sonHoresIguals(listFranAux.get(0).getHoraInici(), zero)) {
+                        if (i == (listFranAux.size() - 1)) {
+                            /* Si es sa darrera franja afegirem una que abarcara desde el fi d'aquesta franja fins 23:59 */
+                            fi = (Calendar) fin.clone();
+                        }
+                    } else {
+                        if (i == (listFranAux.size() - 1)) {
+                            /* Si es sa darrera franja afegirem una que abarcara desde el fi d'aquesta franja fins 23:59 */
+                            afegir = true;
+                        } else {
+                            /* aixo es inutil XD*/
+                            fi = (Calendar) fin.clone();
+                        }
+                        fi = listFranAux.get(i).getHoraInici();
+                        fi.add(Calendar.MINUTE, -1);
+                        conv.debugCalendar(fi, i);
                     }
                 }
 
                 if (i + 1 < listFranAux.size()) {
                     /* Si hi ha una altra franja */
-                    if (!sonHoresIguals(listFranAux.get(0).getHoraInici(), zero)) {
-                        fi = listFranAux.get(i).getHoraInici();
-                        conv.debugCalendar(fi, i);
-                    } else { /* horaInici primera franja == 00:00 */
+                    if (sonHoresIguals(listFranAux.get(0).getHoraInici(), zero)) {
+                        /* horaInici primera franja == 00:00 */
                         fi = listFranAux.get(i + 1).getHoraInici();
+                        fi.add(Calendar.MINUTE, -1);
                         conv.debugCalendar(fi, i);
-                        if (i == listFranAux.size()) {
-                            /* Si es sa darrera franja afegirem una que abarcara desde el fi d'aquesta franja fins 23:59 */
-                            afegir = true;
-                        }
-                    }
-
-                /* Si no hi ha cap més franja i no n'hem creat cap de correcte */
-                } else if (listFranAux.size() != 1) {
-                    if (!sonHoresIguals(listFranAux.get(i).getHoraFi(), zero) && !sonHoresIguals(listFranAux.get(i).getHoraInici(), zero) && !sonHoresIguals(ini, listFranAux.get(i).getHoraFi())) {
-                        if (sonHoresIguals(listFranAux.get(i).getHoraFi(), fin)) {
-                            fi = listFranAux.get(i).getHoraInici();
-                            fi.add(Calendar.MINUTE, -1);
-                            conv.debugCalendar(fi, i);
-                            afegir =
-                                    true;
-                        } else {
-                            fi.setTime(dateFin);
-                            conv.debugCalendar(fi, i);
-                        /* fi = 23:59 */
-
-                        }
                     }
                 }
+
+
                 FranjaHoraria franja;
                 if (!end) {
                     franja = new FranjaHoraria(ini, fi, (float) 0.00);
                     llistaFranges.add(franja);
                 }
                 if (afegir) {
-
-                    franja = new FranjaHoraria(listFranAux.get(i).getHoraFi(), fin, (float) 0.00);
+                    ini = listFranAux.get(i).getHoraFi();
+                    ini.add(Calendar.MINUTE, +1);
+                    franja = new FranjaHoraria(ini, fin, (float) 0.00);
                     llistaFranges.add(franja);
                     afegir = false;
                 }
-
                 if (i + 1 < listFranAux.size()) {
 
-                    if (!sonHoresIguals(listFranAux.get(0).getHoraInici(), zero)) {
-                        ini = listFranAux.get(i).getHoraFi();
-                    } else { /* horaInici primera franja == 00:00 */
+                    if (sonHoresIguals(listFranAux.get(i + 1).getHoraFi(), fin) && sonHoresIguals(listFranAux.get(0).getHoraInici(), zero)) {
+                        end = true;
+                    } else if (sonHoresIguals(listFranAux.get(0).getHoraInici(), zero)) {
+                        /* horaInici primera franja == 00:00 */
                         ini = listFranAux.get(i + 1).getHoraFi();
-                    }
-
-                }
-                if (afegida) {
-                    ini = listFranAux.get(i).getHoraFi();
-                    if (i + 1 < listFranAux.size()) {
-                        fi = listFranAux.get(i + 1).getHoraInici();
+                        ini.add(Calendar.MINUTE, +1);
+                    } else {
+                        ini = listFranAux.get(i).getHoraFi();
+                        ini.add(Calendar.MINUTE, +1);
                     }
 
                 }
             }
 
         }
+
+
     }
 
     private int duracio(Programa prog) {
@@ -792,6 +787,8 @@ public class Generador {
         String valor[] = new String[3];
 
         boolean factible = false;
+        System.out.println("caducitat =" + prog.getDataCaducitat().get(Calendar.DAY_OF_MONTH));
+        System.out.println("dataEmissio =" + dataEmissio.get(Calendar.DAY_OF_MONTH));
         if (conv.horaMajor(prog.getDataCaducitat(), dataEmissio) || conv.sonIgualsData(prog.getDataCaducitat(), dataEmissio)) {
             /* Entenem que un programa es pot emetre el mateix dia que caduca */
             valor = solapa(prog, franja, dataEmissio);
