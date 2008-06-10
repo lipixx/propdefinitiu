@@ -167,7 +167,8 @@ public class ControladorPlanificacio {
 
         //Netejem la llista global de programes
         llistaProgrames.clear();
-        llistaPlanificacions.clear();
+        llistaPlanificacions = new LinkedList<Planificacio>();
+
         /**Si s'ha seleccionat autogeneracio, mirarem si existeixen filtres marcats.
          * Si existeixen, buidarem la llista programesSeleccionats i  per cada filtre
          * seleccionat, obtindrem la llista de programes corresponents i els afegirem

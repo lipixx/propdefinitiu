@@ -103,11 +103,6 @@ public class VistaGenerada extends javax.swing.JDialog {
         preuTotalV.setEditable(false);
 
         butoCancelar.setText("Cancelar");
-        butoCancelar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                butoCancelarActionPerformed(evt);
-            }
-        });
 
         jLabel4.setFont(new java.awt.Font("Bitstream Vera Sans", 1, 10));
         jLabel4.setText("Llista Planificacions");
@@ -165,7 +160,7 @@ public class VistaGenerada extends javax.swing.JDialog {
                 .addComponent(preuTotalV, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 313, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 315, Short.MAX_VALUE)
                 .addComponent(butoAnular)
                 .addGap(414, 414, 414))
         );
@@ -223,10 +218,6 @@ public class VistaGenerada extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    private void butoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butoCancelarActionPerformed
-        setPreu(0);
-        this.setVisible(false);
-    }//GEN-LAST:event_butoCancelarActionPerformed
 
     public void setLlistaPlans(String[] llistaPlanificacions) {
         llistaPlanificacionsV.setListData(llistaPlanificacions);
@@ -259,6 +250,7 @@ public class VistaGenerada extends javax.swing.JDialog {
         butoAnular.addActionListener(actions[2]);
         botoContractar.addActionListener(actions[3]);
         veureResum.addActionListener(actions[4]);
+        butoCancelar.addActionListener(actions[5]);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botoContractar;
