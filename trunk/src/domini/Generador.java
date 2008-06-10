@@ -232,13 +232,11 @@ public class Generador {
 
                         while (!dataEmissio.after(dataFiEmissio) && !preuSobrepassat && !ok) {
 
-                            if (llistaPlanificacionsGenerades.size() == 0) {
+                            if (llistaPlanificacionsGenerades.size() < 3 || total < 4) {
 
                                 int numDies = superDataFi.get(Calendar.DAY_OF_MONTH) - superDataIni.get(Calendar.DAY_OF_MONTH);
                                 numDies++;
                                 maxEmisDia = llistaProgrames.size() / numDies;
-                                maxEmisDia++;
-                            } else if (llistaPlanificacionsGenerades.size() < 3 || total < 4) {
                                 maxEmisDia++;
                             } else {
 
@@ -268,7 +266,7 @@ public class Generador {
                             }
 
 
-                            if (total % 3 == 2 && llistaFranges.size() > 0) {
+                            if (total % 3 == 1 && llistaFranges.size() > 0) {
                                 /* Quan les franges sempre siguin les mateixes i es generin les mateixes planificacions reordenarem les franges de nou*/
                                 Random rnd = new Random();
                                 mesclarFranges(llistaFranges, rnd);
@@ -297,7 +295,6 @@ public class Generador {
 
                                     Calendar horaFi = (Calendar) horaInici.clone();
                                     horaFi.setTime(hora);
-                                    System.out.println("horaFinal =" + horaFi.get(Calendar.HOUR_OF_DAY) + ":" + horaFi.get(Calendar.MINUTE));
 
                                     boolean burroCargado = false;
                                     for (int burro = 0; burro < llistaFranges.size() && !burroCargado; burro++) {
@@ -397,6 +394,8 @@ public class Generador {
 
                                 } else if (directe) {
                                     ok = true;
+                                } else if (!directe && conv.comparacioData(dataEmissio, dataFiEmissio) == -11) {
+                                    dataEmissio.add(Calendar.DAY_OF_MONTH, +1);
                                 }
                             }
                             if (maxEmisDia <= numEmisDia) {
