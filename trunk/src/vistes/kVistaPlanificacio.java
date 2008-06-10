@@ -576,7 +576,7 @@ public class kVistaPlanificacio {
             {
                 vGen.pintarGraella(graella);
             }
-            vGen.setPreu(CPlani.getPreuPlan(planSelectedID));
+            vGen.setPreu(CPlani.getPreuPlan(planSelectedID,true));
         }
 
     }
@@ -640,7 +640,7 @@ public class kVistaPlanificacio {
                 vPlani.pintarGraella(graella);
             }
 
-            vPlani.setPreu(CPlani.getPreuPlan(planSelectedID));
+            vPlani.setPreu(CPlani.getPreuPlan(planSelectedID,false));
         }
     }
 

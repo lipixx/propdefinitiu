@@ -491,7 +491,7 @@ public class ControladorPlanificacio {
         Emissio tmp;
 
         if (temporal) {
-            P = this.getPlanificacio(dataIni1, dataFi1);
+            P = this.getPlanificacio(dataIni1, dataFi1, temporal);
         } else //Vol dir que hem de mirar les del client
         {
             P = cActual.getPlanificacio(dataIni1, dataFi1);
@@ -515,11 +515,11 @@ public class ControladorPlanificacio {
         return sortida;
     }
 
-    public double getPreuPlan(String planSelectedID) throws ParseException {
+    public double getPreuPlan(String planSelectedID, boolean temporal) throws ParseException {
 
         Calendar idPlan[] = Conv.idPlanificacio(planSelectedID);
 
-        Planificacio P = getPlanificacio(idPlan[0], idPlan[1]);
+        Planificacio P = getPlanificacio(idPlan[0], idPlan[1], temporal);
         if (P == null) {
             return 0;
         } else {
@@ -528,8 +528,11 @@ public class ControladorPlanificacio {
 
     }
 
-    private Planificacio getPlanificacio(Calendar dataIni, Calendar dataFi) {
-        for (Planificacio p : llistaPlanificacions) {
+    private Planificacio getPlanificacio(Calendar dataIni, Calendar dataFi, boolean temporal) {
+        LinkedList<Planificacio> lTemp = llistaPlanificacions;
+        if (!temporal) lTemp = cActual.getLlistaPlan();
+        
+        for (Planificacio p : lTemp ) {
             if (Conv.sonIgualsData(p.getDataInici(), dataIni) && Conv.sonIgualsData(p.getDataFi(), dataFi)) {
                 return p;
             }
