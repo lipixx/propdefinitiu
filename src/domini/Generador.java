@@ -397,9 +397,6 @@ public class Generador {
 
                                 } else if (directe) {
                                     ok = true;
-                                } else {
-                                    dataEmissio.add(Calendar.DAY_OF_MONTH, +1);
-                                    numEmisDia = 0;
                                 }
                             }
                             if (maxEmisDia <= numEmisDia) {
@@ -1179,7 +1176,7 @@ public class Generador {
         Calendar calendarInici = Calendar.getInstance();
         Calendar calendarFi = (Calendar) calendarInici.clone();
 
-        SimpleDateFormat formatCalendar2 = new SimpleDateFormat("H:mm");
+        SimpleDateFormat formatCalendar2 = new SimpleDateFormat("HH:mm");
         int horaIni = 0, minutIni = 0, horaFi = 0, minutFi = 0;
         boolean solapa = false;
         boolean ok = false;
@@ -1204,6 +1201,11 @@ public class Generador {
 
         }
 
+
+        Date dateIni = formatCalendar2.parse("00:00");
+        Calendar zero = Calendar.getInstance();
+        zero.setTime(dateIni);
+
         llista = ordenarEmissionsHora(list);
         int n = llista.size();
 
@@ -1224,16 +1226,12 @@ public class Generador {
                         calendarInici.get(Calendar.HOUR_OF_DAY);
                 minutIni =
                         calendarInici.get(Calendar.MINUTE);
-                /**/
-                System.out.println("HORA INICI:" + horaIni + ":" + minutIni);
-                /**/
+
                 horaFi =
                         ((minutIni + dura) / 60) + horaIni;
                 minutFi =
                         (dura + minutIni) % 60;
-                /**/
-                System.out.println("HORA FI:" + horaFi + ":" + minutFi);
-                /**/
+
                 if (minutFi < 10) {
                     hora = formatCalendar2.parse("" + horaFi + ":0" + minutFi);
                 } else {
@@ -1256,17 +1254,13 @@ public class Generador {
                         calendarInici.get(Calendar.HOUR_OF_DAY);
                 minutIni =
                         calendarInici.get(Calendar.MINUTE);
-                /**/
-                System.out.println("HORA INICI:" + horaIni + ":" + minutIni);
-                /**/
+
 
                 horaFi =
                         ((minutIni + dura) / 60) + horaIni;
                 minutFi =
                         (dura + minutIni) % 60;
-                /**/
-                System.out.println("HORA FI:" + horaFi + ":" + minutFi);
-                /**/
+                
 
                 if (minutFi < 10) {
                     hora = formatCalendar2.parse("" + horaFi + ":0" + minutFi);
@@ -1284,46 +1278,57 @@ public class Generador {
             if (n != 0) {
 
                 /* Si l'interval d'hores de la nova emissio esta entre la franja associada */
-                if ((!calendarFi.after(franja.getHoraFi()) && !calendarInici.before(franja.getHoraInici()))) {
+                if (!conv.horaMajor(calendarFi, franja.getHoraFi()) && !conv.horaMajor(franja.getHoraInici(), calendarInici)) {
+                    //if (!calendarFi.after(franja.getHoraFi()) && !calendarInici.before(franja.getHoraInici())) {
 
-                    for (int j = 0; j <
-                            n && !ok; j++) {
 
-                        if (j == (n - 1) && j == 0) {/* Nomes hi ha una emissio, miram si el nostre interval pot anar abans o despres */
-                            if (!conv.horaMajor(calendarFi, llista.get(j).getHoraInici()) || !conv.horaMajor(llista.get(j).getHoraFi(), calendarInici)) {
-                                //if (!calendarFi.after(llista.get(j).getHoraInici()) || !calendarInici.before(llista.get(j).getHoraFi())) {
-                                ok = true;
-                            } else {
-                                solapa = true;
+                    if (sonHoresIguals(calendarFi, zero) && !conv.horaMajor(llista.get(llista.size() - 1).getHoraFi(), calendarInici) && !(sonHoresIguals(llista.get(llista.size() - 1).getHoraFi(), zero))) {
+                        ok = true;
+                    } else if (!sonHoresIguals(calendarFi, zero)) {
+                        for (int j = 0; j <
+                                n && !ok; j++) {
+
+                            if (!sonHoresIguals(calendarInici, llista.get(j).getHoraInici()) || !sonHoresIguals(calendarFi, llista.get(j).getHoraFi())) {
+                                if (j == (n - 1) && j == 0) {/* Nomes hi ha una emissio, miram si el nostre interval pot anar abans o despres */
+                                    if (!conv.horaMajor(calendarFi, llista.get(j).getHoraInici()) || (!conv.horaMajor(llista.get(j).getHoraFi(), calendarInici) && !sonHoresIguals(llista.get(j).getHoraFi(), zero))) {
+                                        //if (!calendarFi.after(llista.get(j).getHoraInici()) || !calendarInici.before(llista.get(j).getHoraFi())) {
+                                        ok = true;
+                                    } else {
+                                        solapa = true;
+                                    }
+
+                                } else if (j == (n - 1) && j != 0) { /* Entre dues emissios o be hem arribat a sa darrera emissio */
+                                    if ((!conv.horaMajor(llista.get(j).getHoraFi(), calendarInici) && !sonHoresIguals(llista.get(j).getHoraFi(), zero)) || (!conv.horaMajor(calendarFi, llista.get(j).getHoraInici()) && !conv.horaMajor(llista.get(j - 1).getHoraFi(), calendarInici))) {
+                                        //if ((!calendarInici.before(llista.get(j).getHoraFi())) || (!calendarFi.after(llista.get(j).getHoraInici()) && !calendarInici.before(llista.get(j - 1).getHoraFi()))) {
+
+                                        ok = true;/* Hem trobat un interval de hores optim per a assignar la nostra nova emissio */
+                                    } else {
+                                        solapa = true;
+                                    }
+
+                                } else if (j != (n - 1) && j == 0) { /* Es la primera emissio (hi ha mes de una emissio) */ /* OJOOOOOOO AMB EL 00:00*/
+                                    if ((!conv.horaMajor(calendarFi, llista.get(j).getHoraInici()) && conv.horaMajor(calendarFi, calendarInici)) || (!conv.horaMajor(llista.get(j).getHoraFi(), calendarInici) && !conv.horaMajor(calendarFi, llista.get(j + 1).getHoraInici()) && !sonHoresIguals(llista.get(j).getHoraFi(), zero))) {
+                                        //if (!calendarFi.after(llista.get(j).getHoraInici()) || (!calendarInici.before(llista.get(j).getHoraFi()) && !calendarFi.after(llista.get(j + 1).getHoraInici()))) {
+                                        ok = true;
+                                    } else {
+                                        solapa = true;
+                                    }
+
+                                } else { /* Entre dues emissions */
+                                    if ((!conv.horaMajor(llista.get(j).getHoraFi(), calendarInici) && !conv.horaMajor(calendarFi, llista.get(j + 1).getHoraInici()) && !sonHoresIguals(llista.get(j).getHoraFi(), zero)) || (!conv.horaMajor(calendarFi, llista.get(j).getHoraInici()) && !conv.horaMajor(llista.get(j - 1).getHoraFi(), calendarInici))) {
+                                        //   if ((!calendarInici.before(llista.get(j).getHoraFi()) && !calendarFi.after(llista.get(j + 1).getHoraInici())) || (!calendarFi.after(llista.get(j).getHoraInici()) && !calendarInici.before(llista.get(j - 1).getHoraFi()))) {
+                                        ok = true;
+                                    } else {
+                                        solapa = true;
+                                    }
+
+                                }
                             }
-
-                        } else if (j == (n - 1) && j != 0) { /* Entre dues emissios o be hem arribat a sa darrera emissio */
-                            if (!conv.horaMajor(llista.get(j).getHoraFi(), calendarInici) || (!conv.horaMajor(calendarFi, llista.get(j).getHoraInici()) && !conv.horaMajor(llista.get(j - 1).getHoraFi(), calendarInici))) {
-                                //if ((!calendarInici.before(llista.get(j).getHoraFi())) || (!calendarFi.after(llista.get(j).getHoraInici()) && !calendarInici.before(llista.get(j - 1).getHoraFi()))) {
-
-                                ok = true;/* Hem trobat un interval de hores optim per a assignar la nostra nova emissio */
-                            } else {
-                                solapa = true;
-                            }
-
-                        } else if (j != (n - 1) && j == 0) { /* Es la primera emissio (hi ha mes de una emissio) */
-                            if (!conv.horaMajor(calendarFi, llista.get(j).getHoraInici()) || (!conv.horaMajor(llista.get(j).getHoraFi(), calendarInici) && !conv.horaMajor(calendarFi, llista.get(j + 1).getHoraInici()))) {
-                                //if (!calendarFi.after(llista.get(j).getHoraInici()) || (!calendarInici.before(llista.get(j).getHoraFi()) && !calendarFi.after(llista.get(j + 1).getHoraInici()))) {
-                                ok = true;
-                            } else {
-                                solapa = true;
-                            }
-
-                        } else { /* Entre dues emissions */
-                            if ((!conv.horaMajor(llista.get(j).getHoraFi(), calendarInici) && !conv.horaMajor(calendarFi, llista.get(j + 1).getHoraInici())) || (!conv.horaMajor(calendarFi, llista.get(j).getHoraInici()) && !conv.horaMajor(llista.get(j - 1).getHoraFi(), calendarInici))) {
-                                //   if ((!calendarInici.before(llista.get(j).getHoraFi()) && !calendarFi.after(llista.get(j + 1).getHoraInici())) || (!calendarFi.after(llista.get(j).getHoraInici()) && !calendarInici.before(llista.get(j - 1).getHoraFi()))) {
-                                ok = true;
-                            } else {
-                                solapa = true;
-                            }
-
                         }
+                    } else {
+                        solapa = true;
                     }
+
                 }
 
                 if (!ok) {
@@ -1349,6 +1354,12 @@ public class Generador {
             /* SOLAPA = FALSE */
             valor[0] = "" + 0;
         }
+
+        /**/
+        System.out.println("HORA INICI:" + horaIni + ":" + minutIni);
+
+        System.out.println("HORA FI:" + horaFi + ":" + minutFi);
+        /**/
 
         valor[1] = "" + horaIni + ":" + minutIni;
         valor[2] = "" + horaFi + ":" + minutFi;
