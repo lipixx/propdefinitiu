@@ -1290,7 +1290,7 @@ public class Generador {
                             n && !ok; j++) {
 
                         if (j == (n - 1) && j == 0) {/* Nomes hi ha una emissio, miram si el nostre interval pot anar abans o despres */
-                            if (!conv.horaMajor(calendarFi, llista.get(j).getHoraInici()) || conv.horaMajor(llista.get(j).getHoraFi(), calendarInici) || sonHoresIguals(llista.get(j).getHoraFi(), calendarInici)) {
+                            if (!conv.horaMajor(calendarFi, llista.get(j).getHoraInici()) || !conv.horaMajor(llista.get(j).getHoraFi(), calendarInici)) {
                                 //if (!calendarFi.after(llista.get(j).getHoraInici()) || !calendarInici.before(llista.get(j).getHoraFi())) {
                                 ok = true;
                             } else {
@@ -1298,7 +1298,8 @@ public class Generador {
                             }
 
                         } else if (j == (n - 1) && j != 0) { /* Entre dues emissios o be hem arribat a sa darrera emissio */
-                            if ((!calendarInici.before(llista.get(j).getHoraFi())) || (!calendarFi.after(llista.get(j).getHoraInici()) && !calendarInici.before(llista.get(j - 1).getHoraFi()))) {
+                            if (!conv.horaMajor(llista.get(j).getHoraFi(), calendarInici) || (!conv.horaMajor(calendarFi, llista.get(j).getHoraInici()) && !conv.horaMajor(llista.get(j - 1).getHoraFi(), calendarInici))) {
+                                //if ((!calendarInici.before(llista.get(j).getHoraFi())) || (!calendarFi.after(llista.get(j).getHoraInici()) && !calendarInici.before(llista.get(j - 1).getHoraFi()))) {
 
                                 ok = true;/* Hem trobat un interval de hores optim per a assignar la nostra nova emissio */
                             } else {
@@ -1306,14 +1307,16 @@ public class Generador {
                             }
 
                         } else if (j != (n - 1) && j == 0) { /* Es la primera emissio (hi ha mes de una emissio) */
-                            if (!calendarFi.after(llista.get(j).getHoraInici()) || (!calendarInici.before(llista.get(j).getHoraFi()) && !calendarFi.after(llista.get(j + 1).getHoraInici()))) {
+                            if (!conv.horaMajor(calendarFi, llista.get(j).getHoraInici()) || (!conv.horaMajor(llista.get(j).getHoraFi(), calendarInici) && !conv.horaMajor(calendarFi, llista.get(j + 1).getHoraInici()))) {
+                                //if (!calendarFi.after(llista.get(j).getHoraInici()) || (!calendarInici.before(llista.get(j).getHoraFi()) && !calendarFi.after(llista.get(j + 1).getHoraInici()))) {
                                 ok = true;
                             } else {
                                 solapa = true;
                             }
 
                         } else { /* Entre dues emissions */
-                            if ((!calendarInici.before(llista.get(j).getHoraFi()) && !calendarFi.after(llista.get(j + 1).getHoraInici())) || (!calendarFi.after(llista.get(j).getHoraInici()) && !calendarInici.before(llista.get(j - 1).getHoraFi()))) {
+                            if ((!conv.horaMajor(llista.get(j).getHoraFi(), calendarInici) && !conv.horaMajor(calendarFi, llista.get(j + 1).getHoraInici())) || (!conv.horaMajor(calendarFi, llista.get(j).getHoraInici()) && !conv.horaMajor(llista.get(j - 1).getHoraFi(), calendarInici))) {
+                                //   if ((!calendarInici.before(llista.get(j).getHoraFi()) && !calendarFi.after(llista.get(j + 1).getHoraInici())) || (!calendarFi.after(llista.get(j).getHoraInici()) && !calendarInici.before(llista.get(j - 1).getHoraFi()))) {
                                 ok = true;
                             } else {
                                 solapa = true;
