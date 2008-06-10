@@ -326,8 +326,8 @@ public class kVistaPlanificacio {
                 // cerca sa planificacio de sa llista temporal i fa un client.addPlanificacio(plani);
                 vGen.setPreu(0);
                 vGen.setVisible(false);
-                actualitzaVista(false);
                 actualitzaVista(true);
+                actualitzaVista(false);
 
             } catch (ParseException ex) {
                 System.out.println("Error: L 372");

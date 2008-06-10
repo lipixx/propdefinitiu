@@ -438,10 +438,9 @@ public class ControladorPlanificacio {
     public void contractar(Calendar dIni, Calendar dFi) {
         // identificam la planificacio per la seva data ini i data fin 
         boolean trobat = false;
-        for (int i = 0; i <
-                llistaPlanificacions.size() && !trobat; i++) {
+        for (int i = 0; i < llistaPlanificacions.size() && !trobat; i++) {
             if (Conv.sonIgualsData(llistaPlanificacions.get(i).getDataInici(), dIni) && Conv.sonIgualsData(llistaPlanificacions.get(i).getDataFi(), dFi)) {
-                cActual.listPlan.add(llistaPlanificacions.get(i));
+                cActual.addPlanificacio(llistaPlanificacions.get(i));
                 trobat = true;
             }
 
