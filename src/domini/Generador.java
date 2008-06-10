@@ -441,39 +441,27 @@ public class Generador {
                 plani.setDataFi(max);
                 llistaPlanificacionsGenerades.add(plani);
 
-            } else if (plani.getLlistaEmissions().size() > 0) {
+            } else {
+                if (plani.getLlistaEmissions().size() > 0) {
 
-                igual = false;
+                    igual = false;
 
-                for (int p = 0; p < llistaPlanificacionsGenerades.size() && !igual; p++) {
-                    for (int k = 0; k < plani.getLlistaEmissions().size() && !igual; k++) {
-                        if (llistaPlanificacionsGenerades.get(p).getLlistaEmissions().size() == plani.getLlistaEmissions().size()) {
-                            for (int j = 0; j < llistaPlanificacionsGenerades.get(p).getLlistaEmissions().size() && !igual; j++) {
-                                if (((Emissio) llistaPlanificacionsGenerades.get(p).getLlistaEmissions().get(j)).getPrograma().getNom().equalsIgnoreCase(((Emissio) plani.getLlistaEmissions().get(j)).getPrograma().getNom()) && sonIguals(((Emissio) llistaPlanificacionsGenerades.get(p).getLlistaEmissions().get(j)).getDataEmissio(), ((Emissio) plani.getLlistaEmissions().get(j)).getDataEmissio()) && sonHoresIguals(((Emissio) llistaPlanificacionsGenerades.get(p).getLlistaEmissions().get(j)).getHoraInici(), ((Emissio) plani.getLlistaEmissions().get(j)).getHoraInici()) && sonHoresIguals(((Emissio) llistaPlanificacionsGenerades.get(p).getLlistaEmissions().get(j)).getHoraFi(), ((Emissio) plani.getLlistaEmissions().get(j)).getHoraFi())) {
-                                    if (comptadorIguals == 3) {
-                                        comptadorIguals = -1;
-                                        in.add(Calendar.DAY_OF_MONTH, +1);
-                                        if (in.after(dataFiEmissio)) {
-                                            fi.add(Calendar.DAY_OF_MONTH, +3);
-                                        }
-                                    }
-                                    comptadorIguals++;
-                                    igual =
-                                            true;
-                                }
-                            }
-                        }
+                    /**Comparem totes ses planificacions generades anteriorment
+                     * amb sa nova generada (plani)
+                     */
+                    for (int p = 0; p < llistaPlanificacionsGenerades.size() && !igual; p++) {
+                        igual = planificacionsIguals(llistaPlanificacionsGenerades.get(p), plani);
                     }
+
+                    /**Si hem vist que no coincidia amb cap de ses anteriors:*/
+                    if (!igual) 
+                    {
+                        plani.setDataInici(min);
+                        plani.setDataFi(max);
+                        llistaPlanificacionsGenerades.add(plani);
+                    }
+
                 }
-
-
-                if (!igual) {
-
-                    plani.setDataInici(min);
-                    plani.setDataFi(max);
-                    llistaPlanificacionsGenerades.add(plani);
-                }
-
             }
 
             if (total % 10 == 0) {
@@ -487,6 +475,87 @@ public class Generador {
 
 
         return llistaPlanificacionsGenerades;
+    }
+
+    /**
+     * Donades dues planificacions, comprova si son iguals mirant
+     * si coincideix es nombre d'emissions, es preu i ses emissions
+     * una per una.
+     * @param P1 Planificacio 1
+     * @param P2 Planificacio 2
+     * @return Cert si son iguals, fals altrament.
+     */
+    private boolean planificacionsIguals(Planificacio P1, Planificacio P2) {
+
+        /*Comentar per fer comprovacio de dataInici i dataFi*/
+        if (P1.getPreu() != P2.getPreu()) return false;
+        
+        /* Descomentar per fer comprovacio de dataInici i dataFi
+        if (P1.getPreu() != P2.getPreu()
+                || conv.comparacioData(P1.getDataFi(), P2.getDataFi()) != 0 
+                || conv.comparacioData(P1.getDataInici(), P2.getDataInici()) != 0) 
+        {
+            return false;
+        }
+        */
+
+        LinkedList<ServeiPendent> emissionsP1 = P1.getLlistaEmissions();
+        LinkedList<ServeiPendent> emissionsP2 = P2.getLlistaEmissions();
+
+        if (emissionsP1.size() != emissionsP2.size()) {
+            return false;
+        }
+
+        int nEmissions = emissionsP1.size();
+        boolean hies = true;
+
+        /**Per totes ses emissions de P1*/
+        for (int i = 0; i < nEmissions; i++) {
+            if (!hies) {
+                return false;
+            }
+            hies = false;
+
+            /**Comparem cada emissio de emissionsP1 amb
+             * totes ses de emissionsP2. Si hi es
+             * ho diem, sino ja hem acabat.
+             */
+            Emissio e1 = (Emissio) emissionsP1.get(i);
+
+            for (int j = 0; j < nEmissions && !hies; j++) {
+                Emissio e2 = (Emissio) emissionsP2.get(j);
+                if (emissionsIguals(e1, e2)) {
+                    hies = true;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Comprova si dues emissions donades son iguals amb
+     * identificador, data d'emissio, hora inici, hora fi i preu.
+     * @param e1 Emissio 1
+     * @param e2 Emissio 2
+     * @return Cert si son iguals. Fals altrament.
+     */
+    private boolean emissionsIguals(Emissio e1, Emissio e2) {
+        String nom1 = e1.getIdentificador();
+        String nom2 = e2.getIdentificador();
+
+        Calendar dIni1 = e1.getDataEmissio();
+        Calendar dIni2 = e2.getDataEmissio();
+
+        Calendar hIni1 = e1.getHoraInici();
+        Calendar hIni2 = e2.getHoraInici();
+
+        Calendar hFi1 = e1.getHoraFi();
+        Calendar hFi2 = e2.getHoraFi();
+
+        double preu1 = e1.getPreuEmissio();
+        double preu2 = e2.getPreuEmissio();
+
+        return (nom1.equalsIgnoreCase(nom2) && conv.comparacioData(dIni1, dIni2) == 0 && conv.comparacioHores(hIni1, hIni2) == 0 && conv.comparacioHores(hFi1, hFi2) == 0 && preu1 == preu2);
     }
 
     private void afluixarCriteris() {
