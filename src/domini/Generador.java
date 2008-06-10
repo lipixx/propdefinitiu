@@ -787,9 +787,10 @@ public class Generador {
         String valor[] = new String[3];
 
         boolean factible = false;
-        System.out.println("caducitat =" + prog.getDataCaducitat().get(Calendar.DAY_OF_MONTH));
-        System.out.println("dataEmissio =" + dataEmissio.get(Calendar.DAY_OF_MONTH));
-        if (conv.horaMajor(prog.getDataCaducitat(), dataEmissio) || conv.sonIgualsData(prog.getDataCaducitat(), dataEmissio)) {
+        System.out.println("Nom prog =" + prog.getNom());
+        System.out.println("Caducitat =" + prog.getDataCaducitat().get(Calendar.DAY_OF_MONTH) + "-" + prog.getDataCaducitat().get(Calendar.MONTH) + "-" + prog.getDataCaducitat().get(Calendar.YEAR));
+        System.out.println("dataEmissio =" + dataEmissio.get(Calendar.DAY_OF_MONTH) + "-" + dataEmissio.get(Calendar.MONTH) + "-" + dataEmissio.get(Calendar.YEAR));
+        if (conv.comparacioData(prog.getDataCaducitat(), dataEmissio) == 1 || conv.sonIgualsData(prog.getDataCaducitat(), dataEmissio)) {
             /* Entenem que un programa es pot emetre el mateix dia que caduca */
             valor = solapa(prog, franja, dataEmissio);
 
