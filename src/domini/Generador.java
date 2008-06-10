@@ -319,6 +319,7 @@ public class Generador {
                                         vectorProgrames[i] = false;
                                         n--;
                                         valor[0] = "" + 0;
+                                        ok = true;
                                     }
                                 } else {
                                     /* Miram si un programa determinat es pot associar a una franja determinada en la dataEmissio especificada */
@@ -394,7 +395,12 @@ public class Generador {
 
                                 } else if (directe) {
                                     ok = true;
-                                } else if (!directe && conv.comparacioData(dataEmissio, dataFiEmissio) == -11) {
+                                } else if (conv.comparacioData(dataEmissio, llistaProgrames.get(i).getDataCaducitat()) == 1) {
+                                    n--;
+                                    vectorProgrames[i] = false;
+                                    ok = true;
+
+                                } else if (!directe && conv.comparacioData(dataEmissio, dataFiEmissio) == -1) {
                                     dataEmissio.add(Calendar.DAY_OF_MONTH, +1);
                                 }
                             }
