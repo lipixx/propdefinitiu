@@ -33,6 +33,11 @@ public class Planificacio implements Serializable {
         llistaEmissions = new LinkedList<ServeiPendent>();
     }
 
+    public void setId(int i)
+    {
+        id = i;
+    }
+    
     public int getId() {
         return id;
     }
