@@ -450,7 +450,7 @@ public class Generador {
                     for (int k = 0; k < plani.getLlistaEmissions().size() && !igual; k++) {
                         if (llistaPlanificacionsGenerades.get(p).getLlistaEmissions().size() == plani.getLlistaEmissions().size()) {
                             for (int j = 0; j < llistaPlanificacionsGenerades.get(p).getLlistaEmissions().size() && !igual; j++) {
-                                if (k == j && ((Emissio) llistaPlanificacionsGenerades.get(p).getLlistaEmissions().get(j)).getPrograma().getNom().equalsIgnoreCase(((Emissio) plani.getLlistaEmissions().get(j)).getPrograma().getNom()) && sonIguals(((Emissio) llistaPlanificacionsGenerades.get(p).getLlistaEmissions().get(j)).getDataEmissio(), ((Emissio) plani.getLlistaEmissions().get(j)).getDataEmissio()) && sonHoresIguals(((Emissio) llistaPlanificacionsGenerades.get(p).getLlistaEmissions().get(j)).getHoraInici(), ((Emissio) plani.getLlistaEmissions().get(j)).getHoraInici()) && sonHoresIguals(((Emissio) llistaPlanificacionsGenerades.get(p).getLlistaEmissions().get(j)).getHoraFi(), ((Emissio) plani.getLlistaEmissions().get(j)).getHoraFi())) {
+                                if (((Emissio) llistaPlanificacionsGenerades.get(p).getLlistaEmissions().get(j)).getPrograma().getNom().equalsIgnoreCase(((Emissio) plani.getLlistaEmissions().get(j)).getPrograma().getNom()) && sonIguals(((Emissio) llistaPlanificacionsGenerades.get(p).getLlistaEmissions().get(j)).getDataEmissio(), ((Emissio) plani.getLlistaEmissions().get(j)).getDataEmissio()) && sonHoresIguals(((Emissio) llistaPlanificacionsGenerades.get(p).getLlistaEmissions().get(j)).getHoraInici(), ((Emissio) plani.getLlistaEmissions().get(j)).getHoraInici()) && sonHoresIguals(((Emissio) llistaPlanificacionsGenerades.get(p).getLlistaEmissions().get(j)).getHoraFi(), ((Emissio) plani.getLlistaEmissions().get(j)).getHoraFi())) {
                                     if (comptadorIguals == 3) {
                                         comptadorIguals = -1;
                                         in.add(Calendar.DAY_OF_MONTH, +1);
@@ -1260,7 +1260,7 @@ public class Generador {
                         ((minutIni + dura) / 60) + horaIni;
                 minutFi =
                         (dura + minutIni) % 60;
-                
+
 
                 if (minutFi < 10) {
                     hora = formatCalendar2.parse("" + horaFi + ":0" + minutFi);
