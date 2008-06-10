@@ -1290,8 +1290,8 @@ public class Generador {
                             n && !ok; j++) {
 
                         if (j == (n - 1) && j == 0) {/* Nomes hi ha una emissio, miram si el nostre interval pot anar abans o despres */
-                            if(!conv.horaMajor(calendarFi, llista.get(j).getHoraInici()) || conv.horaMajor(llista.get(j).getHoraFi(), calendarInici)){
-                            //if (!calendarFi.after(llista.get(j).getHoraInici()) || !calendarInici.before(llista.get(j).getHoraFi())) {
+                            if (!conv.horaMajor(calendarFi, llista.get(j).getHoraInici()) || conv.horaMajor(llista.get(j).getHoraFi(), calendarInici) || sonHoresIguals(llista.get(j).getHoraFi(), calendarInici)) {
+                                //if (!calendarFi.after(llista.get(j).getHoraInici()) || !calendarInici.before(llista.get(j).getHoraFi())) {
                                 ok = true;
                             } else {
                                 solapa = true;
