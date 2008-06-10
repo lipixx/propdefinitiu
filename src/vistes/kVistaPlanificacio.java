@@ -310,6 +310,12 @@ public class kVistaPlanificacio {
         vCriteris.setActions(actions);
     }
 
+    private void clicatBotoCancelGenerada() throws ParseException
+    {
+        vGen.setPreu(0);
+        vGen.setVisible(false);
+        actualitzaVista(false);
+    }
     /**Aquesta funcio es crida quan contractem una nova planificacio a la finestra
      * de VistaGenerat.
      */
@@ -436,7 +442,7 @@ public class kVistaPlanificacio {
 
     private void initVistaGenerat() {
 
-        ActionListener actions[] = new ActionListener[5];
+        ActionListener actions[] = new ActionListener[6];
         vGen.setSetmana(Conv.setmana(iniciSetmana, fiSetmana));
 
         ListSelectionListener selPlan;
@@ -511,6 +517,18 @@ public class kVistaPlanificacio {
             /*Veure resum de la planificacio seleccionada*/
             public void actionPerformed(ActionEvent e) {
                 veureResum(true);
+            }
+        });
+                
+        /**Button: Cancelar Generada*/
+        actions[5] = (new ActionListener() {
+
+            public void actionPerformed(ActionEvent arg0) {
+                try {
+                    clicatBotoCancelGenerada();
+                } catch (ParseException ex) {
+                    Logger.getLogger(kVistaPlanificacio.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
 

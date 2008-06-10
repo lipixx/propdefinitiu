@@ -92,7 +92,7 @@
                   <Component id="preuTotalV" min="-2" pref="58" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="313" max="32767" attributes="0"/>
+                  <EmptySpace pref="315" max="32767" attributes="0"/>
                   <Component id="butoAnular" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="414" max="-2" attributes="0"/>
               </Group>
@@ -198,9 +198,6 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Cancelar"/>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="butoCancelarActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel4">
           <Properties>
