@@ -71,12 +71,14 @@ public class ControladorPlanificacio {
 
         boolean trobat = false;
         Planificacio p = null;
-        
+
         if (temporal) {
             indexPlan--;
             if (indexPlan > -1) {
                 p = llistaP.get(indexPlan);
-                if (p!=null) trobat = true;
+                if (p != null) {
+                    trobat = true;
+                }
             }
         } else {
 
@@ -93,7 +95,7 @@ public class ControladorPlanificacio {
                 }
             }
         }
-        
+
         String[][] graella = new String[144][8];
         for (int hmm = 0; hmm < 144; hmm++) {
             for (int wowo = 1; wowo < 8; wowo++) {
@@ -144,7 +146,9 @@ public class ControladorPlanificacio {
                     horaFi = aux.get(Calendar.HOUR_OF_DAY);
                     minutFi = aux.get(Calendar.MINUTE);
                     posFi = (horaFi * 6) + (minutFi / 10);
-
+                    if (posFi == 0) {
+                        posFi = 144;
+                    }
                     String nom = mirantEmissio.getIdentificador();
                     while (posIni < posFi) {
                         graella[posIni][dia] = nom;
@@ -317,23 +321,20 @@ public class ControladorPlanificacio {
 
         Planificacio p = null;
         boolean trobat = false;
-        if (!temporal)
-        {
-        for (int i = 0; i < llistaP.size() && !trobat; i++) {
-            iniPlani = (Calendar) llistaP.get(i).getDataInici();
-            fiPlani = (Calendar) llistaP.get(i).getDataFi();
+        if (!temporal) {
+            for (int i = 0; i < llistaP.size() && !trobat; i++) {
+                iniPlani = (Calendar) llistaP.get(i).getDataInici();
+                fiPlani = (Calendar) llistaP.get(i).getDataFi();
 
-            if (Conv.sonIgualsData(iniPlaniAux, iniPlani) && Conv.sonIgualsData(fiPlaniAux, fiPlani)) {
-                trobat = true;
-                p = llistaP.get(i);
+                if (Conv.sonIgualsData(iniPlaniAux, iniPlani) && Conv.sonIgualsData(fiPlaniAux, fiPlani)) {
+                    trobat = true;
+                    p = llistaP.get(i);
+                }
             }
-        }
-        }
-        else
-        {
+        } else {
             p = llistaP.get(indexPlan);
         }
-        
+
         if (p != null) {
             for (int j = 0; j < p.getLlistaEmissions().size(); j++) {
                 ServeiPendent mirantEmissio = (ServeiPendent) p.getLlistaEmissions().get(j);
@@ -391,21 +392,19 @@ public class ControladorPlanificacio {
         }
 
         //Cerquem la Planificacio a la llista:
-        if (!temporal){
-        for (int i = 0; i < llistaPlanisTemporal.size() && !trobat; i++) {
-            P = llistaPlanisTemporal.get(i);
-            pIni = P.getDataInici();
-            pFi = P.getDataFi();
+        if (!temporal) {
+            for (int i = 0; i < llistaPlanisTemporal.size() && !trobat; i++) {
+                P = llistaPlanisTemporal.get(i);
+                pIni = P.getDataInici();
+                pFi = P.getDataFi();
 
-            if (Conv.sonIgualsData(dIni, pIni) && Conv.sonIgualsData(dFi, pFi)) {
-                emissionsTemporal = P.getLlistaEmissions();
-                trobat = true;
+                if (Conv.sonIgualsData(dIni, pIni) && Conv.sonIgualsData(dFi, pFi)) {
+                    emissionsTemporal = P.getLlistaEmissions();
+                    trobat = true;
+                }
             }
-        }
-        trobat = false;
-        }
-        else
-        {
+            trobat = false;
+        } else {
             indexPlan--;
             P = llistaPlanisTemporal.get(indexPlan);
             emissionsTemporal = P.getLlistaEmissions();
@@ -463,15 +462,13 @@ public class ControladorPlanificacio {
         boolean trobat = false;
         /**
         for (int i = 0; i < llistaPlanificacions.size() && !trobat; i++) {
-            if (Conv.sonIgualsData(llistaPlanificacions.get(i).getDataInici(), dIni) && Conv.sonIgualsData(llistaPlanificacions.get(i).getDataFi(), dFi)) {
-                cActual.addPlanificacio(llistaPlanificacions.get(i));
-                trobat = true;
-            }
-
+        if (Conv.sonIgualsData(llistaPlanificacions.get(i).getDataInici(), dIni) && Conv.sonIgualsData(llistaPlanificacions.get(i).getDataFi(), dFi)) {
+        cActual.addPlanificacio(llistaPlanificacions.get(i));
+        trobat = true;
         }
-       */
-        
-        cActual.addPlanificacio(llistaPlanificacions.get(indexPlan-1));
+        }
+         */
+        cActual.addPlanificacio(llistaPlanificacions.get(indexPlan - 1));
 
     }
 
