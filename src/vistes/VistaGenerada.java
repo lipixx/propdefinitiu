@@ -55,7 +55,7 @@ public class VistaGenerada extends javax.swing.JDialog {
     }
 
     void setPreu(double preu) {
-        preuTotalV.setText("" + preu);
+        preuTotalV.setText("" + (float) preu);
     }
 
     /** This method is called from within the constructor to
