@@ -44,7 +44,7 @@ public class ControladorPlanificacio {
         llistaProgrames = new LinkedList<Programa>();
     }
 
-    public String[][] genSet(String inici, String fin, String plani, boolean temporal) throws ParseException {
+    public String[][] genSet(String inici, String fin, String plani, int indexPlan, boolean temporal) throws ParseException {
 
         /* Definim els limits de la setmana a generar */
         Calendar iniSetmana = Conv.strToCalendar(inici);
@@ -64,27 +64,36 @@ public class ControladorPlanificacio {
 
         LinkedList<Planificacio> llistaP = llistaPlanificacions;
 
+
         if (!temporal) {
             llistaP = cActual.getLlistaPlan();
         }
 
-
-        Planificacio p = null;
         boolean trobat = false;
+        Planificacio p = null;
+        
+        if (temporal) {
+            indexPlan--;
+            if (indexPlan > -1) {
+                p = llistaP.get(indexPlan);
+                if (p!=null) trobat = true;
+            }
+        } else {
 
-        for (int i = 0; i < llistaP.size() && !trobat; i++) {
-            /* Obtenim s'identificador de planificacio que estem mirant */
+            for (int i = 0; i < llistaP.size() && !trobat; i++) {
+                /* Obtenim s'identificador de planificacio que estem mirant */
 
-            iniPlani = (Calendar) llistaP.get(i).getDataInici();
-            fiPlani = (Calendar) llistaP.get(i).getDataFi();
+                iniPlani = (Calendar) llistaP.get(i).getDataInici();
+                fiPlani = (Calendar) llistaP.get(i).getDataFi();
 
 
-            if (Conv.sonIgualsData(iniPlaniAux, iniPlani) && Conv.sonIgualsData(fiPlaniAux, fiPlani)) {
-                trobat = true;
-                p = llistaP.get(i);
+                if (Conv.sonIgualsData(iniPlaniAux, iniPlani) && Conv.sonIgualsData(fiPlaniAux, fiPlani)) {
+                    trobat = true;
+                    p = llistaP.get(i);
+                }
             }
         }
-
+        
         String[][] graella = new String[144][8];
         for (int hmm = 0; hmm < 144; hmm++) {
             for (int wowo = 1; wowo < 8; wowo++) {
@@ -291,7 +300,7 @@ public class ControladorPlanificacio {
         }
     }
 
-    public String genResum(String idPlanificacio, boolean temporal) {
+    public String genResum(String idPlanificacio, int indexPlan, boolean temporal) {
         LinkedList<Planificacio> llistaP = llistaPlanificacions;
         String out = new String();
 
@@ -308,7 +317,8 @@ public class ControladorPlanificacio {
 
         Planificacio p = null;
         boolean trobat = false;
-
+        if (!temporal)
+        {
         for (int i = 0; i < llistaP.size() && !trobat; i++) {
             iniPlani = (Calendar) llistaP.get(i).getDataInici();
             fiPlani = (Calendar) llistaP.get(i).getDataFi();
@@ -318,7 +328,12 @@ public class ControladorPlanificacio {
                 p = llistaP.get(i);
             }
         }
-
+        }
+        else
+        {
+            p = llistaP.get(indexPlan);
+        }
+        
         if (p != null) {
             for (int j = 0; j < p.getLlistaEmissions().size(); j++) {
                 ServeiPendent mirantEmissio = (ServeiPendent) p.getLlistaEmissions().get(j);
@@ -359,7 +374,7 @@ public class ControladorPlanificacio {
      * @post S'ha esborrat de la Planificacio amb clau (dIni,dFi) l'emissio amb clau (nomPrograma)
      * @return Retorna un bolea cert si s'ha anulat el programa.
      */
-    public boolean anularEmissio(String nomPrograma, Calendar dIni, Calendar dFi, boolean temporal) {
+    public boolean anularEmissio(String nomPrograma, Calendar dIni, Calendar dFi, int indexPlan, boolean temporal) {
         // idPLanificacio son 2 calendars dd/mm/yyyy - dd/mm/yyyy 
         // true implica que es TEMPORAL
         Emissio e = null;
@@ -376,6 +391,7 @@ public class ControladorPlanificacio {
         }
 
         //Cerquem la Planificacio a la llista:
+        if (!temporal){
         for (int i = 0; i < llistaPlanisTemporal.size() && !trobat; i++) {
             P = llistaPlanisTemporal.get(i);
             pIni = P.getDataInici();
@@ -387,7 +403,13 @@ public class ControladorPlanificacio {
             }
         }
         trobat = false;
-
+        }
+        else
+        {
+            indexPlan--;
+            P = llistaPlanisTemporal.get(indexPlan);
+            emissionsTemporal = P.getLlistaEmissions();
+        }
         //Ara tenim la llista d'emissions de la planificacio trobada, cercarem la emissio ssi
         //hem trobat emissions
         if (emissionsTemporal != null) {
@@ -436,9 +458,10 @@ public class ControladorPlanificacio {
         return resultat;
     }
 
-    public void contractar(Calendar dIni, Calendar dFi) {
+    public void contractar(Calendar dIni, Calendar dFi, int indexPlan) {
         // identificam la planificacio per la seva data ini i data fin 
         boolean trobat = false;
+        /**
         for (int i = 0; i < llistaPlanificacions.size() && !trobat; i++) {
             if (Conv.sonIgualsData(llistaPlanificacions.get(i).getDataInici(), dIni) && Conv.sonIgualsData(llistaPlanificacions.get(i).getDataFi(), dFi)) {
                 cActual.addPlanificacio(llistaPlanificacions.get(i));
@@ -446,6 +469,9 @@ public class ControladorPlanificacio {
             }
 
         }
+       */
+        
+        cActual.addPlanificacio(llistaPlanificacions.get(indexPlan-1));
 
     }
 
@@ -528,12 +554,59 @@ public class ControladorPlanificacio {
 
     }
 
+    public double getPreuPlan(String planSelectedID, int index, boolean temporal) throws ParseException {
+
+        Calendar idPlan[] = Conv.idPlanificacio(planSelectedID);
+        Planificacio P;
+        if (temporal) {
+            P = getPlanificacio(index);
+        } else {
+            P = getPlanificacio(idPlan[0], idPlan[1], temporal);
+        }
+        if (P == null) {
+            return 0;
+        } else {
+            return P.getPreu();
+        }
+
+    }
+
+    /**
+     * Aquesta funcio cerca per data ini i data fi una planificacio
+     * @param dataIni
+     * @param dataFi
+     * @param temporal
+     * @return
+     */
     private Planificacio getPlanificacio(Calendar dataIni, Calendar dataFi, boolean temporal) {
         LinkedList<Planificacio> lTemp = llistaPlanificacions;
-        if (!temporal) lTemp = cActual.getLlistaPlan();
-        
-        for (Planificacio p : lTemp ) {
+        if (!temporal) {
+            lTemp = cActual.getLlistaPlan();
+        }
+
+        for (Planificacio p : lTemp) {
             if (Conv.sonIgualsData(p.getDataInici(), dataIni) && Conv.sonIgualsData(p.getDataFi(), dataFi)) {
+                return p;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Aquesta funcio cerca per index una planificacio.
+     * @param dataIni
+     * @param dataFi
+     * @param index
+     * @param temporal
+     * @return
+     */
+    private Planificacio getPlanificacio(int index) {
+
+        LinkedList<Planificacio> lTemp = llistaPlanificacions;
+
+        for (int i = 0; i < lTemp.size(); i++) {
+            Planificacio p = lTemp.get(i);
+            if (p.getId() == index) {
                 return p;
             }
         }

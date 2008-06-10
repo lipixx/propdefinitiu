@@ -152,7 +152,7 @@ public class kVistaPlanificacio {
 
                         Calendar[] idPlani = Conv.idPlanificacio(idPlanificacio);
 
-                        if (CPlani.anularEmissio(nomPrograma, idPlani[0], idPlani[1], false) /* true implica que es TEMPORAL */) {
+                        if (CPlani.anularEmissio(nomPrograma, idPlani[0], idPlani[1], -9, false) /* true implica que es TEMPORAL */) {
                             vPlani.setPreu(0);
                             actualitzaVista(false);
                             if (planSelected != -1) {
@@ -182,19 +182,19 @@ public class kVistaPlanificacio {
 
     public void veureResum(boolean temporal) {
         String idPlanificacio;
-
+        int indexP = -9;
         if (temporal) {
             idPlanificacio = vGen.getPlanSelected();
             vResum.setLocationRelativeTo(vGen);
+            indexP = vGen.getIndexPlanSelected();
         } else {
             idPlanificacio = vPlani.getPlanSelected();
             vResum.setLocationRelativeTo(vPlani);
         }
 
-        if (idPlanificacio != null) 
-        {
+        if (idPlanificacio != null) {
             vResum.setTitle("Resum de la planificacio " + idPlanificacio);
-            vResum.setResum(CPlani.genResum(idPlanificacio, temporal), idPlanificacio);
+            vResum.setResum(CPlani.genResum(idPlanificacio, indexP-1, temporal), idPlanificacio);
             vResum.setVisible(true);
         }
     }
@@ -210,7 +210,7 @@ public class kVistaPlanificacio {
 
     private void initGraella() throws ParseException {
         if (CPlani.getNumPlanisClient() > 0) {
-            generarGraella(false);
+            generarGraella(false, -9);
             vPlani.pintarGraella(graella);
         }
 
@@ -310,12 +310,12 @@ public class kVistaPlanificacio {
         vCriteris.setActions(actions);
     }
 
-    private void clicatBotoCancelGenerada() throws ParseException
-    {
+    private void clicatBotoCancelGenerada() throws ParseException {
         vGen.setPreu(0);
         vGen.setVisible(false);
         actualitzaVista(false);
     }
+
     /**Aquesta funcio es crida quan contractem una nova planificacio a la finestra
      * de VistaGenerat.
      */
@@ -328,7 +328,7 @@ public class kVistaPlanificacio {
         if (idPlanificacio != null) {
             try {
                 Calendar[] idPlanif = Conv.idPlanificacio(idPlanificacio);
-                CPlani.contractar(idPlanif[0], idPlanif[1]);
+                CPlani.contractar(idPlanif[0], idPlanif[1], vGen.getIndexPlanSelected());
                 // cerca sa planificacio de sa llista temporal i fa un client.addPlanificacio(plani);
                 vGen.setPreu(0);
                 vGen.setVisible(false);
@@ -346,7 +346,7 @@ public class kVistaPlanificacio {
      */
     private void clicatBotoGenerar() {
         try {
-            
+
             programesSeleccionats = vSprog.getLlistaSeleccionats();
             if (programesSeleccionats.size() != 0) {
                 llistaPlanificacions = CPlani.gene(programesSeleccionats, nousCriteris);
@@ -485,10 +485,11 @@ public class kVistaPlanificacio {
                     if (nomPrograma != null && nomPrograma.compareToIgnoreCase("") != 0 && nomPrograma.compareToIgnoreCase("-") != 0) {
 
                         String idPlanificacio = vGen.getPlanSelected();
+                        int indexPlan = vGen.getIndexPlanSelected();
                         /* idPLanificacio son 2 calendars dd/mm/yyyy - dd/mm/yyyy */
                         Calendar[] idPlani = Conv.idPlanificacio(idPlanificacio);
 
-                        if (CPlani.anularEmissio(nomPrograma, idPlani[0], idPlani[1], true) /* true implica que es TEMPORAL */) {
+                        if (CPlani.anularEmissio(nomPrograma, idPlani[0], idPlani[1],indexPlan, true) /* true implica que es TEMPORAL */) {
                             actualitzaVista(true);
                             vGen.setPreu(0);
                             vGen.setSelectPlan(planSelected);
@@ -519,7 +520,7 @@ public class kVistaPlanificacio {
                 veureResum(true);
             }
         });
-                
+
         /**Button: Cancelar Generada*/
         actions[5] = (new ActionListener() {
 
@@ -552,8 +553,9 @@ public class kVistaPlanificacio {
         // vPlanGen.pintarGraella(graella);
         // generar graella amb akesta tupla demissions (segons la setmana indicada en globals)
         String planSelectedID = vGen.getPlanSelected();
+        int indexPlanSelected = vGen.getIndexPlanSelected();
 
-        if (planSelectedID != null) {
+        if (planSelectedID != null || indexPlanSelected > 0) {
 
             Calendar idPlan[] = Conv.idPlanificacio(planSelectedID);
             String setmana = Conv.obteSetmana(idPlan[0]);
@@ -570,26 +572,28 @@ public class kVistaPlanificacio {
             //Seteja sa Graella amb ses noves tEmissio[]
 
 
-            generarGraella(temporal);
+            generarGraella(temporal, indexPlanSelected);
 
             if (graella != null)//Pintar-la
             {
                 vGen.pintarGraella(graella);
             }
-            vGen.setPreu(CPlani.getPreuPlan(planSelectedID,true));
+            vGen.setPreu(CPlani.getPreuPlan(planSelectedID, indexPlanSelected, true));
         }
 
     }
 
     private void avancarPlanificacio(boolean temporal) throws ParseException {
         String planSelectedID;
+        int indexPlanSelected = -9;
         if (temporal) {
+            indexPlanSelected = vGen.getIndexPlanSelected();
             planSelectedID = vGen.getPlanSelected();
         } else {
             planSelectedID = vPlani.getPlanSelected();
         }
         if (planSelectedID != null) {
-            generarGraella(temporal);
+            generarGraella(temporal, indexPlanSelected);
             if (temporal) {
                 vGen.pintarGraella(graella);
             } else {
@@ -600,13 +604,15 @@ public class kVistaPlanificacio {
 
     private void retrocedirPlanificacio(boolean temporal) throws ParseException {
         String planSelectedID;
+        int indexPlanSelected = -9;
         if (temporal) {
+            indexPlanSelected = vGen.getIndexPlanSelected();
             planSelectedID = vGen.getPlanSelected();
         } else {
             planSelectedID = vPlani.getPlanSelected();
         }
         if (planSelectedID != null) {
-            generarGraella(temporal);
+            generarGraella(temporal, indexPlanSelected);
             if (temporal) {
                 vGen.pintarGraella(graella);
             } else {
@@ -633,14 +639,14 @@ public class kVistaPlanificacio {
             vPlani.setSetmana(setmana);
 
             //Seteja sa Graella amb ses noves tEmissio[]
-            generarGraella(temporal);
+            generarGraella(temporal, -9);
 
             if (graella != null)//Pintar-la
             {
                 vPlani.pintarGraella(graella);
             }
 
-            vPlani.setPreu(CPlani.getPreuPlan(planSelectedID,false));
+            vPlani.setPreu(CPlani.getPreuPlan(planSelectedID, false));
         }
     }
 
@@ -770,14 +776,14 @@ public class kVistaPlanificacio {
         }
     }
 
-    private void generarGraella(boolean temporal) throws ParseException {
+    private void generarGraella(boolean temporal, int indexPlan) throws ParseException {
         String inici = Conv.dateToStr(iniciSetmana);
         String fi = Conv.dateToStr(fiSetmana);
 
         if (temporal) {
-            graella = CPlani.genSet(inici, fi, vGen.getPlanSelected(), temporal);
+            graella = CPlani.genSet(inici, fi, vGen.getPlanSelected(), indexPlan, temporal);
         } else {
-            graella = CPlani.genSet(inici, fi, vPlani.getPlanSelected(), temporal);
+            graella = CPlani.genSet(inici, fi, vPlani.getPlanSelected(), -1, temporal);
         }
     }
 
