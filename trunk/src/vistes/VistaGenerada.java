@@ -24,6 +24,10 @@ public class VistaGenerada extends javax.swing.JDialog {
         initComponents();
     }
 
+    public int getIndexPlanSelected() {
+        return llistaPlanificacionsV.getSelectedIndex()+1;
+    }
+
     String getPlanSelected() {
         String pla = (String) llistaPlanificacionsV.getSelectedValue();
         return pla;
