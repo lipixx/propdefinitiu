@@ -180,6 +180,8 @@ public class ControladorPlanificacio {
 
         //Netejem la llista global de programes
         llistaProgrames.clear();
+        llistaFrangesPreferides.clear();
+        llistaFrangesProhibides.clear();
         llistaPlanificacions = new LinkedList<Planificacio>();
 
         /**Si s'ha seleccionat autogeneracio, mirarem si existeixen filtres marcats.
