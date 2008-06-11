@@ -93,12 +93,7 @@ public class Generador {
             repositoriFranges.add(llistaFranT.get(j));
         }
 
-        for (int kaka = 0; kaka < fProhibides.size(); kaka++) {
-            System.out.println("prohibida =" + fProhibides.get(kaka).getHoraInici().get(Calendar.HOUR_OF_DAY) + ":" + fProhibides.get(kaka).getHoraInici().get(Calendar.MINUTE));
-            System.out.println("prohibida =" + fProhibides.get(kaka).getHoraFi().get(Calendar.HOUR_OF_DAY) + ":" + fProhibides.get(kaka).getHoraFi().get(Calendar.MINUTE));
-        }
-
-        if (criteris[0][0] == 1) {
+               if (criteris[0][0] == 1) {
 
             /* El preu es el criteris mes prioritari*/
             /* Ordenam les franges preferides per el seu preu, si no hi ha cap franja preferida definida es crea */
@@ -125,9 +120,7 @@ public class Generador {
             if (criteris[3][0] < criteris[1][0] || criteris[3][0] < criteris[2][0]) {
                 /* Primer volem els programes de format directe */
                 llistaProgrames = primerDirectes(llistaProgrames);
-                for (int po = 0; po < llistaProgrames.size(); po++) {
-                    System.out.println("prog = " + llistaProgrames.get(po).getNom());
-                }
+                
             }
 
         } else {
@@ -141,20 +134,11 @@ public class Generador {
                 crearFrangesNoProhibidesNiPreferides(fPreferides, fProhibides);
             }
 
-            for (int zona = 0; zona < llistaFranges.size(); zona++) {
-                System.out.println("a generador");
-                conv.debugCalendar(llistaFranges.get(zona).getHoraInici(), zona);
-                conv.debugCalendar(llistaFranges.get(zona).getHoraFi(), zona);
-            }
-
+           
             if (criteris[3][0] < criteris[1][0] || criteris[3][0] < criteris[2][0]) {
                 /* Primer volem els programes de format directe */
                 llistaProgrames = primerDirectes(llistaProgrames);
-                for (int po = 0; po < llistaProgrames.size(); po++) {
-                    System.out.println("prog = " + llistaProgrames.get(po).getNom());
-                }
-
-            }
+                            }
         }
         /* Fi inicialitzacio de programes i franges */
 
@@ -284,8 +268,7 @@ public class Generador {
                                     int horaFinal = ((minutIni + dura) / 60) + horaIni;
                                     int minutFinal = (dura + minutIni) % 60;
 
-                                    System.out.println("horaInici =" + horaIni + ":" + minutIni);
-                                    System.out.println("horaFinal =" + horaFinal + ":" + minutFinal);
+                                    
                                     Date hora;
                                     if (minutFinal < 10) {
                                         hora = formatCalendar2.parse("" + horaFinal + ":0" + minutFinal);
@@ -299,8 +282,8 @@ public class Generador {
                                     boolean burroCargado = false;
                                     for (int burro = 0; burro < llistaFranges.size() && !burroCargado; burro++) {
                                         /* Intentam trobar la franja que pertany a la emisio en directe */
-                                        System.out.println("Inici franja =" + llistaFranges.get(burro).getHoraInici().get(Calendar.HOUR_OF_DAY) + ":" + llistaFranges.get(burro).getHoraInici().get(Calendar.MINUTE));
-                                        System.out.println("Fi franja =" + llistaFranges.get(burro).getHoraFi().get(Calendar.HOUR_OF_DAY) + ":" + llistaFranges.get(burro).getHoraFi().get(Calendar.MINUTE));
+
+
                                         if (conv.horaMajor(horaInici, llistaFranges.get(burro).getHoraInici()) && conv.horaMajor(llistaFranges.get(burro).getHoraFi(), horaFi)) {
                                             /* Hem trobat la franja que pertany a la hora d'emissio*/
                                             burroCargado = true;
@@ -310,8 +293,8 @@ public class Generador {
                                     if (!burroCargado && ((criteris[3][0] < criteris[1][0] && fPreferides.size() > 0) || (criteris[3][0] < criteris[2][0] && fProhibides.size() >= 0))) {
                                         /* Si no hi ha cap franja que coincideix amb l'hora d'emissio del programa en directe
                                         i els programes seleccionats tenen major preferencia que les franges horaries preferides o prohibides */
-                                        System.out.println("horaInici =" + horaInici.get(Calendar.HOUR_OF_DAY) + ":" + horaInici.get(Calendar.MINUTE));
-                                        System.out.println("horaFinal =" + horaFi.get(Calendar.HOUR_OF_DAY) + ":" + horaFi.get(Calendar.MINUTE));
+
+
                                         FranjaHoraria franja = new FranjaHoraria(horaInici, horaFi, (float) 0.01);
                                         valor = factible(llistaProgrames.get(i), franja, dataEmissio);
                                     } else if (!burroCargado) {
@@ -699,10 +682,10 @@ public class Generador {
 
                 } else if (sonHoresIguals(listFranAux.get(i).getHoraInici(), zero)) {
                     /* Si la primera franja comenca a les 00:00, setejarem la hora d'inici a la fi de la primera franja */
-                    conv.debugCalendar(listFranAux.get(i).getHoraFi(), i);
+
                     ini = listFranAux.get(i).getHoraFi();
                     ini.add(Calendar.MINUTE, +1);
-                    conv.debugCalendar(ini, i);
+
                 //if (i == (listFranAux.size() - 1)) {
                         /* Si es sa darrera franja afegirem una que abarcara desde el fi d'aquesta franja fins 23:59 */
                 //  afegir = true;
@@ -734,7 +717,6 @@ public class Generador {
                         }
                         fi = listFranAux.get(i).getHoraInici();
                         fi.add(Calendar.MINUTE, -1);
-                        conv.debugCalendar(fi, i);
                     }
                 }
 
@@ -744,7 +726,6 @@ public class Generador {
                         /* horaInici primera franja == 00:00 */
                         fi = listFranAux.get(i + 1).getHoraInici();
                         fi.add(Calendar.MINUTE, -1);
-                        conv.debugCalendar(fi, i);
                     }
                 }
 
@@ -862,9 +843,7 @@ public class Generador {
         String valor[] = new String[3];
 
         boolean factible = false;
-        System.out.println("Nom prog =" + prog.getNom());
-        System.out.println("Caducitat =" + prog.getDataCaducitat().get(Calendar.DAY_OF_MONTH) + "-" + prog.getDataCaducitat().get(Calendar.MONTH) + "-" + prog.getDataCaducitat().get(Calendar.YEAR));
-        System.out.println("dataEmissio =" + dataEmissio.get(Calendar.DAY_OF_MONTH) + "-" + dataEmissio.get(Calendar.MONTH) + "-" + dataEmissio.get(Calendar.YEAR));
+        
         if (conv.comparacioData(prog.getDataCaducitat(), dataEmissio) == 1 || conv.sonIgualsData(prog.getDataCaducitat(), dataEmissio)) {
             /* Entenem que un programa es pot emetre el mateix dia que caduca */
             valor = solapa(prog, franja, dataEmissio);
@@ -1423,7 +1402,7 @@ public class Generador {
 
         } while (!ok && !directo && !calendarFi.after(franja.getHoraFi()));
 
-// SOLAPA || !OK
+
         if (solapa && !ok) {
             /* SOLAPA = TRUE */
             valor[0] = "" + 1;
@@ -1433,11 +1412,7 @@ public class Generador {
             valor[0] = "" + 0;
         }
 
-        /**/
-        System.out.println("HORA INICI:" + horaIni + ":" + minutIni);
-
-        System.out.println("HORA FI:" + horaFi + ":" + minutFi);
-        /**/
+     
 
         valor[1] = "" + horaIni + ":" + minutIni;
         valor[2] = "" + horaFi + ":" + minutFi;
