@@ -363,15 +363,25 @@ public class Generador {
                                             preuTotal += emi.getPreuEmissio();
                                             ok = true;
                                         } else {
+                                            /* Si preu sobrepassat */
 
-                                            afluixarCriteris();
-                                            if (criteris[0][1] == 0) {
-                                                plani.addEmissioPlanificacio(emi);
-                                                nemis++;
-                                                numEmisDia++;
-                                                preuTotal += emi.getPreuEmissio();
-                                            } else {
+                                            if (criteris[0][0] == 1) {
+                                                /* Si el preu es lo mes prioritari, no afegirem cam programa mes */
+                                                for (int pro = 0; pro < vectorProgrames.length; pro++) {
+                                                    vectorProgrames[pro] = false;
+                                                }
                                                 preuSobrepassat = true;
+                                            } else {
+
+                                                afluixarCriteris();
+                                                if (criteris[0][1] == 0) {
+                                                    plani.addEmissioPlanificacio(emi);
+                                                    nemis++;
+                                                    numEmisDia++;
+                                                    preuTotal += emi.getPreuEmissio();
+                                                } else {
+                                                    preuSobrepassat = true;
+                                                }
                                             }
                                         }
                                     } else {
